@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cTile.cs" />
+    <Compile Include="cTileSetter.cs" />
     <Compile Include="cWorld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="AreatricCloud.cs" />
+    <Compile Include="Camera.cs" />
     <Compile Include="GlowSpriteCreator.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="ScreenEffects\ScreenDarkenLineEffect.cs" />

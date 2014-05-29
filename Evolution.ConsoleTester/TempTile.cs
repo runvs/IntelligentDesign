@@ -22,5 +22,11 @@ namespace Evolution.ConsoleTester
             return new Vector2i(0,0);
         }
 
+
+
+        public float GetTileSizeInPixel()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

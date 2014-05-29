@@ -21,8 +21,10 @@ namespace WorldGeneration
             int sizeY = properties.WorldSizeInTiles.Y;
 
             world.SetWorldProperties(properties);
+            cTileSetter.SetWorldProperties(properties);
 
             float heightMapNoiseFrequency = properties.HeightMapNoiseFrequency;
+            float heightMapMaxHeightInMeter = properties.MaxHeightInMeter;
 
             float[,] heightMap = new float[sizeX, sizeY];
             float[,] temperattureMap = new float[sizeX, sizeY];
@@ -31,7 +33,8 @@ namespace WorldGeneration
             {
                 for (int j = 0; j < sizeY; j++)
                 {
-                    heightMap[i, j] = Math.Abs(Noise.Generate(i / heightMapNoiseFrequency, j / heightMapNoiseFrequency) * 75);
+                    heightMap[i, j] = Math.Abs(Noise.Generate(i / heightMapNoiseFrequency, j / heightMapNoiseFrequency) * heightMapMaxHeightInMeter);
+                    Console.WriteLine(heightMap[i, j]);
                 }
             }
 

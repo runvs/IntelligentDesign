@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JamUtilities;
+using WorldEvolver;
 
 namespace WorldInterfaces
 {
@@ -35,17 +36,25 @@ namespace WorldInterfaces
 
         public void GetInput()
         {
-            throw new NotImplementedException();
+            // do nothing now
         }
 
         public void Update(TimeObject timeObject)
         {
-            throw new NotImplementedException();
+            foreach (var t in _tileList)
+            {
+                cTile tile = t as cTile;
+                tile.Update(timeObject);
+            }
         }
 
         public void Draw(SFML.Graphics.RenderWindow rw)
         {
-            throw new NotImplementedException();
+            foreach (var t in _tileList)
+            {
+                cTile tile = t as cTile;
+                tile.Draw(rw);
+            }
         }
 
         public void AddTille(ITile tile)
