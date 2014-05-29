@@ -74,8 +74,10 @@ namespace JamUtilities
             double angle = Random.NextDouble() * 2 * Math.PI;
             return new Vector2f((float)Math.Cos(angle) * radiusX, (float)Math.Sin(angle) * radiusY);
         }
-
-
+        static public double GetRandomDouble(double minimum, double maximum)
+        {
+            return Random.NextDouble() * (maximum - minimum) + minimum;
+        }
         static private void CheckRanges(ref Vector2f range)
         {
             //if (range == null)
