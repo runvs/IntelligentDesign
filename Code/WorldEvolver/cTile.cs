@@ -72,6 +72,12 @@ namespace WorldEvolver
         public void Update(TimeObject timeObject)
         {
             _localTime += timeObject.ElapsedGameTime;
+            _refreshTimer -= timeObject.ElapsedGameTime;
+            if (_refreshTimer <= 0.0f)
+            {
+                _refreshTimer = _refreshTimerMax;
+                ResetTileAppearance();
+            }
         }
 
         public void Draw(SFML.Graphics.RenderWindow rw)

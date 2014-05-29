@@ -34,7 +34,7 @@ namespace WorldGeneration
                 for (int j = 0; j < sizeY; j++)
                 {
                     heightMap[i, j] = Math.Abs(Noise.Generate(i / heightMapNoiseFrequency, j / heightMapNoiseFrequency) * heightMapMaxHeightInMeter);
-                    Console.WriteLine(heightMap[i, j]);
+                    //Console.WriteLine(heightMap[i, j]);
                 }
             }
 
