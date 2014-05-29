@@ -62,9 +62,29 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Evolution\Evolution.csproj">
+      <Project>{2677910e-6d15-4ca3-b255-4e4cdb0c3276}</Project>
+      <Name>Evolution</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Lib\JamUtilities\JamUtilities\JamUtilities.csproj">
       <Project>{fc7a5984-9b7d-494c-a49d-059dcabfb253}</Project>
       <Name>JamUtilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="ArtificialIntelligence\ArtificialIntelligence.csproj">
+      <Project>{65e1c85e-82fd-4436-a33f-86455cf53b41}</Project>
+      <Name>ArtificialIntelligence</Name>
+    </ProjectReference>
+    <ProjectReference Include="WorldEvolver\WorldEvolver.csproj">
+      <Project>{e0e44a4c-61c9-464e-b11d-01ec6781b3b5}</Project>
+      <Name>WorldEvolver</Name>
+    </ProjectReference>
+    <ProjectReference Include="WorldGeneration\WorldGeneration.csproj">
+      <Project>{daf83965-af3b-49fd-80b9-2ff0ec531ee8}</Project>
+      <Name>WorldGeneration</Name>
+    </ProjectReference>
+    <ProjectReference Include="WorldInterfaces\WorldInterfaces.csproj">
+      <Project>{006634e8-0ee2-4b30-adac-a5f62afc9286}</Project>
+      <Name>WorldInterfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
