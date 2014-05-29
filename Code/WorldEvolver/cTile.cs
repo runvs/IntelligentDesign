@@ -83,7 +83,14 @@ namespace WorldEvolver
         public void Draw(SFML.Graphics.RenderWindow rw)
         {
             _tileShape.Position = TileSizeInPixels *  new Vector2f(_positionInTiles.X, _positionInTiles.Y) - JamUtilities.Camera.CameraPosition;
-            rw.Draw(_tileShape);
+            if (_tileShape.Position.X >= -10 && _tileShape.Position.X <= 810)
+            {
+                if (_tileShape.Position.Y >= -10 && _tileShape.Position.Y <= 610)
+                {
+                    rw.Draw(_tileShape);
+                }
+            }
+            
         }
 
 

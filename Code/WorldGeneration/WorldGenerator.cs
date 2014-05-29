@@ -23,18 +23,37 @@ namespace WorldGeneration
             world.SetWorldProperties(properties);
             cTileSetter.SetWorldProperties(properties);
 
-            float heightMapNoiseFrequency = properties.HeightMapNoiseFrequency;
+            float heightMapNoiseFrequency = properties.HeightMapNoiseLength;
             float heightMapMaxHeightInMeter = properties.MaxHeightInMeter;
 
             float[,] heightMap = new float[sizeX, sizeY];
             float[,] temperattureMap = new float[sizeX, sizeY];
 
+            float highestValue = -1;
+            float lowestValue = 1;
+
             for (int i = 0; i < sizeX; i++)
             {
                 for (int j = 0; j < sizeY; j++)
                 {
-                    heightMap[i, j] = Math.Abs(Noise.Generate(i / heightMapNoiseFrequency, j / heightMapNoiseFrequency) * heightMapMaxHeightInMeter);
-                    //Console.WriteLine(heightMap[i, j]);
+                    heightMap[i, j] = ( Noise.Generate(i / heightMapNoiseFrequency, j / heightMapNoiseFrequency));
+                    if (heightMap[i, j] >= highestValue)
+                    {
+                        highestValue = heightMap[i, j];
+                    }
+                    if (heightMap[i, j] < lowestValue)
+                    {
+                        lowestValue = heightMap[i, j];
+                    }
+                    
+                }
+            }
+            for (int i = 0; i < sizeX; i++)
+            {
+                for (int j = 0; j < sizeY; j++)
+                {
+                    heightMap[i, j] = (heightMap[i, j] + lowestValue) / (lowestValue * 2.0f )* heightMapMaxHeightInMeter;
+                   // Console.WriteLine(heightMap[i, j]);
                 }
             }
 

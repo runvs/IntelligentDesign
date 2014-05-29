@@ -11,7 +11,7 @@ namespace WorldInterfaces
     {
         public Vector2i WorldSizeInTiles {get; set;}
 
-        public float HeightMapNoiseFrequency { get; set; }
+        public float HeightMapNoiseLength { get; set; }
 
         public float MaxHeightInMeter { get; set; }
 

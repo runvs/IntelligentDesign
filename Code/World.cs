@@ -84,9 +84,9 @@ namespace JamTemplate
             _world = new cWorld();
 
             _gameWorldCreationProperties = new WorldInterfaces.cWorldProperties();
-            _gameWorldCreationProperties.HeightMapNoiseFrequency = 40.0f;
-            _gameWorldCreationProperties.WorldSizeInTiles = new SFML.Window.Vector2i(100,100);
-            _gameWorldCreationProperties.WaterLevelInMeter = 15.0f;
+            _gameWorldCreationProperties.HeightMapNoiseLength = 20.0f;
+            _gameWorldCreationProperties.WorldSizeInTiles = new SFML.Window.Vector2i(GameProperties.WorldSizeInTiles.X, GameProperties.WorldSizeInTiles.X);
+            _gameWorldCreationProperties.WaterLevelInMeter = 50.0f;
             _gameWorldCreationProperties.MaxHeightInMeter = 100.0f;
 
             cTile.TileSizeInPixels = 8.0f;
