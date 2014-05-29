@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="cTileProperties.cs" />
     <Compile Include="cWorldProperties.cs" />
+    <Compile Include="eFoodType.cs" />
     <Compile Include="ITile.cs" />
     <Compile Include="IWorld.cs" />
     <Compile Include="IWorldInCreation.cs" />

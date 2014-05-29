@@ -12,5 +12,6 @@ namespace WorldInterfaces
         cTileProperties GetTileProperties();
         Vector2i GetPositionInTiles();
         float GetTileSizeInPixel();
+        
     }
 }

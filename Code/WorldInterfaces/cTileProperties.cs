@@ -8,6 +8,16 @@ namespace WorldInterfaces
 {
     public class cTileProperties
     {
+        public cTileProperties()
+        {
+            _foodTable = new Dictionary<eFoodType, float>();
+
+            foreach (eFoodType e in Enum.GetValues(typeof(eFoodType)))
+            {
+                _foodTable.Add(e, 0.0f);
+            }
+        }
+
         public float TemperatureInKelvin 
         { 
             get 
@@ -37,5 +47,24 @@ namespace WorldInterfaces
             }
         }
         private float _heightInMeters;
+
+        System.Collections.Generic.Dictionary<eFoodType, float> _foodTable;
+        public float GetFoodAmountOnTile (eFoodType foodType)
+        {
+            return _foodTable[foodType];
+        }
+        public void SetFoodAmountOnTile (eFoodType foodType, float newValue)
+        {
+            _foodTable[foodType] = newValue;
+        }
+
+        public void ChangeFoodAmountOnTile(eFoodType foodType, float delta)
+        {
+            _foodTable[foodType] += delta;
+        }
+
+
+
     }
 }
+

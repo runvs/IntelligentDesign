@@ -7,7 +7,7 @@ using SFML.Window;
 namespace JamUtilities
 {
     public static class Camera
-    {
+    { 
         public static SFML.Window.Vector2f CameraPosition { get; set;}
         public static SFML.Window.Vector2f CameraVelocity { get; private set; }
         public static float CameraMaxVelocity = 200.0f;
