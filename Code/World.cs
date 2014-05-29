@@ -45,7 +45,7 @@ namespace JamTemplate
             rw.Clear(SFML.Graphics.Color.Blue);
             ParticleManager.Draw(rw);
 
-
+            
 
             ScreenEffects.GetStaticEffect("vignette").Draw(rw);
             ScreenEffects.Draw(rw);
@@ -61,6 +61,8 @@ namespace JamTemplate
 
             _gameWorld = new WorldInterfaces.cWorld();
             _gameWorldCreationProperties = new WorldInterfaces.cWorldProperties();
+            _gameWorldCreationProperties.HeightMapNoiseFrequency = 40.0f;
+            _gameWorldCreationProperties.WorldSizeInTiles = new SFML.Window.Vector2i(100,100);
 
             IWorldInCreation worldInCreation = _gameWorld as IWorldInCreation;
 

@@ -10,5 +10,7 @@ namespace WorldInterfaces
     public class cWorldProperties
     {
         public Vector2i WorldSizeInTiles {get; set;}
+
+        public float HeightMapNoiseFrequency { get; set; }
     }
 }

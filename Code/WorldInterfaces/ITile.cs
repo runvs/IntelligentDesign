@@ -10,6 +10,6 @@ namespace WorldInterfaces
     public interface ITile
     {
         cTileProperties GetTileProperties();
-        Vector2i GetPositionInTiles(); 
+        Vector2i GetPositionInTiles();
     }
 }

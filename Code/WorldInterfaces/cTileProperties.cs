@@ -24,5 +24,18 @@ namespace WorldInterfaces
             } 
         }
         private float _temperatureInKelvin;
+
+        public float HeightInMeters
+        {
+            get
+            {
+                return _heightInMeters;
+            }
+            set
+            {
+                _heightInMeters = value;
+            }
+        }
+        private float _heightInMeters;
     }
 }

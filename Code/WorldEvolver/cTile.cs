@@ -9,10 +9,18 @@ using WorldInterfaces;
 
 namespace WorldEvolver
 {
-    class cTile: ITile, IGameObject
+    public class cTile: ITile, IGameObject
     {
         private cTileProperties _properties;
         private Vector2i _positionInTiles;
+
+
+        public cTile (Vector2i position, cTileProperties properties)
+        {
+            _positionInTiles = position;
+            _properties = properties;
+        }
+
 
         public cTileProperties GetTileProperties()
         {
@@ -44,5 +52,6 @@ namespace WorldEvolver
         {
             throw new NotImplementedException();
         }
+
     }
 }

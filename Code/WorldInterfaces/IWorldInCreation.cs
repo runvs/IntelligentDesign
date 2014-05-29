@@ -9,5 +9,6 @@ namespace WorldInterfaces
     public interface IWorldInCreation
     {
         void AddTille(ITile tile);
+        void SetWorldProperties(cWorldProperties properties);
     }
 }

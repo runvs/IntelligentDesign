@@ -15,7 +15,16 @@ namespace WorldInterfaces
 
         public ITile GetTileOnPosition(SFML.Window.Vector2i pos)
         {
-            throw new NotImplementedException();
+            ITile ret = null;
+            foreach (var t in _tileList)
+            {
+                if (t.GetPositionInTiles().Equals(pos))
+                {
+                    ret = t;
+                    break;
+                }
+            }
+            return ret;
         }
 
         public bool IsDead()
@@ -50,6 +59,13 @@ namespace WorldInterfaces
         public cWorldProperties GetWorldProperties()
         {
             return _worldProperties;
+        }
+
+
+        public void SetWorldProperties(cWorldProperties properties)
+        {
+            _worldProperties = properties;
+            _tileList = new List<ITile>(properties.WorldSizeInTiles.X * properties.WorldSizeInTiles.Y);
         }
     }
 }
