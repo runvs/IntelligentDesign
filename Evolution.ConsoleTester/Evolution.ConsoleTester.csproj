@@ -56,11 +56,17 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TempTile.cs" />
+    <Compile Include="TempWorld.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Code\WorldInterfaces\WorldInterfaces.csproj">
+      <Project>{006634e8-0ee2-4b30-adac-a5f62afc9286}</Project>
+      <Name>WorldInterfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Evolution\Evolution.csproj">
       <Project>{2677910e-6d15-4ca3-b255-4e4cdb0c3276}</Project>
       <Name>Evolution</Name>
