@@ -7,22 +7,20 @@ using JamUtilities;
 
 namespace WorldInterfaces
 {
-    class cWorld : IWorld, IWorldInCreation, IGameObject
+    public class cWorld : IWorld, IWorldInCreation, IGameObject
     {
         private System.Collections.Generic.List<ITile> _tileList;
+
+        private cWorldProperties _worldProperties;
 
         public ITile GetTileOnPosition(SFML.Window.Vector2i pos)
         {
             throw new NotImplementedException();
         }
 
-        public SFML.Window.Vector2i GetWorldSizeInTiles()
-        {
-            throw new NotImplementedException();
-        }
-
         public bool IsDead()
         {
+            // worlds cannot die
             return false;
         }
 
@@ -47,6 +45,11 @@ namespace WorldInterfaces
             {
                 _tileList.Add(tile);
             }
+        }
+        
+        public cWorldProperties GetWorldProperties()
+        {
+            return _worldProperties;
         }
     }
 }

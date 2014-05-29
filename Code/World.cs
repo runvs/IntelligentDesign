@@ -3,6 +3,7 @@ using System;
 using JamUtilities;
 using JamUtilities.Particles;
 using JamUtilities.ScreenEffects;
+using WorldInterfaces;
 
 namespace JamTemplate
 {
@@ -10,6 +11,9 @@ namespace JamTemplate
     {
 
         #region Fields
+
+        IWorld _gameWorld;
+        cWorldProperties _gameWorldCreationProperties;
 
         #endregion Fields
 
@@ -49,6 +53,18 @@ namespace JamTemplate
 
         private void InitGame()
         {
+            CreateWorld();
+        }
+
+        private void CreateWorld()
+        {
+
+            _gameWorld = new WorldInterfaces.cWorld();
+            _gameWorldCreationProperties = new WorldInterfaces.cWorldProperties();
+
+            IWorldInCreation worldInCreation = _gameWorld as IWorldInCreation;
+
+            WorldGeneration.WorldGenerator.CreateWorld(ref worldInCreation, _gameWorldCreationProperties);
         }
 
         #endregion Methods

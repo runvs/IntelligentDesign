@@ -11,6 +11,6 @@ namespace WorldInterfaces
     {
         ITile GetTileOnPosition(Vector2i pos);
 
-        Vector2i GetWorldSizeInTiles();
+        cWorldProperties GetWorldProperties();
     }
 }
