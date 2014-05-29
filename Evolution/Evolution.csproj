@@ -50,8 +50,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Animal.cs" />
+    <Compile Include="DNA.cs" />
+    <Compile Include="Population.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Code\WorldInterfaces\WorldInterfaces.csproj">
+      <Project>{006634e8-0ee2-4b30-adac-a5f62afc9286}</Project>
+      <Name>WorldInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lib\JamUtilities\JamUtilities\JamUtilities.csproj">
+      <Project>{fc7a5984-9b7d-494c-a49d-059dcabfb253}</Project>
+      <Name>JamUtilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

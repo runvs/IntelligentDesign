@@ -4,19 +4,30 @@ using System.Collections.Generic;
 using SFML.Graphics;
 
 using JamUtilities;
+using WorldInterfaces;
 
 namespace Evolution
 {
-    class Population : IGameObject
+    public class Population : IGameObject
     {
-        private World _world;
-        private List<Animal> _animals;
+        private IWorld _world;
+        public  List<Animal> Animals {get; private set;}
+
+        public int Count()
+        {
+            return Animals.Count;
+        }
+        public void AddRandomAnimal(uint numberOfAnimals)
+        {
+            for (uint i = 0; i < numberOfAnimals; i++ )
+                Animals.Add(new Animal(_world));
+        }
 
         public void Mate(uint numberOfChilds)
         {
             ///calculate mating probability
             double rank = 0;
-            foreach (Animal anim in _animals)
+            foreach (Animal anim in Animals)
             {
                 rank = anim.SetRank(rank);
             }
@@ -24,12 +35,12 @@ namespace Evolution
             for (uint i = 0; i < numberOfChilds; i++)
             {
                 /// first parent
-                Animal A = _animals[0];
+                Animal A = Animals[0];
                 /// second parent
-                Animal B = _animals[0];
+                Animal B = Animals[0];
                 /// find first parent
                 double randomRank = RandomGenerator.GetRandomDouble(0, rank);
-                foreach (Animal temp in _animals)
+                foreach (Animal temp in Animals)
                 {
                     if (temp.Rank >= randomRank)
                     {
@@ -39,7 +50,7 @@ namespace Evolution
                 }
                 ///find second parent
                 randomRank = RandomGenerator.GetRandomDouble(0, rank);
-                foreach (Animal temp in _animals)
+                foreach (Animal temp in Animals)
                 {
                     if (temp.Rank >= randomRank)
                     {
@@ -49,40 +60,41 @@ namespace Evolution
                 }
                 Console.WriteLine("mating: {0,5} and {1,5}", A.Id, B.Id);
                 ///create new animal
-                _animals.Add(new Animal(_world, A, B));
+                Animals.Add(new Animal(_world, A, B));
             }
         }
 
-        public Population(World world, uint populationSize)
+        public Population(IWorld world, uint populationSize)
         {
             _world = world;
-            _animals = new List<Animal>();
+            Animals = new List<Animal>();
             for (uint i = 0; i < populationSize; i++)
-                _animals.Add(new Animal(_world));
+                Animals.Add(new Animal(_world));
         }
 
         #region IGameObject
         public bool IsDead()
         {
-            return _animals.Count == 0;
+            return Animals.Count == 0;
         }
         public void GetInput()
         {
-            foreach (Animal anim in _animals)
+            foreach (Animal anim in Animals)
             {
                 anim.GetInput();
             }
         }
         public void Update(TimeObject timeObject)
         {
-            foreach (Animal anim in _animals)
+            foreach (Animal anim in Animals)
             {
                 anim.Update(timeObject);
             }
+            Animals.RemoveAll(x => x.IsDead());
         }
         public void Draw(RenderWindow rw)
         {
-            foreach (Animal anim in _animals)
+            foreach (Animal anim in Animals)
             {
                 anim.Draw(rw);
             }

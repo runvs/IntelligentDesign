@@ -1,15 +1,20 @@
 ﻿using System;
+using System.IO;
 using SFML.Graphics;
 using JamUtilities;
 
+using SFML.Window;
+
+using WorldInterfaces;
+
 namespace Evolution
 {
-    class Animal : IGameObject
+    public class Animal : IGameObject
     {
         public static uint MaxId = 0;
         public uint Id;
 
-        private World _world;
+        private IWorld _world;
         public DNA DNA;
         public double Rank { get; private set; }
 
@@ -35,7 +40,12 @@ namespace Evolution
             return Rank;
         }
 
-        public Animal(World world)
+        public void Save(StreamWriter stream)
+        {
+            stream.WriteLine("{0:000} {1:000}", Id, PreferredTemperature);
+        }
+
+        public Animal(IWorld world)
         {
             Id = MaxId;
             MaxId++;
@@ -44,7 +54,7 @@ namespace Evolution
             UpdatePhenotype();
             CurrentHealth = MaxHealth;
         }
-        public Animal(World world, Animal A, Animal B)
+        public Animal(IWorld world, Animal A, Animal B)
         {
             Id = MaxId;
             MaxId++;
@@ -64,7 +74,7 @@ namespace Evolution
         }
         public void Update(TimeObject timeObject)
         {
-            CurrentHealth -= (int) Math.Abs(_world.GetTemperature()-PreferredTemperature);
+            CurrentHealth -= (int) (10 + 0.5*Math.Abs(_world.GetTileOnPosition(new Vector2i(0,0)).GetTileProperties().TemperatureInKelvin-PreferredTemperature));
         }
         public void Draw(RenderWindow rw)
         {
