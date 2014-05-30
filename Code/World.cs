@@ -85,11 +85,13 @@ namespace JamTemplate
 
             _gameWorldCreationProperties = new WorldInterfaces.cWorldProperties();
             _gameWorldCreationProperties.HeightMapNoiseLength = 20.0f;
-            _gameWorldCreationProperties.WorldSizeInTiles = new SFML.Window.Vector2i(GameProperties.WorldSizeInTiles.X, GameProperties.WorldSizeInTiles.X);
+            _gameWorldCreationProperties.WorldSizeInTiles = new SFML.Window.Vector2i(GameProperties.WorldSizeInTiles.X, GameProperties.WorldSizeInTiles.Y);
             _gameWorldCreationProperties.WaterLevelInMeter = 25.0f;
             _gameWorldCreationProperties.MaxHeightInMeter = 100.0f;
-            _gameWorldCreationProperties.AtmosphericHeatOutFluxPerSecond = 1.0f / 294.0f;
-            _gameWorldCreationProperties.SunHeatInfluxPerSecond = 1.0f;
+            _gameWorldCreationProperties.AtmosphericHeatOutFluxPerSecond = 1.0f / 300.0f;
+            _gameWorldCreationProperties.SunHeatInfluxPerSecond = 40.0f;
+            _gameWorldCreationProperties.SunLightIntensityFactor = 0.9f;
+            _gameWorldCreationProperties.DayNightCycleFrequency = 1.0f;
 
             cTile.TileSizeInPixels = 8.0f;
 

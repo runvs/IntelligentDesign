@@ -87,8 +87,6 @@ namespace WorldInterfaces
             {
                 cTile tile = t as cTile;
 
-
-
                 tile.Update(timeObject);
 
             }

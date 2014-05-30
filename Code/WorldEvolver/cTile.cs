@@ -28,6 +28,11 @@ namespace WorldEvolver
         private float _refreshTimer;
         private float _refreshTimerMax;
 
+        // gives the phase between 0 and 2*PI
+        private float _dayNightCyclePhase;
+
+        private float _sunLightIntensityFactor;
+
         private RectangleShape _tileShape;  // probably an image later?
 
 
@@ -39,10 +44,13 @@ namespace WorldEvolver
 
             _localTime = 0.0f;
 
-            _refreshTimerMax = (float)RandomGenerator.GetRandomDouble(0.0 ,1.0);
+            _refreshTimerMax = (float)RandomGenerator.GetRandomDouble(0.0 ,0.01);
             _refreshTimer = _refreshTimerMax;
             _tileShape = new RectangleShape(new Vector2f(TileSizeInPixels, TileSizeInPixels));
             _tileShape.FillColor = cTileSetter.GetColorFromTileProperties(_tileProperties);
+
+            _dayNightCyclePhase = (float)(position.X)/(float)(_world.GetWorldProperties().WorldSizeInTiles.X) * (float)(2.0 * Math.PI);
+            //System.Console.WriteLine(_dayNightCyclePhase);
         }
 
         
@@ -79,8 +87,12 @@ namespace WorldEvolver
                 ResetTileAppearance();
             }
 
+            
+
             //System.Console.WriteLine(GetTileProperties().TemperatureInKelvin);
             DoTemperatureCalculations(timeObject);
+
+
 
         }
 
@@ -116,12 +128,17 @@ namespace WorldEvolver
 
         private void DoTemperatureCalculations(TimeObject timeObject)
         {
+            _sunLightIntensityFactor = 1.0f + _world.GetWorldProperties().SunLightIntensityFactor * 
+                (float)(Math.Sin( - _localTime * _world.GetWorldProperties().DayNightCycleFrequency + _dayNightCyclePhase));
+
             float atmosphericHeatOutFlux = - _world.GetWorldProperties().AtmosphericHeatOutFluxPerSecond * GetTileProperties().TemperatureInKelvin;
-            float sunHeatInFlux = _world.GetWorldProperties().SunHeatInfluxPerSecond;
+            float sunHeatInFlux = _world.GetWorldProperties().SunHeatInfluxPerSecond * _sunLightIntensityFactor;
 
             float totalHeatFlux = (atmosphericHeatOutFlux + sunHeatInFlux) * timeObject.ElapsedGameTime;
 
             GetTileProperties().TemperatureInKelvin += totalHeatFlux;
+
+            //System.Console.WriteLine(GetTileProperties().TemperatureInKelvin);
 
         }
 
@@ -140,11 +157,13 @@ namespace WorldEvolver
                 
                 Color newCol;
                 float temperature = GetTileProperties().TemperatureInKelvin;
-                //System.Console.WriteLine(temperature);
-                if (temperature > 300)
+                float desiredTemperature = _world.GetWorldProperties().DesiredTemperature;
+                
+                if (temperature > desiredTemperature)
                 {
-                    
-                    temperature = temperature - 300;
+
+                    temperature = temperature - desiredTemperature;
+                    temperature *= 5;
                     if (temperature >= 255)
                     {
                         temperature = 255;
@@ -154,12 +173,14 @@ namespace WorldEvolver
                 }
                 else
                 {
-                    //temperature = 300 - temperature;
+                    temperature = desiredTemperature - temperature;
+                    temperature *= 5;
                     if (temperature >= 255)
                     {
                         temperature = 255;
                     }
-                    newCol = new Color(255, 255, (byte)temperature);
+                    byte b = (byte)(255 - temperature);
+                    newCol = new Color(b , b,  255);
                 }
                 _tileShape.FillColor = newCol;
             }

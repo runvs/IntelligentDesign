@@ -20,5 +20,11 @@ namespace WorldInterfaces
         public float SunHeatInfluxPerSecond { get; set; }
 
         public float AtmosphericHeatOutFluxPerSecond { get; set; }
+
+        public float DesiredTemperature { get { return SunHeatInfluxPerSecond / AtmosphericHeatOutFluxPerSecond; } }
+
+        public float DayNightCycleFrequency { get; set; }
+
+        public float SunLightIntensityFactor { get; set; }
     }
 }
