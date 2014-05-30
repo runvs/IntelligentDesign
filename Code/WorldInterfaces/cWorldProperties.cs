@@ -16,5 +16,9 @@ namespace WorldInterfaces
         public float MaxHeightInMeter { get; set; }
 
         public float WaterLevelInMeter { get; set; }
+
+        public float SunHeatInfluxPerSecond { get; set; }
+
+        public float AtmosphericHeatOutFluxPerSecond { get; set; }
     }
 }

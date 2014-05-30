@@ -16,6 +16,7 @@ namespace WorldInterfaces
             {
                 _foodTable.Add(e, 0.0f);
             }
+            TemperatureInKelvin = 300;
         }
 
         public float TemperatureInKelvin 

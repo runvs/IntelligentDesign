@@ -14,9 +14,39 @@ namespace WorldInterfaces
 
         private cWorldProperties _worldProperties;
 
+        public enum eWorldDrawType
+        {
+            WORLDDRAWTYPE_NORMAL,
+            WORLDDRAWTYPE_TEMPERATURE,
+            WORLDDRAWTYPE_HEIGHT
+        }
+
+        public eWorldDrawType WorldDrawType { get; private set; }
+
         public ITile GetTileOnPosition(SFML.Window.Vector2i pos)
         {
             ITile ret = null;
+
+            // wrap Position for periodic boundaries
+            while (pos.X < 0)
+            {
+                pos.X += _worldProperties.WorldSizeInTiles.X;
+            }
+            while (pos.X >= _worldProperties.WorldSizeInTiles.X)
+            {
+                pos.X -= _worldProperties.WorldSizeInTiles.X;
+            }
+
+            while (pos.Y < 0)
+            {
+                pos.Y += _worldProperties.WorldSizeInTiles.Y;
+            }
+            while (pos.Y >= _worldProperties.WorldSizeInTiles.Y)
+            {
+                pos.Y -= _worldProperties.WorldSizeInTiles.Y;
+            }
+
+
             foreach (var t in _tileList)
             {
                 if (t.GetPositionInTiles().Equals(pos))
@@ -37,6 +67,18 @@ namespace WorldInterfaces
         public void GetInput()
         {
             // do nothing now
+            if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F1))
+            {
+                WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_NORMAL;
+            }
+            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F2))
+            {
+                WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_HEIGHT;
+            }
+            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F3))
+            {
+                WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE;
+            }
         }
 
         public void Update(TimeObject timeObject)
@@ -44,7 +86,11 @@ namespace WorldInterfaces
             foreach (var t in _tileList)
             {
                 cTile tile = t as cTile;
+
+
+
                 tile.Update(timeObject);
+
             }
         }
 
