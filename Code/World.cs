@@ -91,7 +91,7 @@ namespace JamTemplate
             _gameWorldCreationProperties.AtmosphericHeatOutFluxPerSecond = 1.0f / 300.0f;
             _gameWorldCreationProperties.SunHeatInfluxPerSecond = 40.0f;
             _gameWorldCreationProperties.SunLightIntensityFactor = 0.9f;
-            _gameWorldCreationProperties.DayNightCycleFrequency = 1.0f;
+            _gameWorldCreationProperties.DayNightCycleFrequency = 0.20f;
 
             cTile.TileSizeInPixels = 8.0f;
 
