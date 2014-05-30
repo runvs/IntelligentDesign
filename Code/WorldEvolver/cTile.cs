@@ -49,7 +49,7 @@ namespace WorldEvolver
             _tileShape = new RectangleShape(new Vector2f(TileSizeInPixels, TileSizeInPixels));
             _tileShape.FillColor = cTileSetter.GetColorFromTileProperties(_tileProperties);
 
-            _dayNightCyclePhase = (float)(position.X)/(float)(_world.GetWorldProperties().WorldSizeInTiles.X) * (float)(2.0 * Math.PI);
+            _dayNightCyclePhase = (float)(position.X)/(float)(_world.GetWorldProperties().WorldSizeInTiles.X)  * (float)(2.0 * Math.PI);
         }
 
         

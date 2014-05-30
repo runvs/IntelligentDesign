@@ -60,7 +60,7 @@ namespace JamTemplate
 
         public void Draw(RenderWindow rw)
         {
-            rw.Clear(SFML.Graphics.Color.Blue);
+            rw.Clear(SFML.Graphics.Color.Cyan);
             _world.Draw(rw);
             ParticleManager.Draw(rw);
 
@@ -89,9 +89,9 @@ namespace JamTemplate
             _gameWorldCreationProperties.WaterLevelInMeter = 25.0f;
             _gameWorldCreationProperties.MaxHeightInMeter = 100.0f;
             _gameWorldCreationProperties.AtmosphericHeatOutFluxPerSecond = 1.0f / 300.0f;
-            _gameWorldCreationProperties.SunHeatInfluxPerSecond = 40.0f;
+            _gameWorldCreationProperties.SunHeatInfluxPerSecond = 20.0f;
             _gameWorldCreationProperties.SunLightIntensityFactor = 0.9f;
-            _gameWorldCreationProperties.DayNightCycleFrequency = 0.20f;
+            _gameWorldCreationProperties.DayNightCycleFrequency = 0.40f;
 
             cTile.TileSizeInPixels = 8.0f;
 
