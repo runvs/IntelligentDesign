@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JamUtilities;
+using SFML.Window;
 using WorldEvolver;
 using WorldInterfaces;
 
@@ -80,6 +81,9 @@ namespace WorldEvolver
             {
                 WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE;
             }
+
+            Console.WriteLine(GetTileOnPosition(new Vector2i(1, 1)).GetTileProperties().TemperatureInKelvin);
+
         }
 
         public void Update(TimeObject timeObject)

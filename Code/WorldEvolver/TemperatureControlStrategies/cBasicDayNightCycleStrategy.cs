@@ -14,7 +14,7 @@ namespace WorldEvolver.TemperatureControlStrategies
         protected override void DoUpdate(JamUtilities.TimeObject time)
         {
             float temperatureChange = 
-                0.5f * (float)(Math.Sin(_tile.GetLocalTime() * _tile.GetWorldProperties().DayNightCycleFrequency + _tile.GetTileProperties().DayNightCyclePhase));
+                0.5f * (float)(Math.Sin(_tile.GetLocalTime() * _tile.GetWorldProperties().DayNightCycleFrequency + _tile.GetTileProperties().DayNightCyclePhase)) * _tile.GetWorldProperties().SunLightIntensityFactor;
 
             if (temperatureChange >= _tile.GetWorldProperties().TileTemperatureChangeMaximum)
             {
@@ -24,6 +24,7 @@ namespace WorldEvolver.TemperatureControlStrategies
             {
                 temperatureChange = -_tile.GetWorldProperties().TileTemperatureChangeMaximum;
             }
+
             _tile.GetTileProperties().TemperatureInKelvin += temperatureChange;
         }
 
