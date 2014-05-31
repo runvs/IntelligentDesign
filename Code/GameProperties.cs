@@ -8,6 +8,6 @@ namespace JamTemplate
 {
     public static class GameProperties
     {
-        public static Vector2i WorldSizeInTiles { get { return new Vector2i(20, 20); } }
+        public static Vector2i WorldSizeInTiles { get { return new Vector2i(40, 80); } }
     }
 }

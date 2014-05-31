@@ -5,6 +5,7 @@ using System.Text;
 
 namespace WorldEvolver.TemperatureControlStrategies
 {
+    [Obsolete("Use cBasicDayNightCycleStrategy instead", true)]
     class cAdvandcedDayNightCylceStrategy : cAbstractTemperatureControlStragegy
     {
         public cAdvandcedDayNightCylceStrategy(cTile tile)

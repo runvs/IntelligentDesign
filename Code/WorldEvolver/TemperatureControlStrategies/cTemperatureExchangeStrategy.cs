@@ -18,21 +18,15 @@ namespace WorldEvolver.TemperatureControlStrategies
         {
             _summedUpTemperatureFlow = 0.0f;
             float thisTileTemperature = _tile.GetTileProperties().TemperatureInKelvin;
-            float max = _tile.GetWorldProperties().TileTemperatureChangeMaximum;
             foreach (var t in _tile.NeighbourTiles)
             {
                 float otherTileTemperature = t.GetTileProperties().TemperatureInKelvin;
                 float temperatureDifference = otherTileTemperature - thisTileTemperature;
                 float temperatureFlux = temperatureDifference * time.ElapsedGameTime;
                 temperatureFlux *= _tile.GetWorldProperties().TileTemperatureExchangeAmplification;
-                if (temperatureFlux >= max)
-                {
-                    temperatureFlux = max;
-                }
-                if (temperatureFlux <= -max)
-                {
-                    temperatureFlux = -max;
-                }
+
+                EnsureHeatChangeRanges(ref temperatureFlux);
+
                 _summedUpTemperatureFlow += temperatureFlux;
             }
         }

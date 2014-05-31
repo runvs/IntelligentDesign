@@ -51,11 +51,18 @@ namespace WorldEvolver
             _tileShape = new RectangleShape(new Vector2f(TileSizeInPixels, TileSizeInPixels));
             _tileShape.FillColor = cTileSetter.GetColorFromTileProperties(_tileProperties);
 
-            _tileProperties.DayNightCyclePhase = (float)(position.X)/(float)(_world.GetWorldProperties().WorldSizeInTiles.X)  * (float)(2.0 * Math.PI);
+            float centerY = (float)world.GetWorldProperties().WorldSizeInTiles.Y/2.0f;
+            float yCoordinate = (float)position.Y;
+            //float yFactor = (yCoordinate <= centerY) ? 0.9f + 0.2f/centerY * yCoordinate : 1.3f - 0.2f / centerY * yCoordinate;
+            float yFactor = 0.85f +  (float)(0.3 * Math.Sin((float)position.Y/(float)world.GetWorldProperties().WorldSizeInTiles.Y *Math.PI));
+            //float yFactor = 1.0f;
+
+
+            _tileProperties.DayNightCyclePhase = (float)(position.X) / (float)(_world.GetWorldProperties().WorldSizeInTiles.X) * (float)(2.0 * Math.PI) * yFactor;
 
             _temperatureControlList = new List<TemperatureControlStrategies.cAbstractTemperatureControlStragegy>();
             _temperatureControlList.Add(new TemperatureControlStrategies.cBasicDayNightCycleStrategy(this));
-            _temperatureControlList.Add(new TemperatureControlStrategies.cTemperatureExchangeStrategy(this));
+            //_temperatureControlList.Add(new TemperatureControlStrategies.cTemperatureExchangeStrategy(this));
 
             NeighbourTiles = new List<ITile>();
         }

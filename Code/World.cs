@@ -90,10 +90,10 @@ namespace JamTemplate
             _gameWorldCreationProperties.MaxHeightInMeter = 100.0f;
             _gameWorldCreationProperties.AtmosphericHeatOutFluxPerSecond = 1.0f / 300.0f;
             _gameWorldCreationProperties.SunHeatInfluxPerSecond = 1.0f;
-            _gameWorldCreationProperties.SunLightIntensityFactor = 0.1f;
-            _gameWorldCreationProperties.DayNightCycleFrequency = 0.2f;
+            _gameWorldCreationProperties.SunLightIntensityFactor = 0.2f;
+            _gameWorldCreationProperties.DayNightCycleFrequency = 10.6f;
             _gameWorldCreationProperties.TileTemperatureChangeMaximum = 2;
-            _gameWorldCreationProperties.TileTemperatureExchangeAmplification = 1.5f;
+            _gameWorldCreationProperties.TileTemperatureExchangeAmplification = 0.5f;
 
             cTile.TileSizeInPixels = 8.0f;
 
