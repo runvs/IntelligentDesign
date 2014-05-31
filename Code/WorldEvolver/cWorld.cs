@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using JamUtilities;
 using WorldEvolver;
+using WorldInterfaces;
 
-namespace WorldInterfaces
+namespace WorldEvolver
 {
     public class cWorld : IWorld, IWorldInCreation, IGameObject
     {
@@ -119,6 +120,21 @@ namespace WorldInterfaces
         {
             _worldProperties = properties;
             _tileList = new List<ITile>(properties.WorldSizeInTiles.X * properties.WorldSizeInTiles.Y);
+        }
+
+
+        public void BuildTileNeighbourLists()
+        {
+            foreach (cTile t in _tileList)
+            {
+                t.BuildNeighbourTiles();
+            }
+        }
+
+
+        public List<ITile> GetTileList()
+        {
+            return _tileList;
         }
     }
 }

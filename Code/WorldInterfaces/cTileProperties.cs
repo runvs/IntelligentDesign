@@ -63,6 +63,9 @@ namespace WorldInterfaces
             _foodTable[foodType] += delta;
         }
 
+        public float SunLightIntensitiyFactor { get; set; }
+        public float  DayNightCyclePhase { get; set; }
+
 
 
     }

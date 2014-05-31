@@ -14,6 +14,8 @@ namespace WorldEvolver
     {
         private cTileProperties _tileProperties;
         private cWorld _world;
+
+        public List<ITile> NeighbourTiles {get; private set;}
         
         private Vector2i _positionInTiles;
 
@@ -28,12 +30,12 @@ namespace WorldEvolver
         private float _refreshTimer;
         private float _refreshTimerMax;
 
-        // gives the phase between 0 and 2*PI
-        private float _dayNightCyclePhase;
-
-        private float _sunLightIntensityFactor;
 
         private RectangleShape _tileShape;  // probably an image later?
+
+        private List<TemperatureControlStrategies.cAbstractTemperatureControlStragegy> _temperatureControlList;
+
+
 
 
         public cTile (Vector2i position, cTileProperties tileProperties, cWorld world)
@@ -49,9 +51,33 @@ namespace WorldEvolver
             _tileShape = new RectangleShape(new Vector2f(TileSizeInPixels, TileSizeInPixels));
             _tileShape.FillColor = cTileSetter.GetColorFromTileProperties(_tileProperties);
 
-            _dayNightCyclePhase = (float)(position.X)/(float)(_world.GetWorldProperties().WorldSizeInTiles.X)  * (float)(2.0 * Math.PI);
+            _tileProperties.DayNightCyclePhase = (float)(position.X)/(float)(_world.GetWorldProperties().WorldSizeInTiles.X)  * (float)(2.0 * Math.PI);
+
+            _temperatureControlList = new List<TemperatureControlStrategies.cAbstractTemperatureControlStragegy>();
+            _temperatureControlList.Add(new TemperatureControlStrategies.cBasicDayNightCycleStrategy(this));
+            _temperatureControlList.Add(new TemperatureControlStrategies.cTemperatureExchangeStrategy(this));
+
+            NeighbourTiles = new List<ITile>();
         }
 
+        /// <summary>
+        /// This Method fills the _neighbourTiles List with the respective Tiles
+        /// It should be called when _world is completely created.
+        /// </summary>
+        public void BuildNeighbourTiles ()
+        {
+            Vector2i otherTilePos = _positionInTiles + new Vector2i(1,0);
+            NeighbourTiles.Add(_world.GetTileOnPosition(otherTilePos));
+
+            otherTilePos = _positionInTiles + new Vector2i(-1,0);
+            NeighbourTiles.Add(_world.GetTileOnPosition(otherTilePos));
+
+            otherTilePos = _positionInTiles + new Vector2i(0, 1);
+            NeighbourTiles.Add(_world.GetTileOnPosition(otherTilePos));
+
+            otherTilePos = _positionInTiles + new Vector2i(0, -1);
+            NeighbourTiles.Add(_world.GetTileOnPosition(otherTilePos));
+        }
         
 
 
@@ -111,7 +137,9 @@ namespace WorldEvolver
             
         }
 
+        public cWorldProperties GetWorldProperties() { return _world.GetWorldProperties(); }
 
+        public float GetLocalTime() { return _localTime; }
 
         public float GetTileSizeInPixel()
         {
@@ -123,22 +151,19 @@ namespace WorldEvolver
             return TileSizeInPixels;
         }
 
+        
 
 
         private void DoTemperatureCalculations(TimeObject timeObject)
         {
-            _sunLightIntensityFactor = 1.0f + _world.GetWorldProperties().SunLightIntensityFactor * 
-                (float)(Math.Sin( - _localTime * _world.GetWorldProperties().DayNightCycleFrequency + _dayNightCyclePhase));
-
-            float atmosphericHeatOutFlux = - _world.GetWorldProperties().AtmosphericHeatOutFluxPerSecond * GetTileProperties().TemperatureInKelvin;
-            float sunHeatInFlux = _world.GetWorldProperties().SunHeatInfluxPerSecond * _sunLightIntensityFactor;
-
-            float totalHeatFlux = (atmosphericHeatOutFlux + sunHeatInFlux) * timeObject.ElapsedGameTime;
-
-            GetTileProperties().TemperatureInKelvin += totalHeatFlux;
-
-            //System.Console.WriteLine(GetTileProperties().TemperatureInKelvin);
-
+            foreach (var t in _temperatureControlList)
+            {
+                t.Update(timeObject);
+            }
+            foreach (var t in _temperatureControlList)
+            {
+                t.DoPostUpdate(timeObject);
+            }
         }
 
         public void ResetTileAppearance()

@@ -10,5 +10,9 @@ namespace WorldInterfaces
     {
         void AddTille(ITile tile);
         void SetWorldProperties(cWorldProperties properties);
+
+        void BuildTileNeighbourLists();
+
+        List<ITile> GetTileList();
     }
 }

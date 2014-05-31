@@ -82,6 +82,9 @@ namespace WorldGeneration
 
             // ToDo: Overlap on the edges Blend it here.
 
+            System.Console.WriteLine("Building Tile Neighbour Lists");
+            world.BuildTileNeighbourLists();
+
         }
 
         

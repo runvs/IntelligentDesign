@@ -26,5 +26,8 @@ namespace WorldInterfaces
         public float DayNightCycleFrequency { get; set; }
 
         public float SunLightIntensityFactor { get; set; }
+
+        public float TileTemperatureExchangeAmplification { get; set; }
+        public float TileTemperatureChangeMaximum { get; set; }
     }
 }
