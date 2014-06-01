@@ -46,7 +46,7 @@ namespace WorldEvolver
 
             _localTime = 0.0f;
 
-            _refreshTimerMax = (float)RandomGenerator.GetRandomDouble(0.0 ,0.01);
+            _refreshTimerMax = (float)RandomGenerator.GetRandomDouble(0.5 ,1.0);
             _refreshTimer = _refreshTimerMax;
             _tileShape = new RectangleShape(new Vector2f(TileSizeInPixels, TileSizeInPixels));
             _tileShape.FillColor = cTileSetter.GetColorFromTileProperties(_tileProperties);
@@ -181,7 +181,16 @@ namespace WorldEvolver
             }
             else if (_world.WorldDrawType == cWorld.eWorldDrawType.WORLDDRAWTYPE_HEIGHT)
             {
-                //_tileShape.FillColor = cTileSetter.GetColorFromTileProperties(_tileProperties);
+                Color newCol;
+                float height = GetTileProperties().HeightInMeters;
+                float maxHeight = GetWorldProperties().MaxHeightInMeter;
+
+
+                byte b = (byte)(255.0f * (0.05f + 0.9 * (height / maxHeight)));
+
+                newCol = new Color(b, b, b);
+
+                _tileShape.FillColor = newCol;
             }
             else if (_world.WorldDrawType == cWorld.eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE)
             {

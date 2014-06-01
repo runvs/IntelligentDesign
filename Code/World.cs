@@ -75,7 +75,7 @@ namespace JamTemplate
             CreateWorld();
 
             Camera.MinPosition = new Vector2f(0, 0);
-            Camera.MaxPosition = new Vector2f(GameProperties.WorldSizeInTiles.X * cTile.GetTileSizeInPixelStatic(), GameProperties.WorldSizeInTiles.Y * cTile.GetTileSizeInPixelStatic());
+            Camera.MaxPosition = new Vector2f(GameProperties.WorldSizeInTiles.X * cTile.GetTileSizeInPixelStatic() - 800, GameProperties.WorldSizeInTiles.Y * cTile.GetTileSizeInPixelStatic() - 600);
 
         }
 
@@ -91,11 +91,13 @@ namespace JamTemplate
             _gameWorldCreationProperties.AtmosphericHeatOutFluxPerSecond = 1.0f / 300.0f;
             _gameWorldCreationProperties.SunHeatInfluxPerSecond = 1.0f;
             _gameWorldCreationProperties.SunLightIntensityFactor = 0.2f;
-            _gameWorldCreationProperties.DayNightCycleFrequency = 10.6f;
+            _gameWorldCreationProperties.DayNightCycleFrequency = 0.6f;
             _gameWorldCreationProperties.TileTemperatureChangeMaximum = 2;
             _gameWorldCreationProperties.TileTemperatureExchangeAmplification = 0.5f;
 
             cTile.TileSizeInPixels = 8.0f;
+
+            
 
             IWorldInCreation worldInCreation = _world as IWorldInCreation;
 

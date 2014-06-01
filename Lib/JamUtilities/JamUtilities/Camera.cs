@@ -17,13 +17,40 @@ namespace JamUtilities
 
         public static Vector2f ShouldBePosition { get; set; }
 
+        private static void EnsurePositionRanges (ref Vector2f newCamPos)
+        {
+            if (newCamPos.X <= MinPosition.X)
+            {
+                newCamPos.X = MinPosition.X;
+            }
+            if (newCamPos.Y <= MinPosition.Y)
+            {
+                newCamPos.Y = MinPosition.Y;
+            }
+
+            if (newCamPos.X >= MaxPosition.X)
+            {
+                newCamPos.X = MaxPosition.X;
+            }
+
+            if (newCamPos.Y >= MaxPosition.Y)
+            {
+                newCamPos.Y = MaxPosition.Y;
+            }
+        }
+
+
         public static void DoCameraMovement(JamUtilities.TimeObject deltaT)
         {
             //Vector2f newCamPos = new Vector2f((_player.ActorPosition.X - 6) * GameProperties.TileSizeInPixel, (_player.ActorPosition.Y - 6) * GameProperties.TileSizeInPixel);
 
-            Vector2f PlayerPosInPixels = ShouldBePosition;
-            float DistanceXSquared = (float)(Math.Sign(CameraPosition.X - PlayerPosInPixels.X)) * (CameraPosition.X - PlayerPosInPixels.X) * (CameraPosition.X - PlayerPosInPixels.X);
-            float DistanceYSquared = (float)(Math.Sign(CameraPosition.Y - PlayerPosInPixels.Y)) * (CameraPosition.Y - PlayerPosInPixels.Y) * (CameraPosition.Y - PlayerPosInPixels.Y);
+
+            Vector2f playerPosInPixels = ShouldBePosition;
+            EnsurePositionRanges(ref playerPosInPixels);
+            ShouldBePosition = playerPosInPixels;
+            
+            float DistanceXSquared = (float)(Math.Sign(CameraPosition.X - playerPosInPixels.X)) * (CameraPosition.X - playerPosInPixels.X) * (CameraPosition.X - playerPosInPixels.X);
+            float DistanceYSquared = (float)(Math.Sign(CameraPosition.Y - playerPosInPixels.Y)) * (CameraPosition.Y - playerPosInPixels.Y) * (CameraPosition.Y - playerPosInPixels.Y);
 
             Vector2f newCamVelocity = 0.125f * new Vector2f(-DistanceXSquared, -DistanceYSquared);
             if (newCamVelocity.X >= CameraMaxVelocity)
@@ -46,24 +73,7 @@ namespace JamUtilities
             CameraVelocity = newCamVelocity;
 
             Vector2f newCamPos = CameraPosition + CameraVelocity * deltaT.ElapsedRealTime;
-            if (newCamPos.X <= MinPosition.X)
-            {
-                newCamPos.X = MinPosition.X;
-            }
-            if (newCamPos.Y <= MinPosition.Y)
-            {
-                newCamPos.Y = MinPosition.Y;
-            }
-
-            if (newCamPos.X >= MaxPosition.X)
-            {
-                newCamPos.X = MaxPosition.X;
-            }
-
-            if (newCamPos.Y >= MaxPosition.Y)
-            {
-                newCamPos.Y = MaxPosition.Y;
-            }
+            EnsurePositionRanges(ref newCamPos);
 
             CameraPosition = newCamPos;
         }

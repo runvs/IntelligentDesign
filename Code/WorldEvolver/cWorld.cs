@@ -48,15 +48,18 @@ namespace WorldEvolver
                 pos.Y -= _worldProperties.WorldSizeInTiles.Y;
             }
 
+            int listID = pos.X + GetWorldProperties().WorldSizeInTiles.X * pos.Y;
 
-            foreach (var t in _tileList)
-            {
-                if (t.GetPositionInTiles().Equals(pos))
-                {
-                    ret = t;
-                    break;
-                }
-            }
+            ret = _tileList[listID];
+
+            //foreach (var t in _tileList)
+            //{
+            //    if (t.GetPositionInTiles().Equals(pos))
+            //    {
+            //        ret = t;
+            //        break;
+            //    }
+            //}
             return ret;
         }
 
@@ -126,8 +129,21 @@ namespace WorldEvolver
 
         public void BuildTileNeighbourLists()
         {
-            foreach (cTile t in _tileList)
+            //foreach (cTile t in _tileList)
+            int runner = 0;
+            int percentage = 0;
+            int fifePercent = (int)((float)_tileList.Count * 0.05f);
+            Console.Write("Finished percentage of all Tiles: ");
+            for (int i = 0; i != _tileList.Count; i++)
             {
+                runner++;
+                if (runner >= fifePercent)
+                {
+                    percentage += 5;
+                    runner = 0;
+                    Console.Write("" + percentage + "%  ");
+                }
+                cTile t = _tileList[i] as cTile;
                 t.BuildNeighbourTiles();
             }
         }
