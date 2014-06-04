@@ -16,12 +16,12 @@ namespace WorldEvolver.TemperatureControlStrategies
 
         protected override void DoUpdate(JamUtilities.TimeObject time)
         {
-            _tile.GetTileProperties().SunLightIntensitiyFactor = 1.0f +
+            _tile.GetWorldProperties().SunLightIntensityFactor = 1.0f +
                 _tile.GetWorldProperties().SunLightIntensityFactor *
                 (float)(Math.Sin(-_tile.GetLocalTime() * _tile.GetWorldProperties().DayNightCycleFrequency + _tile.GetTileProperties().DayNightCyclePhase));
 
             float atmosphericHeatOutFlux = -_tile.GetWorldProperties().AtmosphericHeatOutFluxPerSecond * _tile.GetTileProperties().TemperatureInKelvin;
-            float sunHeatInFlux = _tile.GetWorldProperties().SunHeatInfluxPerSecond * _tile.GetTileProperties().SunLightIntensitiyFactor;
+            float sunHeatInFlux = _tile.GetWorldProperties().SunHeatInfluxPerSecond * _tile.GetWorldProperties().SunLightIntensityFactor;
 
             float totalHeatFlux = (atmosphericHeatOutFlux + sunHeatInFlux) * time.ElapsedGameTime;
 

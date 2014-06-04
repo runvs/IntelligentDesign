@@ -21,6 +21,19 @@ namespace WorldEvolver
 
         public static float TileSizeInPixels { get; set; }
 
+        // TODO Must be used
+        public enum eTileType
+        {
+            TILETYPE_GRASS,
+            TILETYPE_DESERT,
+            TILETYPE_SNOW,
+            TILETYPE_WATER,
+            TILETYPE_ICE,
+            TILETYPE_MOUNTAIN
+        }
+
+
+
         // his is just the local time of this tile since the start of the game
         private float _localTime;
 
@@ -31,11 +44,16 @@ namespace WorldEvolver
         private float _refreshTimerMax;
 
 
+
         private RectangleShape _tileShape;  // probably an image later?
+        private static RectangleShape _dayNightShape;
 
         private List<TemperatureControlStrategies.cAbstractTemperatureControlStragegy> _temperatureControlList;
 
-
+        private float _temperatureIntegrationTimer;
+        private float _temperatureIntegrationTimerMax;
+        // this queue will be used for the integrated temperature calculation
+        private Queue<float> _lastTemperaturesList;
 
 
         public cTile (Vector2i position, cTileProperties tileProperties, cWorld world)
@@ -51,6 +69,10 @@ namespace WorldEvolver
             _tileShape = new RectangleShape(new Vector2f(TileSizeInPixels, TileSizeInPixels));
             _tileShape.FillColor = cTileSetter.GetColorFromTileProperties(_tileProperties);
 
+            _dayNightShape = new RectangleShape(new Vector2f(TileSizeInPixels, TileSizeInPixels));
+            _dayNightShape.FillColor = new Color(0, 0, 0, 255);
+
+
             float centerY = (float)world.GetWorldProperties().WorldSizeInTiles.Y/2.0f;
             float yCoordinate = (float)position.Y;
             //float yFactor = (yCoordinate <= centerY) ? 0.9f + 0.2f/centerY * yCoordinate : 1.3f - 0.2f / centerY * yCoordinate;
@@ -65,6 +87,15 @@ namespace WorldEvolver
             //_temperatureControlList.Add(new TemperatureControlStrategies.cTemperatureExchangeStrategy(this));
 
             NeighbourTiles = new List<ITile>();
+
+            _lastTemperaturesList = new Queue<float>(100);
+            for (int i = 0; i != 100; i++)
+            {
+                _lastTemperaturesList.Enqueue(_world.GetWorldProperties().DesiredTemperature);
+            }
+                _temperatureIntegrationTimerMax = _world.GetWorldProperties().TileTemperatureIntegrationTimer;
+            _temperatureIntegrationTimer = _temperatureIntegrationTimerMax;
+
         }
 
         /// <summary>
@@ -119,6 +150,12 @@ namespace WorldEvolver
                 ResetTileAppearance();
             }
 
+            _temperatureIntegrationTimer -= timeObject.ElapsedGameTime;
+            if (_temperatureIntegrationTimer <= 0.0f)
+            {
+                _temperatureIntegrationTimer = _temperatureIntegrationTimerMax;
+                AddTemperatureIntegrationPoint();
+            }
             
 
             //System.Console.WriteLine(GetTileProperties().TemperatureInKelvin);
@@ -126,6 +163,24 @@ namespace WorldEvolver
 
 
 
+        }
+
+        private void AddTemperatureIntegrationPoint()
+        {
+            _lastTemperaturesList.Dequeue();
+            _lastTemperaturesList.Enqueue(GetTileProperties().TemperatureInKelvin);
+            GetTileProperties().IntegratedTemperature = GetIntegratedTemperature();
+        }
+
+        public float GetIntegratedTemperature()
+        {
+            float integratedTemperature = 0.0f;
+            foreach (var t in _lastTemperaturesList)
+            {
+                integratedTemperature += t;
+            }
+            integratedTemperature /= _lastTemperaturesList.Count;
+            return integratedTemperature;
         }
 
 
@@ -139,8 +194,21 @@ namespace WorldEvolver
                 if (_tileShape.Position.Y >= -10 && _tileShape.Position.Y <= 610)
                 {
                     rw.Draw(_tileShape);
+
+                    _dayNightShape.Position = TileSizeInPixels * new Vector2f(_positionInTiles.X, _positionInTiles.Y) - JamUtilities.Camera.CameraPosition;
+                    if (_world.WorldDrawType == cWorld.eWorldDrawType.WORLDDRAWTYPE_NORMAL)
+                    {
+                        byte a = (byte)(0.0f + 150.0f * _dayNightTime);
+
+                        _dayNightShape.FillColor = new Color(0, 0, 0, a);
+
+                        rw.Draw(_dayNightShape);
+                    }
+
                 }
             }
+
+           
             
         }
 
@@ -192,7 +260,7 @@ namespace WorldEvolver
 
                 _tileShape.FillColor = newCol;
             }
-            else if (_world.WorldDrawType == cWorld.eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE)
+            else if (_world.WorldDrawType == cWorld.eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE_CURRENT)
             {
                 
                 Color newCol;
@@ -224,6 +292,40 @@ namespace WorldEvolver
                 }
                 _tileShape.FillColor = newCol;
             }
+            else if (_world.WorldDrawType == cWorld.eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE_INTEGRATED)
+            {
+                Color newCol;
+                float temperature = GetIntegratedTemperature();
+                float desiredTemperature = _world.GetWorldProperties().DesiredTemperature;
+
+                if (temperature > desiredTemperature)
+                {
+
+                    temperature = temperature - desiredTemperature;
+                    temperature *= 5;
+                    if (temperature >= 255)
+                    {
+                        temperature = 255;
+                    }
+                    byte b = (byte)(255 - temperature);
+                    newCol = new Color(255, b, b);
+                }
+                else
+                {
+                    temperature = desiredTemperature - temperature;
+                    temperature *= 5;
+                    if (temperature >= 255)
+                    {
+                        temperature = 255;
+                    }
+                    byte b = (byte)(255 - temperature);
+                    newCol = new Color(b, b, 255);
+                }
+                _tileShape.FillColor = newCol;
+            }
         }
+
+        // is between 0 and 1 with 0 being midday and 1 being full midnight
+        public float _dayNightTime { get; set; }
     }
 }

@@ -86,14 +86,23 @@ namespace JamTemplate
             _gameWorldCreationProperties = new WorldInterfaces.cWorldProperties();
             _gameWorldCreationProperties.HeightMapNoiseLength = 20.0f;
             _gameWorldCreationProperties.WorldSizeInTiles = new SFML.Window.Vector2i(GameProperties.WorldSizeInTiles.X, GameProperties.WorldSizeInTiles.Y);
-            _gameWorldCreationProperties.WaterLevelInMeter = 25.0f;
+            
             _gameWorldCreationProperties.MaxHeightInMeter = 100.0f;
-            _gameWorldCreationProperties.AtmosphericHeatOutFluxPerSecond = 1.0f / 300.0f;
+            _gameWorldCreationProperties.AtmosphericHeatOutFluxPerSecond = 1.0f / 293.0f;
             _gameWorldCreationProperties.SunHeatInfluxPerSecond = 1.0f;
-            _gameWorldCreationProperties.SunLightIntensityFactor = 0.2f;
-            _gameWorldCreationProperties.DayNightCycleFrequency = 0.6f;
-            _gameWorldCreationProperties.TileTemperatureChangeMaximum = 2;
+            _gameWorldCreationProperties.SunLightIntensityFactor = 0.08f;
+            _gameWorldCreationProperties.DayNightCycleFrequency = 0.1f;
+            _gameWorldCreationProperties.TileTemperatureChangeMaximum = 3;
             _gameWorldCreationProperties.TileTemperatureExchangeAmplification = 0.5f;
+
+            _gameWorldCreationProperties.MountainHeight = 65;
+            _gameWorldCreationProperties.DesertTemperatureStart = 304;
+            _gameWorldCreationProperties.DesertSlope = 10;
+            _gameWorldCreationProperties.WaterFreezingTemperature = 276;
+            _gameWorldCreationProperties.WaterHeightOffset = 55;
+            _gameWorldCreationProperties.WaterSlope = -0.1465201465201465f;
+
+            _gameWorldCreationProperties.TileTemperatureIntegrationTimer = 1.5f; 
 
             cTile.TileSizeInPixels = 8.0f;
 

@@ -11,8 +11,8 @@ namespace WorldEvolver.TemperatureControlStrategies
         {
             float yPos = _tile.GetPositionInTiles().Y;
             float ySize = _tile.GetWorldProperties().WorldSizeInTiles.Y;
-            yFactorWarmRegions = 0.5f + (float)(0.5 * Math.Cos(yPos / ySize * Math.PI) * Math.Cos(yPos / ySize * Math.PI));
-            yFactorColdRegions = 0.5f + (float)(0.5 * Math.Sin(yPos / ySize * Math.PI) * Math.Sin(yPos / ySize * Math.PI));
+            yFactorWarmRegions = 0.3f + (float)(0.7 * Math.Cos(yPos / ySize * Math.PI) * Math.Cos(yPos / ySize * Math.PI));
+            yFactorColdRegions = 0.3f + (float)(0.7 * Math.Sin(yPos / ySize * Math.PI) * Math.Sin(yPos / ySize * Math.PI));
             
         }
 
@@ -24,7 +24,20 @@ namespace WorldEvolver.TemperatureControlStrategies
             float temperatureChange =
                 (float)(Math.Sin(_tile.GetLocalTime() * _tile.GetWorldProperties().DayNightCycleFrequency + _tile.GetTileProperties().DayNightCyclePhase)) * _tile.GetWorldProperties().SunLightIntensityFactor;
 
+            
+
             EnsureHeatChangeRanges(ref temperatureChange);
+
+            if (temperatureChange <= 0) // night
+            {
+
+                _tile._dayNightTime = -temperatureChange / _tile.GetWorldProperties().SunLightIntensityFactor;
+            }
+            else
+            {
+                _tile._dayNightTime = 0;
+            }
+
 
             _tile.GetTileProperties().TemperatureInKelvin += temperatureChange;
         }

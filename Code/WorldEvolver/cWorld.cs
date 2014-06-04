@@ -19,7 +19,8 @@ namespace WorldEvolver
         public enum eWorldDrawType
         {
             WORLDDRAWTYPE_NORMAL,
-            WORLDDRAWTYPE_TEMPERATURE,
+            WORLDDRAWTYPE_TEMPERATURE_CURRENT,
+            WORLDDRAWTYPE_TEMPERATURE_INTEGRATED,
             WORLDDRAWTYPE_HEIGHT
         }
 
@@ -82,7 +83,11 @@ namespace WorldEvolver
             }
             else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F3))
             {
-                WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE;
+                WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE_CURRENT;
+            }
+            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F4))
+            {
+                WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE_INTEGRATED;
             }
         }
 
