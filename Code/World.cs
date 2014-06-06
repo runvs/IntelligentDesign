@@ -90,17 +90,17 @@ namespace JamTemplate
             _gameWorldCreationProperties.MaxHeightInMeter = 100.0f;
             _gameWorldCreationProperties.AtmosphericHeatOutFluxPerSecond = 1.0f / 293.0f;
             _gameWorldCreationProperties.SunHeatInfluxPerSecond = 1.0f;
-            _gameWorldCreationProperties.SunLightIntensityFactor = 0.1f;
-            _gameWorldCreationProperties.DayNightCycleFrequency = 0.7f;
+            _gameWorldCreationProperties.SunLightIntensityFactor = 0.35f;
+            _gameWorldCreationProperties.DayNightCycleFrequency = 0.51f;
             _gameWorldCreationProperties.TileTemperatureChangeMaximum = 3;
             _gameWorldCreationProperties.TileTemperatureExchangeAmplification = 0.5f;
 
-            _gameWorldCreationProperties.MountainHeight = 65;
-            _gameWorldCreationProperties.DesertTemperatureStart = 304;
-            _gameWorldCreationProperties.DesertSlope = 10;
-            _gameWorldCreationProperties.WaterFreezingTemperature = 276;
-            _gameWorldCreationProperties.WaterHeightOffset = 55;
-            _gameWorldCreationProperties.WaterSlope = -0.1465201465201465f;
+            _gameWorldCreationProperties.MountainHeight = 70;
+            _gameWorldCreationProperties.WaterFreezingTemperature = 282;
+            _gameWorldCreationProperties.DesertGrassTransitionAtHeightZero = 305.0f;
+            _gameWorldCreationProperties.DesertGrassTransitionAtMountainHeight = 298.0f;
+            _gameWorldCreationProperties.WaterGrassTransitionAtHeightZero = 304.0f;
+            _gameWorldCreationProperties.WaterGrassTransitionHeightAtWaterFreezingPoint = 30.0f;
 
             _gameWorldCreationProperties.TileTemperatureIntegrationTimer = 1.5f; 
 

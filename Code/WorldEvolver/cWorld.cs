@@ -92,21 +92,35 @@ namespace WorldEvolver
 
             else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.A))
             {
+                
                 _worldProperties.SunLightIntensityFactor += 0.05f;
+                if (_worldProperties.SunLightIntensityFactor >= 1.0f)
+                {
+                    _worldProperties.SunLightIntensityFactor = 1.0f;
+                }
             }
             else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.D))
             {
                 _worldProperties.SunLightIntensityFactor -= 0.05f;
+                if (_worldProperties.SunLightIntensityFactor <= 0.0f)
+                {
+                    _worldProperties.SunLightIntensityFactor = 0.0f;
+                }
             }
 
 
             else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.W))
             {
                 _worldProperties.DayNightCycleFrequency += 0.05f;
+                
             }
             else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.S))
             {
                 _worldProperties.DayNightCycleFrequency-= 0.05f;
+                if (_worldProperties.DayNightCycleFrequency <= 0.0f)
+                {
+                    _worldProperties.DayNightCycleFrequency = 0.00001f;
+                }
             }
 
         }

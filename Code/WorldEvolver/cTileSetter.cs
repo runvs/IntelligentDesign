@@ -19,67 +19,61 @@ namespace WorldEvolver
         {
             _worldProperties = worldProperties;
 
-            //Console.WriteLine(_worldProperties.DesiredTemperature);
+            _desertHeightSlope = (_worldProperties.MountainHeight - 0.0f) / (_worldProperties.DesertGrassTransitionAtMountainHeight - _worldProperties.DesertGrassTransitionAtHeightZero);
+            _desertHeightOffset = -_desertHeightSlope * _worldProperties.DesertGrassTransitionAtHeightZero;
 
-            _desertHeightOffset = -_worldProperties.DesertTemperatureStart * _worldProperties.DesertSlope;
+            _grassHeightSlope = (_worldProperties.WaterGrassTransitionHeightAtWaterFreezingPoint - 0.0f) / (_worldProperties.WaterFreezingTemperature - _worldProperties.WaterGrassTransitionAtHeightZero);
+            _grassHeightOffset = -_grassHeightSlope * _worldProperties.WaterGrassTransitionAtHeightZero;
         }
 
         private static float _desertHeightOffset;
+        private static float _desertHeightSlope;
+
+        private static float _grassHeightOffset;
+        private static float _grassHeightSlope;
+
 
         public static cTile.eTileType GetTileTypeFromTileProperties (cTileProperties properties)
         {
             float tempIntegrated = properties.IntegratedTemperature;
             float tempCurrent = properties.TemperatureInKelvin;
-            float tempMean = (tempCurrent + 19.0f * tempIntegrated) / 20.0f;
+            float tempMean = (tempCurrent + 99.0f * tempIntegrated) / 100.0f;
             float height = properties.HeightInMeters;
 
             cTile.eTileType ret = cTile.eTileType.TILETYPE_GRASS;
-            if (tempIntegrated >= _worldProperties.DesertTemperatureStart)
+            if (tempIntegrated <= _worldProperties.WaterFreezingTemperature)
             {
-                
-                if (height >= _worldProperties.MountainHeight)
-                {
-                    ret = cTile.eTileType.TILETYPE_MOUNTAIN;
-                }
-                else
-                {
-                    if (height >= (_desertHeightOffset + tempMean * _worldProperties.DesertSlope))
-                    {
-                        ret = cTile.eTileType.TILETYPE_GRASS;
-                    }
-                    else 
-                    {
-                        ret = cTile.eTileType.TILETYPE_DESERT;
-                    }
-                }
-            }
-            else if (properties.IntegratedTemperature >= _worldProperties.WaterFreezingTemperature)
-            {
-                if (properties.HeightInMeters >= _worldProperties.MountainHeight)
-                {
-                    ret = cTile.eTileType.TILETYPE_MOUNTAIN;
-                }
-                else
-                {
-                    if (properties.HeightInMeters > (_worldProperties.WaterHeightOffset + _worldProperties.WaterSlope * tempMean))
-                    {
-                        ret = cTile.eTileType.TILETYPE_GRASS;
-                    }
-                    else
-                    {
-                        ret = cTile.eTileType.TILETYPE_WATER;
-                    }
-                }
-            }
-            else
-            {
-                if (properties.HeightInMeters > (_worldProperties.WaterHeightOffset + _worldProperties.WaterSlope * tempMean))
+
+                if (height >= _grassHeightOffset + tempMean * _grassHeightSlope)
                 {
                     ret = cTile.eTileType.TILETYPE_SNOW;
                 }
                 else
                 {
                     ret = cTile.eTileType.TILETYPE_ICE;
+                }
+            }
+            else
+            {
+                if (height >= _worldProperties.MountainHeight)
+                {
+                    ret = cTile.eTileType.TILETYPE_MOUNTAIN;
+                }
+                else
+                {
+                    if (height <= _grassHeightOffset + _grassHeightSlope * tempMean)
+                    {
+                        ret = cTile.eTileType.TILETYPE_WATER;
+                    }
+                    else if (height >= _desertHeightOffset + _desertHeightSlope * tempMean)
+                    {
+                        ret = cTile.eTileType.TILETYPE_DESERT;
+                    }
+                    else
+                    {
+                        ret = cTile.eTileType.TILETYPE_GRASS;
+                    }
+
                 }
             }
 
@@ -95,7 +89,7 @@ namespace WorldEvolver
 
         }
 
-        private static Color GetColorFromTileType(cTile.eTileType type)
+        public static Color GetColorFromTileType(cTile.eTileType type)
         {
             Color col = new Color(0,0,0);
             if (type == cTile.eTileType.TILETYPE_DESERT)

@@ -32,7 +32,7 @@ namespace WorldEvolver
             TILETYPE_MOUNTAIN
         }
 
-
+        eTileType _tileType;
 
         // his is just the local time of this tile since the start of the game
         private float _localTime;
@@ -64,7 +64,7 @@ namespace WorldEvolver
 
             _localTime = 0.0f;
 
-            _refreshTimerMax = (float)RandomGenerator.GetRandomDouble(0.01 ,0.015);
+            _refreshTimerMax = (float)RandomGenerator.GetRandomDouble(0.5 ,1.5);
             _refreshTimer = _refreshTimerMax;
             _tileShape = new RectangleShape(new Vector2f(TileSizeInPixels, TileSizeInPixels));
             _tileShape.FillColor = cTileSetter.GetColorFromTileProperties(_tileProperties);
@@ -245,7 +245,8 @@ namespace WorldEvolver
         {
             if (_world.WorldDrawType == cWorld.eWorldDrawType.WORLDDRAWTYPE_NORMAL)
             {
-                _tileShape.FillColor = cTileSetter.GetColorFromTileProperties(_tileProperties);
+                _tileType = cTileSetter.GetTileTypeFromTileProperties(_tileProperties);
+                _tileShape.FillColor = cTileSetter.GetColorFromTileType(_tileType);
             }
             else if (_world.WorldDrawType == cWorld.eWorldDrawType.WORLDDRAWTYPE_HEIGHT)
             {
