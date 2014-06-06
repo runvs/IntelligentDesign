@@ -64,7 +64,7 @@ namespace WorldEvolver
 
             _localTime = 0.0f;
 
-            _refreshTimerMax = (float)RandomGenerator.GetRandomDouble(0.5 ,1.0);
+            _refreshTimerMax = (float)RandomGenerator.GetRandomDouble(0.01 ,0.015);
             _refreshTimer = _refreshTimerMax;
             _tileShape = new RectangleShape(new Vector2f(TileSizeInPixels, TileSizeInPixels));
             _tileShape.FillColor = cTileSetter.GetColorFromTileProperties(_tileProperties);

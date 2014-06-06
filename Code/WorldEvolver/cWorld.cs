@@ -89,6 +89,26 @@ namespace WorldEvolver
             {
                 WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE_INTEGRATED;
             }
+
+            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.A))
+            {
+                _worldProperties.SunLightIntensityFactor += 0.05f;
+            }
+            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.D))
+            {
+                _worldProperties.SunLightIntensityFactor -= 0.05f;
+            }
+
+
+            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.W))
+            {
+                _worldProperties.DayNightCycleFrequency += 0.05f;
+            }
+            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.S))
+            {
+                _worldProperties.DayNightCycleFrequency-= 0.05f;
+            }
+
         }
 
         public void Update(TimeObject timeObject)
