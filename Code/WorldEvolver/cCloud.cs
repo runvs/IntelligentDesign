@@ -23,6 +23,8 @@ namespace WorldEvolver
         float _totalTime;
         public bool IsRaining { get; private set; }
 
+        public float _waterAmount { get; private set; }
+
         private float _cloudSize;
 
 
@@ -40,12 +42,17 @@ namespace WorldEvolver
 
             _shape = new CircleShape(cTile.TileSizeInPixels * _cloudSize);
 
+            _waterAmount = _world.GetWorldProperties().RainWaterAmount * 50;
         }
 
 
 
         public bool IsDead()
         {
+            if (_waterAmount <= 0)
+            {
+                return true;
+            }
             return false;   // at least now clouds cannot die 
         }
 
@@ -70,6 +77,12 @@ namespace WorldEvolver
         internal float GetCloudSize()
         {
             return _cloudSize;
+        }
+
+        internal void ReduceWaterAmount(float p)
+        {
+            _waterAmount -= p;
+
         }
     }
 }

@@ -76,6 +76,8 @@ namespace WorldGeneration
                     // TODO Do Something about the ugly World Cast
                     cTile tile = new cTile(new Vector2i(i, j), tileprops, world as cWorld);
                     tile.GetTileProperties().TemperatureInKelvin = properties.DesiredTemperature +(float)(RandomGenerator.Random.NextDouble() * 25.0 - 12.0);
+                    tile.GetTileProperties().SetFoodAmountOnTile(eFoodType.FOOD_TYPE_MEAT, 0);
+                    tile.GetTileProperties().SetFoodAmountOnTile(eFoodType.FOOD_TYPE_PLANT, 0);
                     world.AddTille(tile);
                 }
             }

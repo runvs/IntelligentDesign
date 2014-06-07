@@ -28,5 +28,11 @@ namespace Evolution.ConsoleTester
         {
             throw new NotImplementedException();
         }
+
+
+        public eTileType GetTileType()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -56,8 +56,13 @@ namespace WorldInterfaces
 
         public float CloudNumber { get; set; }
 
+        // this is the amount of water that comes down in one second on one tile when it is raining
+        public float RainWaterAmount { get; set; }
+        
         public float PlantGrowthRate { get; set; }
 
         #endregion AtmosphericStuff
+
+
     }
 }

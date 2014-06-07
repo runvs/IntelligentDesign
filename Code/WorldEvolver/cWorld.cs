@@ -168,6 +168,7 @@ namespace WorldEvolver
 
             }
 
+            List<cCloud>  newList = new List<cCloud>(_cloudList.Count);
             foreach (var c in _cloudList)
             {
                 c.Update(timeObject);
@@ -178,11 +179,19 @@ namespace WorldEvolver
                     {
                         for (int j = -range; j != range; ++j)
                         {
-                            GetTileOnPosition(c.PositionInTiles + new Vector2i(i, j)).GetTileProperties().ChangeFoodAmountOnTile(eFoodType.FOOD_TYPE_PLANT, _worldProperties.PlantGrowthRate * timeObject.ElapsedGameTime);
+                            GetTileOnPosition(c.PositionInTiles + new Vector2i(i,j)).GetTileProperties().SummedUpWater += _worldProperties.RainWaterAmount * timeObject.ElapsedGameTime;
+                            c.ReduceWaterAmount(_worldProperties.RainWaterAmount * timeObject.ElapsedGameTime);
                         }
                     }
                 }
+
+                if (!c.IsDead())
+                {
+                    newList.Add(c);
+                }
+
             }
+            _cloudList = newList;
         }
 
         public void Draw(SFML.Graphics.RenderWindow rw)

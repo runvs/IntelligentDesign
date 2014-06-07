@@ -67,8 +67,31 @@ namespace WorldInterfaces
 
         public float IntegratedTemperature { get; set; }
 
+        public float SummedUpWater
+        {
+            get
+            {
+                return _summedUpWater;
+            }
+            set
+            {
+                _summedUpWater = value;
+                if (_summedUpWater <= 0)
+                {
+                    _summedUpWater = 0;
+                }
+                if (_summedUpWater >= _maxWater)
+                {
+                    _summedUpWater = _maxWater;
+                }
+            }
+        }
+        private float _summedUpWater;
 
 
+
+
+        public float _maxWater = 7;
     }
 }
 

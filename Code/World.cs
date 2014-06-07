@@ -102,6 +102,10 @@ namespace JamTemplate
             _gameWorldCreationProperties.WaterGrassTransitionAtHeightZero = 304.0f;
             _gameWorldCreationProperties.WaterGrassTransitionHeightAtWaterFreezingPoint = 30.0f;
 
+            _gameWorldCreationProperties.RainWaterAmount  = 1.0f;
+
+            _gameWorldCreationProperties.PlantGrowthRate = 1.0f;
+
 
             _gameWorldCreationProperties.PlantGrowthRate = 5.0f;
             _gameWorldCreationProperties.CloudNumber = 10;

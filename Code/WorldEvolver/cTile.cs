@@ -21,18 +21,14 @@ namespace WorldEvolver
 
         public static float TileSizeInPixels { get; set; }
 
-        // TODO Must be used
-        public enum eTileType
-        {
-            TILETYPE_GRASS,
-            TILETYPE_DESERT,
-            TILETYPE_SNOW,
-            TILETYPE_WATER,
-            TILETYPE_ICE,
-            TILETYPE_MOUNTAIN
-        }
+
 
         eTileType _tileType;
+
+        public eTileType GetTileType()
+        {
+            return _tileType;
+        }
 
         // his is just the local time of this tile since the start of the game
         private float _localTime;
@@ -156,13 +152,73 @@ namespace WorldEvolver
                 _temperatureIntegrationTimer = _temperatureIntegrationTimerMax;
                 AddTemperatureIntegrationPoint();
             }
-            
 
-            //System.Console.WriteLine(GetTileProperties().TemperatureInKelvin);
             DoTemperatureCalculations(timeObject);
 
 
+            DoWaterBudgeting(timeObject);
 
+
+
+            DoPlantGrowth(timeObject);
+
+
+        }
+
+        private void DoWaterBudgeting(TimeObject timeObject)
+        {
+            float nativeFlux = 0.0f;
+            if(_tileType == eTileType.TILETYPE_DESERT)
+            {
+                nativeFlux = -3;
+            }
+            else if(_tileType == eTileType.TILETYPE_GRASS)
+            {
+                nativeFlux = -1;
+            }
+            else if(_tileType == eTileType.TILETYPE_ICE)
+            {
+                nativeFlux = 0;
+            }
+            else if(_tileType == eTileType.TILETYPE_MOUNTAIN)
+            {
+                nativeFlux = -2;
+            }
+            else if(_tileType == eTileType.TILETYPE_SNOW)
+            {
+                nativeFlux = 0;
+            }
+            else if(_tileType == eTileType.TILETYPE_WATER)
+            {
+                nativeFlux = 10;
+            }
+
+            float inFlux = 0.0f;
+
+            foreach (var t in NeighbourTiles)
+            {
+                if (t.GetTileType() == eTileType.TILETYPE_WATER)
+                {
+                    inFlux += 2;
+                }
+            }
+
+            float totalWaterChange = inFlux + nativeFlux;
+
+            GetTileProperties().SummedUpWater += totalWaterChange * timeObject.ElapsedGameTime;
+
+        }
+
+        private void DoPlantGrowth(TimeObject timeObject)
+        {
+            if (GetTileType() == eTileType.TILETYPE_DESERT || GetTileType() == eTileType.TILETYPE_GRASS)
+            {
+                if (GetTileProperties().SummedUpWater >= 1)
+                {
+                    GetTileProperties().SummedUpWater -= 1;
+                    GetTileProperties().ChangeFoodAmountOnTile(eFoodType.FOOD_TYPE_PLANT, _world.GetWorldProperties().PlantGrowthRate * timeObject.ElapsedGameTime);
+                }
+            }
         }
 
         private void AddTemperatureIntegrationPoint()
@@ -248,19 +304,24 @@ namespace WorldEvolver
             {
                 _tileType = cTileSetter.GetTileTypeFromTileProperties(_tileProperties);
                 _tileShape.FillColor = cTileSetter.GetColorFromTileType(_tileType);
+
+                if (GetTileProperties().GetFoodAmountOnTile(eFoodType.FOOD_TYPE_PLANT) >= 1)
+                {
+                    _tileShape.FillColor = Color.Green;
+                }
+
             }
             else if (_world.WorldDrawType == cWorld.eWorldDrawType.WORLDDRAWTYPE_HEIGHT)
             {
                 Color newCol;
                 float height = GetTileProperties().HeightInMeters;
                 float maxHeight = GetWorldProperties().MaxHeightInMeter;
-
-
                 byte b = (byte)(255.0f * (0.05f + 0.9 * (height / maxHeight)));
 
                 newCol = new Color(b, b, b);
 
                 _tileShape.FillColor = newCol;
+
             }
             else if (_world.WorldDrawType == cWorld.eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE_CURRENT)
             {
@@ -329,5 +390,8 @@ namespace WorldEvolver
 
         // is between 0 and 1 with 0 being midday and 1 being full midnight
         public float _dayNightTime { get; set; }
+
+
+
     }
 }
