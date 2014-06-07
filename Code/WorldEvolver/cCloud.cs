@@ -38,9 +38,10 @@ namespace WorldEvolver
             _rainFrequency = (float)RandomGenerator.GetRandomDouble(5.0, 10.0);
             _rainOffset = (float)RandomGenerator.GetRandomDouble(0.0, 2.0*Math.PI); ;
 
-            _cloudSize = 6;
+            _cloudSize = 2;
 
             _shape = new CircleShape(cTile.TileSizeInPixels * _cloudSize);
+            _shape.Origin = new Vector2f(cTile.TileSizeInPixels * _cloudSize, cTile.TileSizeInPixels * _cloudSize);
 
             _waterAmount = _world.GetWorldProperties().RainWaterAmount * 50;
         }

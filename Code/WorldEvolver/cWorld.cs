@@ -64,9 +64,10 @@ namespace WorldEvolver
                 pos.Y -= _worldProperties.WorldSizeInTiles.Y;
             }
 
-            int listID = pos.X + GetWorldProperties().WorldSizeInTiles.X * pos.Y;
+            int listID = pos.Y + GetWorldProperties().WorldSizeInTiles.Y * pos.X;
 
             ret = _tileList[listID];
+
             return ret;
         }
 
@@ -174,15 +175,18 @@ namespace WorldEvolver
                 c.Update(timeObject);
                 if (c.IsRaining)
                 {
-                    int range = (int)(c.GetCloudSize() / 2.0f);
+                    int range = (int)(c.GetCloudSize() / 2.0f) + 1;
                     for (int i = -range; i != range; ++i)
                     {
                         for (int j = -range; j != range; ++j)
                         {
-                            GetTileOnPosition(c.PositionInTiles + new Vector2i(i,j)).GetTileProperties().SummedUpWater += _worldProperties.RainWaterAmount * timeObject.ElapsedGameTime;
-                            c.ReduceWaterAmount(_worldProperties.RainWaterAmount * timeObject.ElapsedGameTime);
+                            Vector2i newPos = c.PositionInTiles + new Vector2i(i, j);
+                            GetTileOnPosition(newPos).GetTileProperties().SummedUpWater += _worldProperties.RainWaterAmount * timeObject.ElapsedGameTime;
+                       
+                            //c.ReduceWaterAmount(_worldProperties.RainWaterAmount * timeObject.ElapsedGameTime);
                         }
                     }
+                    Console.WriteLine("");
                 }
 
                 if (!c.IsDead())
@@ -274,8 +278,7 @@ namespace WorldEvolver
             {
                 _cloudList.Add(
                     new cCloud(this, 
-                        RandomGenerator.GetRandomVector2iInRect(new SFML.Graphics.IntRect(0, 0, 
-                            _worldProperties.WorldSizeInTiles.X, _worldProperties.WorldSizeInTiles.Y))));
+                        new Vector2i(8,8)));
             }
         }
     }

@@ -108,7 +108,7 @@ namespace JamTemplate
 
 
             _gameWorldCreationProperties.PlantGrowthRate = 5.0f;
-            _gameWorldCreationProperties.CloudNumber = 10;
+            _gameWorldCreationProperties.CloudNumber = 1;
 
             _gameWorldCreationProperties.TileTemperatureIntegrationTimer = 1.5f; 
 

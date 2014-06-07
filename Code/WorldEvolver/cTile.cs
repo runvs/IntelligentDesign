@@ -199,13 +199,13 @@ namespace WorldEvolver
             {
                 if (t.GetTileType() == eTileType.TILETYPE_WATER)
                 {
-                    inFlux += 2;
+                    //inFlux += 2;
                 }
             }
 
-            float totalWaterChange = inFlux + nativeFlux;
+            //float totalWaterChange = inFlux + nativeFlux;
 
-            GetTileProperties().SummedUpWater += totalWaterChange * timeObject.ElapsedGameTime;
+            //GetTileProperties().SummedUpWater += totalWaterChange * timeObject.ElapsedGameTime;
 
         }
 
@@ -216,7 +216,7 @@ namespace WorldEvolver
                 if (GetTileProperties().SummedUpWater >= 1)
                 {
                     GetTileProperties().SummedUpWater -= 1;
-                    GetTileProperties().ChangeFoodAmountOnTile(eFoodType.FOOD_TYPE_PLANT, _world.GetWorldProperties().PlantGrowthRate * timeObject.ElapsedGameTime);
+                    GetTileProperties().ChangeFoodAmountOnTile(eFoodType.FOOD_TYPE_PLANT, _world.GetWorldProperties().PlantGrowthRate);
                 }
             }
         }
