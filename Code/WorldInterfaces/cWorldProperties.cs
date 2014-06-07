@@ -54,6 +54,10 @@ namespace WorldInterfaces
         /// </summary>
         public float TileTemperatureIntegrationTimer { get; set; }
 
+        public float CloudNumber { get; set; }
+
+        public float PlantGrowthRate { get; set; }
+
         #endregion AtmosphericStuff
     }
 }

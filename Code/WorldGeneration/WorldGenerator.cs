@@ -84,6 +84,7 @@ namespace WorldGeneration
 
             System.Console.WriteLine("Building Tile Neighbour Lists");
             world.BuildTileNeighbourLists();
+            world.CreateClouds();
 
         }
 

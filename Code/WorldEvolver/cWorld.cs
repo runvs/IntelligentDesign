@@ -13,6 +13,7 @@ namespace WorldEvolver
     public class cWorld : IWorld, IWorldInCreation, IGameObject
     {
         private System.Collections.Generic.List<ITile> _tileList;
+        private System.Collections.Generic.List<cCloud> _cloudList;
 
         private cWorldProperties _worldProperties;
 
@@ -22,6 +23,20 @@ namespace WorldEvolver
             WORLDDRAWTYPE_TEMPERATURE_CURRENT,
             WORLDDRAWTYPE_TEMPERATURE_INTEGRATED,
             WORLDDRAWTYPE_HEIGHT
+        }
+
+        public enum eWorldDrawOverlay
+        {
+            WORLDDRAWOVERLAY_CLOUDS,
+            WORLDDRAWOVERLAY_DAYNIGHT
+        }
+
+        Dictionary<eWorldDrawOverlay, bool> _overlayDictionary;
+        private float _inputWallTime;
+
+        public bool GetDrawOverlay(eWorldDrawOverlay overlay)
+        {
+            return _overlayDictionary[overlay];
         }
 
         public eWorldDrawType WorldDrawType { get; private set; }
@@ -52,15 +67,6 @@ namespace WorldEvolver
             int listID = pos.X + GetWorldProperties().WorldSizeInTiles.X * pos.Y;
 
             ret = _tileList[listID];
-
-            //foreach (var t in _tileList)
-            //{
-            //    if (t.GetPositionInTiles().Equals(pos))
-            //    {
-            //        ret = t;
-            //        break;
-            //    }
-            //}
             return ret;
         }
 
@@ -72,54 +78,75 @@ namespace WorldEvolver
 
         public void GetInput()
         {
-            // do nothing now
-            if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F1))
+            if (_inputWallTime <= 0.0f)
             {
-                WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_NORMAL;
-            }
-            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F2))
-            {
-                WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_HEIGHT;
-            }
-            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F3))
-            {
-                WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE_CURRENT;
-            }
-            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F4))
-            {
-                WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE_INTEGRATED;
-            }
-
-            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.A))
-            {
-                
-                _worldProperties.SunLightIntensityFactor += 0.05f;
-                if (_worldProperties.SunLightIntensityFactor >= 1.0f)
+              
+                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F1))
                 {
-                    _worldProperties.SunLightIntensityFactor = 1.0f;
+                    WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_NORMAL;
+                    _inputWallTime = 0.5f;
                 }
-            }
-            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.D))
-            {
-                _worldProperties.SunLightIntensityFactor -= 0.05f;
-                if (_worldProperties.SunLightIntensityFactor <= 0.0f)
+                else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F2))
                 {
-                    _worldProperties.SunLightIntensityFactor = 0.0f;
+                    WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_HEIGHT;
+                    _inputWallTime = 0.5f;
                 }
-            }
-
-
-            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.W))
-            {
-                _worldProperties.DayNightCycleFrequency += 0.05f;
-                
-            }
-            else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.S))
-            {
-                _worldProperties.DayNightCycleFrequency-= 0.05f;
-                if (_worldProperties.DayNightCycleFrequency <= 0.0f)
+                else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F3))
                 {
-                    _worldProperties.DayNightCycleFrequency = 0.00001f;
+                    WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE_CURRENT;
+                    _inputWallTime = 0.5f;
+                }
+                else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F4))
+                {
+                    WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_TEMPERATURE_INTEGRATED;
+                    _inputWallTime = 0.5f;
+                }
+                else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F5))
+                {
+                    _overlayDictionary[eWorldDrawOverlay.WORLDDRAWOVERLAY_CLOUDS] = !_overlayDictionary[eWorldDrawOverlay.WORLDDRAWOVERLAY_CLOUDS];
+                    _inputWallTime = 0.5f;
+                }
+                else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F6))
+                {
+                    _overlayDictionary[eWorldDrawOverlay.WORLDDRAWOVERLAY_DAYNIGHT] = !_overlayDictionary[eWorldDrawOverlay.WORLDDRAWOVERLAY_DAYNIGHT];
+                    _inputWallTime = 0.5f;
+                }
+
+
+                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.A))
+                {
+
+                    _worldProperties.SunLightIntensityFactor += 0.05f;
+                    if (_worldProperties.SunLightIntensityFactor >= 1.0f)
+                    {
+                        _worldProperties.SunLightIntensityFactor = 1.0f;
+                    }
+                    _inputWallTime = 0.5f;
+                }
+                else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.D))
+                {
+                    _worldProperties.SunLightIntensityFactor -= 0.05f;
+                    if (_worldProperties.SunLightIntensityFactor <= 0.0f)
+                    {
+                        _worldProperties.SunLightIntensityFactor = 0.0f;
+                    }
+                    _inputWallTime = 0.5f;
+                }
+
+
+                if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.W))
+                {
+                    _worldProperties.DayNightCycleFrequency += 0.05f;
+                    _inputWallTime = 0.5f;
+                }
+                else if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.S))
+                {
+                    _worldProperties.DayNightCycleFrequency -= 0.05f;
+                    if (_worldProperties.DayNightCycleFrequency <= 0.0f)
+                    {
+                        _worldProperties.DayNightCycleFrequency = 0.00001f;
+                    }
+                    _inputWallTime = 0.5f;
                 }
             }
 
@@ -127,12 +154,34 @@ namespace WorldEvolver
 
         public void Update(TimeObject timeObject)
         {
+            //Console.WriteLine(_inputWallTime);
+            if (_inputWallTime > 0)
+            {
+                _inputWallTime -= timeObject.ElapsedRealTime;
+            }
+
             foreach (var t in _tileList)
             {
                 cTile tile = t as cTile;
 
                 tile.Update(timeObject);
 
+            }
+
+            foreach (var c in _cloudList)
+            {
+                c.Update(timeObject);
+                if (c.IsRaining)
+                {
+                    int range = (int)(c.GetCloudSize() / 2.0f);
+                    for (int i = -range; i != range; ++i)
+                    {
+                        for (int j = -range; j != range; ++j)
+                        {
+                            GetTileOnPosition(c.PositionInTiles + new Vector2i(i, j)).GetTileProperties().ChangeFoodAmountOnTile(eFoodType.FOOD_TYPE_PLANT, _worldProperties.PlantGrowthRate * timeObject.ElapsedGameTime);
+                        }
+                    }
+                }
             }
         }
 
@@ -142,6 +191,14 @@ namespace WorldEvolver
             {
                 cTile tile = t as cTile;
                 tile.Draw(rw);
+            }
+
+            if (GetDrawOverlay(eWorldDrawOverlay.WORLDDRAWOVERLAY_CLOUDS))
+            {
+                foreach (var c in _cloudList)
+                {
+                    c.Draw(rw);
+                }
             }
         }
 
@@ -163,6 +220,12 @@ namespace WorldEvolver
         {
             _worldProperties = properties;
             _tileList = new List<ITile>(properties.WorldSizeInTiles.X * properties.WorldSizeInTiles.Y);
+
+            _overlayDictionary = new Dictionary<eWorldDrawOverlay, bool>();
+            foreach (eWorldDrawOverlay e in Enum.GetValues(typeof(eWorldDrawOverlay)))
+            {
+                _overlayDictionary.Add(e, false);
+            }
         }
 
 
@@ -188,9 +251,23 @@ namespace WorldEvolver
         }
 
 
-        public List<ITile> GetTileList()
+        //public List<ITile> GetTileList()
+        //{
+        //    return _tileList;
+        //}
+
+
+        public void CreateClouds()
         {
-            return _tileList;
+            _cloudList = new List<cCloud>();
+
+            for (int i = 0; i != _worldProperties.CloudNumber; i++)
+            {
+                _cloudList.Add(
+                    new cCloud(this, 
+                        RandomGenerator.GetRandomVector2iInRect(new SFML.Graphics.IntRect(0, 0, 
+                            _worldProperties.WorldSizeInTiles.X, _worldProperties.WorldSizeInTiles.Y))));
+            }
         }
     }
 }

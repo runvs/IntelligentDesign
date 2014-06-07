@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cCloud.cs" />
     <Compile Include="cTile.cs" />
     <Compile Include="cTileSetter.cs" />
     <Compile Include="cWorld.cs" />

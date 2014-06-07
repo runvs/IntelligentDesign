@@ -195,9 +195,10 @@ namespace WorldEvolver
                 {
                     rw.Draw(_tileShape);
 
-                    _dayNightShape.Position = TileSizeInPixels * new Vector2f(_positionInTiles.X, _positionInTiles.Y) - JamUtilities.Camera.CameraPosition;
-                    if (_world.WorldDrawType == cWorld.eWorldDrawType.WORLDDRAWTYPE_NORMAL)
+                    
+                    if (_world.GetDrawOverlay(cWorld.eWorldDrawOverlay.WORLDDRAWOVERLAY_DAYNIGHT))
                     {
+                        _dayNightShape.Position = TileSizeInPixels * new Vector2f(_positionInTiles.X, _positionInTiles.Y) - JamUtilities.Camera.CameraPosition;
                         byte a = (byte)(0.0f + 150.0f * _dayNightTime);
 
                         _dayNightShape.FillColor = new Color(0, 0, 0, a);
