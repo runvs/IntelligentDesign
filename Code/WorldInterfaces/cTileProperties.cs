@@ -91,7 +91,7 @@ namespace WorldInterfaces
 
 
 
-        public float _maxWater = 7;
+        public float _maxWater = 14;
     }
 }
 

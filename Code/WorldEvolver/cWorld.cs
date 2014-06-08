@@ -169,24 +169,35 @@ namespace WorldEvolver
 
             }
 
-            List<cCloud>  newList = new List<cCloud>(_cloudList.Count);
+            CloudUpdate(timeObject);
+        }
+
+        private void CloudUpdate(TimeObject timeObject)
+        {
+            List<cCloud> newList = new List<cCloud>(_cloudList.Count);
             foreach (var c in _cloudList)
             {
                 c.Update(timeObject);
                 if (c.IsRaining)
                 {
-                    int range = (int)(c.GetCloudSize() / 2.0f) + 1;
+                    int range = (int)(c.GetCloudSize());
                     for (int i = -range; i != range; ++i)
                     {
                         for (int j = -range; j != range; ++j)
                         {
-                            Vector2i newPos = c.PositionInTiles + new Vector2i(i, j);
-                            GetTileOnPosition(newPos).GetTileProperties().SummedUpWater += _worldProperties.RainWaterAmount * timeObject.ElapsedGameTime;
-                       
-                            //c.ReduceWaterAmount(_worldProperties.RainWaterAmount * timeObject.ElapsedGameTime);
+                            if (i * i + j * j <= range * range)
+                            {
+                                if (RandomGenerator.Random.NextDouble() <= 0.85)
+                                {
+                                    Vector2i newPos = c.PositionInTiles + new Vector2i(i, j);
+
+                                    GetTileOnPosition(newPos).GetTileProperties().SummedUpWater += _worldProperties.RainWaterAmount * timeObject.ElapsedGameTime;
+                                    c.ReduceWaterAmount(_worldProperties.RainWaterAmount * timeObject.ElapsedGameTime);
+                                }
+                            }
+                            
                         }
                     }
-                    Console.WriteLine("");
                 }
 
                 if (!c.IsDead())
@@ -196,6 +207,23 @@ namespace WorldEvolver
 
             }
             _cloudList = newList;
+
+            float numberOfTilesToCheck = GetWorldProperties().WorldSizeInTiles.X * GetWorldProperties().WorldSizeInTiles.Y * 0.005f;
+            for (int i = 0; i <= numberOfTilesToCheck; i++)
+            {
+                int id = RandomGenerator.Random.Next(_tileList.Count);
+                if (_tileList[id].GetTileType() == eTileType.TILETYPE_WATER)
+                {
+                    if (_tileList[id].GetTileProperties().TemperatureInKelvin > GetWorldProperties().DesertGrassTransitionAtHeightZero)
+                    {
+                        if (RandomGenerator.Random.NextDouble() <= 0.01)
+                        {
+                            cCloud newCloud = new cCloud(this, _tileList[id].GetPositionInTiles());
+                            _cloudList.Add(newCloud);
+                        }
+                    }
+                }
+            }
         }
 
         public void Draw(SFML.Graphics.RenderWindow rw)
@@ -278,7 +306,7 @@ namespace WorldEvolver
             {
                 _cloudList.Add(
                     new cCloud(this, 
-                        new Vector2i(8,8)));
+                        new Vector2i(16,8)));
             }
         }
     }

@@ -5,6 +5,7 @@ using System.Text;
 using JamUtilities;
 using SFML.Graphics;
 using SFML.Window;
+using WorldInterfaces;
 
 namespace WorldEvolver
 {
@@ -23,10 +24,14 @@ namespace WorldEvolver
         float _totalTime;
         public bool IsRaining { get; private set; }
 
-        public float _waterAmount { get; private set; }
+        public float WaterAmount { get; private set; }
+        public float WaterAmountMax { get; private set; }
 
         private float _cloudSize;
 
+        private float _moveTimer;
+        private float _moveTimerMax;
+        private Vector2i _moveDirection;
 
         public cCloud (cWorld world, Vector2i position )
         {
@@ -35,22 +40,28 @@ namespace WorldEvolver
 
             _totalTime = 0.0f;
 
-            _rainFrequency = (float)RandomGenerator.GetRandomDouble(5.0, 10.0);
+            _rainFrequency = (float)RandomGenerator.GetRandomDouble(0.5, 1.50);
             _rainOffset = (float)RandomGenerator.GetRandomDouble(0.0, 2.0*Math.PI); ;
 
-            _cloudSize = 2;
+            _cloudSize = 4;
 
             _shape = new CircleShape(cTile.TileSizeInPixels * _cloudSize);
             _shape.Origin = new Vector2f(cTile.TileSizeInPixels * _cloudSize, cTile.TileSizeInPixels * _cloudSize);
 
-            _waterAmount = _world.GetWorldProperties().RainWaterAmount * 50;
+            WaterAmount = _world.GetWorldProperties().RainWaterAmount * 800;
+            WaterAmountMax = WaterAmount;
+            ReduceWaterAmount(0.0f);
+
+            _moveTimerMax = 2.0f;
+            _moveTimer = _moveTimerMax;
+            _moveDirection = RandomGenerator.GetRandomVector2iInRect(new IntRect(0,0,1,1));
         }
 
 
 
         public bool IsDead()
         {
-            if (_waterAmount <= 0)
+            if (WaterAmount <= 0)
             {
                 return true;
             }
@@ -66,6 +77,14 @@ namespace WorldEvolver
         {
             _totalTime += timeObject.ElapsedGameTime;
             IsRaining = (Math.Sin(_rainOffset + _rainFrequency * _totalTime) > 0);
+            _moveTimer -= timeObject.ElapsedGameTime;
+            if (_moveTimer <= 0)
+            {
+                _moveTimerMax = GetMoveTimerOnTileProperties(_world.GetTileOnPosition(PositionInTiles).GetTileProperties());
+                _moveTimer = _moveTimerMax;
+                PositionInTiles += _moveDirection;
+            }
+
         }
 
         public void Draw(SFML.Graphics.RenderWindow rw)
@@ -82,8 +101,34 @@ namespace WorldEvolver
 
         internal void ReduceWaterAmount(float p)
         {
-            _waterAmount -= p;
+            WaterAmount -= p;
+            Color col = _shape.FillColor;
+            col.A = (byte)(255.0f * (WaterAmount / WaterAmountMax * 0.6f + 0.2f));
+            _shape.FillColor = col;
+        }
 
+        public static float GetMoveTimerOnTileProperties (cTileProperties properties)
+        {
+            float tempCurrent = properties.TemperatureInKelvin;
+
+            float ret = 2.25f;
+            float slope = - 4.0f/60.0f;
+            float xOffset = 2.25f - 300.0f* slope;
+
+            if(tempCurrent <= 270)
+            {
+                ret = 3.0f;
+            }
+            else if (tempCurrent >= 330)
+            {
+                ret = 1.0f;
+            }
+            else
+            {
+                ret = xOffset  + slope * tempCurrent;
+            }
+
+            return ret;
         }
     }
 }

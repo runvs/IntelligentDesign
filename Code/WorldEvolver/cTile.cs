@@ -199,25 +199,33 @@ namespace WorldEvolver
             {
                 if (t.GetTileType() == eTileType.TILETYPE_WATER)
                 {
-                    //inFlux += 2;
+                    inFlux += 2;
                 }
             }
 
-            //float totalWaterChange = inFlux + nativeFlux;
+            float totalWaterChange = inFlux + nativeFlux;
+            if (totalWaterChange >= 0)
+            {
+                GetTileProperties().SummedUpWater += totalWaterChange * timeObject.ElapsedGameTime;
+            }
 
-            //GetTileProperties().SummedUpWater += totalWaterChange * timeObject.ElapsedGameTime;
+            
 
         }
 
         private void DoPlantGrowth(TimeObject timeObject)
         {
-            if (GetTileType() == eTileType.TILETYPE_DESERT || GetTileType() == eTileType.TILETYPE_GRASS)
+            if (GetTileType() == eTileType.TILETYPE_GRASS)
             {
-                if (GetTileProperties().SummedUpWater >= 1)
+                if (GetTileProperties().SummedUpWater >= GetWorldProperties().PlantGrowthWaterAmount)
                 {
-                    GetTileProperties().SummedUpWater -= 1;
+                    GetTileProperties().SummedUpWater -= GetWorldProperties().PlantGrowthWaterAmount;
                     GetTileProperties().ChangeFoodAmountOnTile(eFoodType.FOOD_TYPE_PLANT, _world.GetWorldProperties().PlantGrowthRate);
                 }
+            }
+            else if (GetTileType() == eTileType.TILETYPE_DESERT || GetTileType() == eTileType.TILETYPE_ICE || GetTileType() == eTileType.TILETYPE_SNOW || GetTileType() == eTileType.TILETYPE_WATER)
+            {
+                GetTileProperties().ChangeFoodAmountOnTile(eFoodType.FOOD_TYPE_PLANT, - _world.GetWorldProperties().PlantGrowthRate * timeObject.ElapsedGameTime);
             }
         }
 

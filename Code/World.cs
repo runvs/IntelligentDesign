@@ -97,16 +97,13 @@ namespace JamTemplate
 
             _gameWorldCreationProperties.MountainHeight = 70;
             _gameWorldCreationProperties.WaterFreezingTemperature = 282;
-            _gameWorldCreationProperties.DesertGrassTransitionAtHeightZero = 305.0f;
-            _gameWorldCreationProperties.DesertGrassTransitionAtMountainHeight = 298.0f;
+            _gameWorldCreationProperties.DesertGrassTransitionAtHeightZero = 306.0f;
+            _gameWorldCreationProperties.DesertGrassTransitionAtMountainHeight = 300.0f;
             _gameWorldCreationProperties.WaterGrassTransitionAtHeightZero = 304.0f;
             _gameWorldCreationProperties.WaterGrassTransitionHeightAtWaterFreezingPoint = 30.0f;
 
             _gameWorldCreationProperties.RainWaterAmount  = 1.0f;
-
-            _gameWorldCreationProperties.PlantGrowthRate = 1.0f;
-
-
+            _gameWorldCreationProperties.PlantGrowthWaterAmount = 3.0f;
             _gameWorldCreationProperties.PlantGrowthRate = 5.0f;
             _gameWorldCreationProperties.CloudNumber = 1;
 
