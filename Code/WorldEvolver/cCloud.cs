@@ -15,7 +15,9 @@ namespace WorldEvolver
 
         private CircleShape _shape;
 
-        public Vector2i PositionInTiles { get; private set; }
+        public Vector2i PositionInTiles { get { return new Vector2i((int)(_absolutePosition.X), (int)(_absolutePosition.Y)); } }
+
+        private Vector2f _absolutePosition;
 
         cWorld _world;
 
@@ -31,12 +33,13 @@ namespace WorldEvolver
 
         private float _moveTimer;
         private float _moveTimerMax;
-        private Vector2i _moveDirection;
+        private Vector2f _moveVector;
+        private float _moveSpeed;
 
         public cCloud (cWorld world, Vector2i position )
         {
             _world = world;
-            PositionInTiles = position;
+            _absolutePosition = new Vector2f(position.X * cTile.GetTileSizeInPixelStatic(), position.Y * cTile.GetTileSizeInPixelStatic());
 
             _totalTime = 0.0f;
 
@@ -54,7 +57,8 @@ namespace WorldEvolver
 
             _moveTimerMax = 2.0f;
             _moveTimer = _moveTimerMax;
-            _moveDirection = RandomGenerator.GetRandomVector2iInRect(new IntRect(0,0,1,1));
+            _moveVector = RandomGenerator.GetRandomVector2fOnCircle(1.0f);
+            _moveSpeed = 1.0f;
         }
 
 
@@ -77,19 +81,22 @@ namespace WorldEvolver
         {
             _totalTime += timeObject.ElapsedGameTime;
             IsRaining = (Math.Sin(_rainOffset + _rainFrequency * _totalTime) > 0);
+
+            _absolutePosition += _moveVector * _moveSpeed * timeObject.ElapsedGameTime * 2.0f;
+
             _moveTimer -= timeObject.ElapsedGameTime;
             if (_moveTimer <= 0)
             {
-                _moveTimerMax = GetMoveTimerOnTileProperties(_world.GetTileOnPosition(PositionInTiles).GetTileProperties());
                 _moveTimer = _moveTimerMax;
-                PositionInTiles += _moveDirection;
+                _moveSpeed = GetMoveSpeedOnTileProperties(_world.GetTileOnPosition(PositionInTiles).GetTileProperties());
+              
             }
 
         }
 
         public void Draw(SFML.Graphics.RenderWindow rw)
         {
-            _shape.Position = new Vector2f(PositionInTiles.X * cTile.TileSizeInPixels, PositionInTiles.Y * cTile.TileSizeInPixels) - Camera.CameraPosition;
+            _shape.Position = _absolutePosition - Camera.CameraPosition;
             rw.Draw(_shape);
         }
 
@@ -107,25 +114,25 @@ namespace WorldEvolver
             _shape.FillColor = col;
         }
 
-        public static float GetMoveTimerOnTileProperties (cTileProperties properties)
+        public static float GetMoveSpeedOnTileProperties (cTileProperties properties)
         {
             float tempCurrent = properties.TemperatureInKelvin;
 
             float ret = 2.25f;
-            float slope = - 4.0f/60.0f;
-            float xOffset = 2.25f - 300.0f* slope;
+            //float slope =  4.0f/60.0f;
+            //float xOffset = 2.25f - 300.0f* slope;
 
             if(tempCurrent <= 270)
             {
-                ret = 3.0f;
+                ret = 1.0f;
             }
             else if (tempCurrent >= 330)
             {
-                ret = 1.0f;
+                ret = 3.0f;
             }
             else
             {
-                ret = xOffset  + slope * tempCurrent;
+                ret = 2.0f;
             }
 
             return ret;

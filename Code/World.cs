@@ -90,16 +90,17 @@ namespace JamTemplate
             _gameWorldCreationProperties.MaxHeightInMeter = 100.0f;
             _gameWorldCreationProperties.AtmosphericHeatOutFluxPerSecond = 1.0f / 293.0f;
             _gameWorldCreationProperties.SunHeatInfluxPerSecond = 1.0f;
-            _gameWorldCreationProperties.SunLightIntensityFactor = 0.35f;
-            _gameWorldCreationProperties.DayNightCycleFrequency = 0.51f;
+                        _gameWorldCreationProperties.DayNightCycleFrequency = 0.11f;
+            _gameWorldCreationProperties.SunLightIntensityFactor = 0.75f * _gameWorldCreationProperties.DayNightCycleFrequency;
+
             _gameWorldCreationProperties.TileTemperatureChangeMaximum = 3;
             _gameWorldCreationProperties.TileTemperatureExchangeAmplification = 0.5f;
 
             _gameWorldCreationProperties.MountainHeight = 70;
-            _gameWorldCreationProperties.WaterFreezingTemperature = 284;
+            _gameWorldCreationProperties.WaterFreezingTemperature = 283.5f;
             _gameWorldCreationProperties.DesertGrassTransitionAtHeightZero = 304.0f;
-            _gameWorldCreationProperties.DesertGrassTransitionAtMountainHeight = 298.0f;
-            _gameWorldCreationProperties.WaterGrassTransitionAtHeightZero = 304.0f;
+            _gameWorldCreationProperties.DesertGrassTransitionAtMountainHeight = 298.50f;
+            _gameWorldCreationProperties.WaterGrassTransitionAtHeightZero = 304.50f;
             _gameWorldCreationProperties.WaterGrassTransitionHeightAtWaterFreezingPoint = 30.0f;
 
             _gameWorldCreationProperties.RainWaterAmount  = 1.0f;
