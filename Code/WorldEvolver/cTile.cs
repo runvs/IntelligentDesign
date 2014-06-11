@@ -144,6 +144,7 @@ namespace WorldEvolver
             {
                 _refreshTimer = _refreshTimerMax;
                 ResetTileAppearance();
+                DoWaterBudgeting();
             }
 
             _temperatureIntegrationTimer -= timeObject.ElapsedGameTime;
@@ -156,7 +157,6 @@ namespace WorldEvolver
             DoTemperatureCalculations(timeObject);
 
 
-            DoWaterBudgeting(timeObject);
 
 
 
@@ -165,7 +165,7 @@ namespace WorldEvolver
 
         }
 
-        private void DoWaterBudgeting(TimeObject timeObject)
+        private void DoWaterBudgeting()
         {
             float nativeFlux = 0.0f;
             if(_tileType == eTileType.TILETYPE_DESERT)
@@ -206,7 +206,7 @@ namespace WorldEvolver
             float totalWaterChange = inFlux + nativeFlux;
             if (totalWaterChange >= 0)
             {
-                GetTileProperties().SummedUpWater += totalWaterChange * timeObject.ElapsedGameTime;
+                GetTileProperties().SummedUpWater += totalWaterChange * _refreshTimerMax;
             }
 
             
@@ -250,7 +250,6 @@ namespace WorldEvolver
 
         public void Draw(SFML.Graphics.RenderWindow rw)
         {
-
 
             _tileShape.Position = TileSizeInPixels *  new Vector2f(_positionInTiles.X, _positionInTiles.Y) - JamUtilities.Camera.CameraPosition;
             if (_tileShape.Position.X >= -10 && _tileShape.Position.X <= 810)
