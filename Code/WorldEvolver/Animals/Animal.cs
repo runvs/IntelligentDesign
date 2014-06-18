@@ -58,7 +58,7 @@ namespace WorldEvolver.Animals
 
         public void Move(Direction direction)
         {
-
+            PositionInTiles += direction.DirectionToVector();
         }
 
         private void CalculateAnimalParameters(AnimalProperties prop)
