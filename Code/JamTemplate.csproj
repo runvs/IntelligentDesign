@@ -63,10 +63,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Evolution\Evolution.csproj">
-      <Project>{2677910e-6d15-4ca3-b255-4e4cdb0c3276}</Project>
-      <Name>Evolution</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Lib\JamUtilities\JamUtilities\JamUtilities.csproj">
       <Project>{fc7a5984-9b7d-494c-a49d-059dcabfb253}</Project>
       <Name>JamUtilities</Name>

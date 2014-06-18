@@ -43,6 +43,7 @@ namespace WorldEvolver
 
         private RectangleShape _tileShape;  // probably an image later?
         private static RectangleShape _dayNightShape;
+        private static RectangleShape _heightShape;
 
         private List<TemperatureControlStrategies.cAbstractTemperatureControlStragegy> _temperatureControlList;
 
@@ -68,6 +69,8 @@ namespace WorldEvolver
             _dayNightShape = new RectangleShape(new Vector2f(TileSizeInPixels, TileSizeInPixels));
             _dayNightShape.FillColor = new Color(0, 0, 0, 255);
 
+            _heightShape = new RectangleShape(new Vector2f(TileSizeInPixels, TileSizeInPixels));
+            _heightShape.FillColor = new Color(0, 0, 0, 255);
 
             float centerY = (float)world.GetWorldProperties().WorldSizeInTiles.Y/2.0f;
             float yCoordinate = (float)position.Y;
@@ -258,6 +261,14 @@ namespace WorldEvolver
                 {
                     rw.Draw(_tileShape);
 
+                    if (GetTileType() == eTileType.TILETYPE_WATER)
+                    {
+                        float heightDifference = GetWorldProperties().MountainHeight - GetTileProperties().HeightInMeters;
+                        
+                        //if (heightDifferenceToMountainHight >= 20)
+                        //{
+                        //}
+                    }
                     
                     if (_world.GetDrawOverlay(cWorld.eWorldDrawOverlay.WORLDDRAWOVERLAY_DAYNIGHT))
                     {
