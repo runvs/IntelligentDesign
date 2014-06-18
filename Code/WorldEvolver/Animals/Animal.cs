@@ -63,6 +63,7 @@ namespace WorldEvolver.Animals
 
         private void CalculateAnimalParameters(AnimalProperties prop)
         {
+
             HealthMax = prop.Stamina * 10;
             HealthCurrent = HealthMax;
             HealthRegeneration = prop.Stamina * 0.5f;
@@ -73,6 +74,7 @@ namespace WorldEvolver.Animals
             PreferredAltitude = prop.PreferredAltitude;
             PreferredTerrain = prop.PreferredTerrain;
             PreferredTemperature = prop.PreferredTemperature;
+
         }
     }
 }

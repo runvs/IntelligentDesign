@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using JamUtilities;
+using SFML.Window;
 using WorldInterfaces;
 
 namespace WorldEvolver
@@ -12,11 +13,16 @@ namespace WorldEvolver
 
         private List<Animal> _animalList;
         private cWorld _world;
+        private AnimalProperties _properties;
 
-        public Tribe (cWorld world)
+        private Vector2i PositionInTiles { get; set; }
+
+        public Tribe (cWorld world, AnimalProperties properties)
         {
             _world = world;
             _animalList = new List<Animal>();
+
+            PositionInTiles = new Vector2i(10, 10);
         }
     
         public bool IsDead()
@@ -43,6 +49,13 @@ namespace WorldEvolver
             {
                 a.Draw(rw);
             }
+        }
+
+        public void SpawnAninal()
+        {
+            Vector2i initialPosition = PositionInTiles + RandomGenerator.GetRandomVector2iInRect(new SFML.Graphics.IntRect(-5,-5, 10, 10));
+            Animal animal = new Animal(_properties, _world, initialPosition);
+            _animalList.Add(animal);
         }
 
 
