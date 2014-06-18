@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using JamUtilities;
+using SFML.Graphics;
 using SFML.Window;
-using WorldEvolver;
 using WorldInterfaces;
 
 namespace WorldEvolver
@@ -81,7 +79,7 @@ namespace WorldEvolver
         {
             if (_inputWallTime <= 0.0f)
             {
-              
+
                 if (SFML.Window.Keyboard.IsKeyPressed(SFML.Window.Keyboard.Key.F1))
                 {
                     WorldDrawType = eWorldDrawType.WORLDDRAWTYPE_NORMAL;
@@ -161,12 +159,9 @@ namespace WorldEvolver
                 _inputWallTime -= timeObject.ElapsedRealTime;
             }
 
-            foreach (var t in _tileList)
+            foreach(cTile t in _tileList)
             {
-                cTile tile = t as cTile;
-
-                tile.Update(timeObject);
-
+                t.Update(timeObject);
             }
 
             CloudUpdate(timeObject);
@@ -195,7 +190,7 @@ namespace WorldEvolver
                                     c.ReduceWaterAmount(_worldProperties.RainWaterAmount * timeObject.ElapsedGameTime);
                                 }
                             }
-                            
+
                         }
                     }
                 }
@@ -226,12 +221,11 @@ namespace WorldEvolver
             }
         }
 
-        public void Draw(SFML.Graphics.RenderWindow rw)
+        public void Draw(RenderWindow rw)
         {
-            foreach (var t in _tileList)
+            foreach (cTile t in _tileList)
             {
-                cTile tile = t as cTile;
-                tile.Draw(rw);
+                t.Draw(rw);
             }
 
             if (GetDrawOverlay(eWorldDrawOverlay.WORLDDRAWOVERLAY_CLOUDS))
@@ -250,7 +244,7 @@ namespace WorldEvolver
                 _tileList.Add(tile);
             }
         }
-        
+
         public cWorldProperties GetWorldProperties()
         {
             return _worldProperties;
@@ -305,8 +299,8 @@ namespace WorldEvolver
             for (int i = 0; i != _worldProperties.CloudNumber; i++)
             {
                 _cloudList.Add(
-                    new cCloud(this, 
-                        new Vector2i(16,8)));
+                    new cCloud(this,
+                        new Vector2i(16, 8)));
             }
         }
     }

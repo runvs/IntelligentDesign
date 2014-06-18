@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JamTemplate", "Code\JamTemplate.csproj", "{C9FA175F-8215-421A-9909-18C280B99837}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JamUtilities", "Lib\JamUtilities\JamUtilities\JamUtilities.csproj", "{FC7A5984-9B7D-494C-A49D-059DCABFB253}"
@@ -16,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldEvolver", "Code\WorldEvolver\WorldEvolver.csproj", "{E0E44A4C-61C9-464E-B11D-01EC6781B3B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialIntelligence", "Code\ArtificialIntelligence\ArtificialIntelligence.csproj", "{65E1C85E-82FD-4436-A33F-86455CF53B41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialIntelligence.ConsoleTester", "ArtificialIntelligence.ConsoleTester\ArtificialIntelligence.ConsoleTester.csproj", "{2CFCEA97-D64A-47A4-AB75-4D674855E43E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,11 +59,12 @@ Global
 		{65E1C85E-82FD-4436-A33F-86455CF53B41}.Debug|x86.Build.0 = Debug|x86
 		{65E1C85E-82FD-4436-A33F-86455CF53B41}.Release|x86.ActiveCfg = Release|x86
 		{65E1C85E-82FD-4436-A33F-86455CF53B41}.Release|x86.Build.0 = Release|x86
+		{2CFCEA97-D64A-47A4-AB75-4D674855E43E}.Debug|x86.ActiveCfg = Debug|x86
+		{2CFCEA97-D64A-47A4-AB75-4D674855E43E}.Debug|x86.Build.0 = Debug|x86
+		{2CFCEA97-D64A-47A4-AB75-4D674855E43E}.Release|x86.ActiveCfg = Release|x86
+		{2CFCEA97-D64A-47A4-AB75-4D674855E43E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
