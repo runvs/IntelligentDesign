@@ -53,7 +53,7 @@ namespace WorldEvolver
 
         private void CalculateAnimalParameters(AnimalProperties properties)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

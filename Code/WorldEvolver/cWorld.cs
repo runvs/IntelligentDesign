@@ -325,6 +325,25 @@ namespace WorldEvolver
         public void CreateAnimals()
         {
             _tribeList = new List<Tribe>();
+
+            AnimalProperties properties = new AnimalProperties();
+            properties.Agility = 1;
+            properties.Diet = AnimalProperties.DietType.CARNIVORE;
+            properties.GroupBehaviour = 1;
+            properties.PreferredAltitude = 50;
+            properties.PreferredTemperature = 300;
+            properties.PreferredTerrain = AnimalProperties.TerrainType.LAND;
+            properties.Stamina = 1;
+            properties.Strength = 1;
+
+            Tribe tribe = new Tribe(this, properties);
+
+            for (int i = 0; i != 10; ++i)
+            {
+                tribe.SpawnAninal();
+            }
+
+            _tribeList.Add(tribe);
         }
     }
 }
