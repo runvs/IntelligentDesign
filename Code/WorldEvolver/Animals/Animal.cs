@@ -12,9 +12,15 @@ namespace WorldEvolver
         public float HealthMax { get; private set; }
         public float HealthCurrent { get; private set; }
         public float HealthRegeneration { get; private set; }
+
         public float MoveSpeed { get; private set; }
+
         public float Damage { get; private set; }
+
+        public AnimalProperties.DietType Diet { get; private set; }
         public float Hunger { get; private set; }
+
+        public AnimalProperties.TerrainType PreferredTerrain { get; private set; }
         public float PreferredTemperature { get; private set; }
         public float PreferredAltitude { get; private set; }
 
@@ -42,7 +48,6 @@ namespace WorldEvolver
 
         public void Update(TimeObject timeObject)
         {
-            //throw new NotImplementedException();
         }
 
         public void Draw(RenderWindow rw)
@@ -51,9 +56,18 @@ namespace WorldEvolver
             rw.Draw(_shape);
         }
 
-        private void CalculateAnimalParameters(AnimalProperties properties)
+        private void CalculateAnimalParameters(AnimalProperties prop)
         {
-            throw new NotImplementedException();
+            HealthMax = prop.Stamina * 10;
+            HealthCurrent = HealthMax;
+            HealthRegeneration = prop.Stamina * 0.5f;
+
+            MoveSpeed = 1 / (prop.Agility + 1.0f);
+            Hunger = (prop.Strength + prop.Stamina) * 0.5f;
+
+            PreferredAltitude = prop.PreferredAltitude;
+            PreferredTerrain = prop.PreferredTerrain;
+            PreferredTemperature = prop.PreferredTemperature;
         }
     }
 }
