@@ -13,8 +13,8 @@ namespace WorldInterfaces
 
         void BuildTileNeighbourLists();
 
-        //List<ITile> GetTileList();
-
         void CreateClouds();
+
+        void CreateAnimals();
     }
 }

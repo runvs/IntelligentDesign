@@ -10,8 +10,10 @@ namespace WorldEvolver
 {
     public class cWorld : IWorld, IWorldInCreation, IGameObject
     {
-        private System.Collections.Generic.List<ITile> _tileList;
-        private System.Collections.Generic.List<cCloud> _cloudList;
+        private List<ITile> _tileList;
+        private List<cCloud> _cloudList;
+
+        private List<Tribe> _tribeList;
 
         private cWorldProperties _worldProperties;
 
@@ -164,6 +166,17 @@ namespace WorldEvolver
                 t.Update(timeObject);
             }
 
+            List<Tribe> templist = new List<Tribe>();
+            foreach (var t in _tribeList)
+            {
+                t.Update(timeObject);
+                if (!t.IsDead())
+                {
+                    templist.Add(t);
+                }
+            }
+            _tribeList = templist;
+
             CloudUpdate(timeObject);
         }
 
@@ -235,6 +248,11 @@ namespace WorldEvolver
                     c.Draw(rw);
                 }
             }
+
+            foreach (var t in _tribeList)
+            {
+                t.Draw(rw);
+            }
         }
 
         public void AddTille(ITile tile)
@@ -286,12 +304,6 @@ namespace WorldEvolver
         }
 
 
-        //public List<ITile> GetTileList()
-        //{
-        //    return _tileList;
-        //}
-
-
         public void CreateClouds()
         {
             _cloudList = new List<cCloud>();
@@ -302,6 +314,17 @@ namespace WorldEvolver
                     new cCloud(this,
                         new Vector2i(16, 8)));
             }
+        }
+
+        public void AddTribe (Tribe tribe)
+        {
+            _tribeList.Add(tribe);
+        }
+
+
+        public void CreateAnimals()
+        {
+            _tribeList = new List<Tribe>();
         }
     }
 }
