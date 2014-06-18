@@ -1,7 +1,7 @@
 ﻿
 namespace WorldEvolver.Animals
 {
-    enum Direction
+    public enum Direction
     {
         NORTH,
         EAST,
