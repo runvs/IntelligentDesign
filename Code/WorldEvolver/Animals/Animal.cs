@@ -21,10 +21,13 @@ namespace WorldEvolver
         public Vector2i PositionInTiles { get; set; }
         private CircleShape _shape;
 
-        public Animal(AnimalProperties properties, cWorld world)
+        public Animal(AnimalProperties properties, cWorld world, Vector2i initialPosition)
         {
-            CalculateAnimalParameters(properties);
+            _world = world;
             _shape = new CircleShape(cTile.GetTileSizeInPixelStatic() / 2.0f);
+            PositionInTiles = initialPosition;
+
+            CalculateAnimalParameters(properties);
         }
 
         public bool IsDead()
