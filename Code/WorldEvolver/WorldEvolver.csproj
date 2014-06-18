@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animals\Animal.cs" />
+    <Compile Include="Animals\AnimalProperties.cs" />
     <Compile Include="cCloud.cs" />
     <Compile Include="cTile.cs" />
     <Compile Include="cTileSetter.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="TemperatureControlStrategies\cAdvandcedDayNightCylceStrategy.cs" />
     <Compile Include="TemperatureControlStrategies\cBasicDayNightCycleStrategy.cs" />
     <Compile Include="TemperatureControlStrategies\cTemperatureExchangeStrategy.cs" />
+    <Compile Include="Animals\Tribe.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Lib\JamUtilities\JamUtilities\JamUtilities.csproj">
@@ -72,6 +75,7 @@
       <Name>WorldInterfaces</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
