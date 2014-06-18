@@ -21,6 +21,7 @@ namespace WorldEvolver
         {
             _world = world;
             _animalList = new List<Animal>();
+            _properties = properties;
 
             PositionInTiles = new Vector2i(10, 10);
         }
