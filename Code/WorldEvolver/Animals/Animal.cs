@@ -56,6 +56,11 @@ namespace WorldEvolver.Animals
             rw.Draw(_shape);
         }
 
+        public void Move(Direction direction)
+        {
+
+        }
+
         private void CalculateAnimalParameters(AnimalProperties prop)
         {
             HealthMax = prop.Stamina * 10;
