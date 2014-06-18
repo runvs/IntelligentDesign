@@ -1,6 +1,7 @@
 ﻿using System;
 using JamUtilities;
 using SFML.Graphics;
+using SFML.Window;
 
 namespace WorldEvolver
 {
@@ -17,9 +18,13 @@ namespace WorldEvolver
         public float PreferredTemperature { get; private set; }
         public float PreferredAltitude { get; private set; }
 
+        public Vector2i PositionInTiles { get; set; }
+        private CircleShape _shape;
+
         public Animal(AnimalProperties properties, cWorld world)
         {
             CalculateAnimalParameters(properties);
+            _shape = new CircleShape(cTile.GetTileSizeInPixelStatic() / 2.0f);
         }
 
         public bool IsDead()
@@ -34,12 +39,13 @@ namespace WorldEvolver
 
         public void Update(TimeObject timeObject)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void Draw(RenderWindow rw)
         {
-            throw new NotImplementedException();
+            _shape.Position = cTile.GetTileSizeInPixelStatic() * new Vector2f(PositionInTiles.X, PositionInTiles.Y) - JamUtilities.Camera.CameraPosition;
+            rw.Draw(_shape);
         }
 
         private void CalculateAnimalParameters(AnimalProperties properties)
