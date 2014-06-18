@@ -3,7 +3,7 @@ using JamUtilities;
 using SFML.Graphics;
 using SFML.Window;
 
-namespace WorldEvolver
+namespace WorldEvolver.Animals
 {
     public class Animal : IGameObject
     {
