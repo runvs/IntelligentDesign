@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Animals\Animal.cs" />
     <Compile Include="Animals\AnimalProperties.cs" />
+    <Compile Include="Animals\Direction.cs" />
     <Compile Include="cCloud.cs" />
     <Compile Include="cTile.cs" />
     <Compile Include="cTileSetter.cs" />

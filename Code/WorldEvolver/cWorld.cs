@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using JamUtilities;
 using SFML.Graphics;
 using SFML.Window;
+using WorldEvolver.Animals;
 using WorldInterfaces;
 
 namespace WorldEvolver
@@ -161,7 +161,7 @@ namespace WorldEvolver
                 _inputWallTime -= timeObject.ElapsedRealTime;
             }
 
-            foreach(cTile t in _tileList)
+            foreach (cTile t in _tileList)
             {
                 t.Update(timeObject);
             }
@@ -316,7 +316,7 @@ namespace WorldEvolver
             }
         }
 
-        public void AddTribe (Tribe tribe)
+        public void AddTribe(Tribe tribe)
         {
             _tribeList.Add(tribe);
         }

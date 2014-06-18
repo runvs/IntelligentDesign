@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using JamUtilities;
 using SFML.Window;
+using WorldEvolver.Animals;
 using WorldInterfaces;
 
 namespace WorldEvolver

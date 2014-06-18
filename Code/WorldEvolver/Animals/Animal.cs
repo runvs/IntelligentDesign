@@ -3,7 +3,7 @@ using JamUtilities;
 using SFML.Graphics;
 using SFML.Window;
 
-namespace WorldEvolver
+namespace WorldEvolver.Animals
 {
     public class Animal : IGameObject
     {
@@ -56,9 +56,13 @@ namespace WorldEvolver
             rw.Draw(_shape);
         }
 
-        private void CalculateAnimalParameters(AnimalProperties prop)
+        public void Move(Direction direction)
         {
 
+        }
+
+        private void CalculateAnimalParameters(AnimalProperties prop)
+        {
             HealthMax = prop.Stamina * 10;
             HealthCurrent = HealthMax;
             HealthRegeneration = prop.Stamina * 0.5f;
@@ -69,7 +73,6 @@ namespace WorldEvolver
             PreferredAltitude = prop.PreferredAltitude;
             PreferredTerrain = prop.PreferredTerrain;
             PreferredTemperature = prop.PreferredTemperature;
-
         }
     }
 }
