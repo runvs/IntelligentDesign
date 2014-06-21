@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using JamUtilities;
+using SFML.Graphics;
 using SFML.Window;
 using WorldInterfaces;
 
@@ -15,7 +16,9 @@ namespace ArtificialIntelligence
         private IWorld _world;
         private AnimalProperties _properties;
 
-        private Vector2i PositionInTiles { get; set; }
+        public Vector2i PositionInTiles { get; set; }
+
+        private Color _tribeColor;
 
         public Tribe(IWorld world, AnimalProperties properties)
         {
@@ -27,7 +30,8 @@ namespace ArtificialIntelligence
             _animalList = new List<Animal>();
             _properties = properties;
 
-            PositionInTiles = new Vector2i(10, 10);
+            PositionInTiles = new Vector2i(_world.GetWorldProperties().WorldSizeInTiles.X / 2, _world.GetWorldProperties().WorldSizeInTiles.Y / 2);
+            _tribeColor = RandomGenerator.GetRandomColor();
         }
     
         public bool IsDead()
@@ -56,10 +60,15 @@ namespace ArtificialIntelligence
             }
         }
 
-        public void SpawnAninal()
+        public void SpawnAnimal()
         {
-            Vector2i initialPosition = PositionInTiles + RandomGenerator.GetRandomVector2iInRect(new SFML.Graphics.IntRect(-5,-5, 10, 10));
+            int count = _animalList.Count;
+            int tribeSize = (int)(4.0f * (float)(Math.Sqrt(_animalList.Count)));
+            int halfsize = -(tribeSize / 2) +1 ;
+
+            Vector2i initialPosition = PositionInTiles + RandomGenerator.GetRandomVector2iInRect(new SFML.Graphics.IntRect(halfsize, halfsize, tribeSize, tribeSize));
             Animal animal = new Animal(_properties, _world, initialPosition);
+            animal.AnimalColor = _tribeColor;
             _animalList.Add(animal);
         }
 

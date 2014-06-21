@@ -162,9 +162,21 @@ namespace JamTemplate
 
             Tribe tribe = new Tribe(_world, properties);
 
-            for (int i = 0; i != 10; ++i)
+            tribe.PositionInTiles = RandomGenerator.GetRandomVector2iInRect(new IntRect(0, 0, _world.GetWorldProperties().WorldSizeInTiles.X, _world.GetWorldProperties().WorldSizeInTiles.Y));
+            for (int i = 0; i != 50; ++i)
             {
-                tribe.SpawnAninal();
+                tribe.SpawnAnimal();
+            }
+
+            _tribeList.Add(tribe);
+
+
+            tribe = new Tribe(_world, properties);
+
+            tribe.PositionInTiles = RandomGenerator.GetRandomVector2iInRect(new IntRect(0, 0, _world.GetWorldProperties().WorldSizeInTiles.X, _world.GetWorldProperties().WorldSizeInTiles.Y));
+            for (int i = 0; i != 50; ++i)
+            {
+                tribe.SpawnAnimal();
             }
 
             _tribeList.Add(tribe);

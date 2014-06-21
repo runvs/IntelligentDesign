@@ -96,5 +96,13 @@ namespace JamUtilities
                 range.Y = tmp;
             }
         }
+
+        public static Color GetRandomColor ()
+        {
+            byte[] rgb = new byte[3];
+            Random.NextBytes(rgb);
+            Color col = new Color(rgb[0], rgb[1], rgb[2]);
+            return col;
+        }
     }
 }

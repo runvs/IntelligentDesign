@@ -12,6 +12,7 @@ namespace ArtificialIntelligence.Intelligence
 
         float _timer = 0.0f;
         float _timerMax = 2.0f + (float)( 2.0 * RandomGenerator.Random.NextDouble() - 1.0);
+
         public RandomWalkIntelligence(Animal animal) : base (animal)
         {
 

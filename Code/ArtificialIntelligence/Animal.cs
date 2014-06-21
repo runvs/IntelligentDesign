@@ -33,6 +33,8 @@ namespace ArtificialIntelligence
 
         private AbstractIntelligencePattern _intelligence;
 
+        public Color AnimalColor { set { _shape.FillColor = value; } }
+
 
         public Animal(AnimalProperties properties, IWorld world, Vector2i initialPosition)
         {
