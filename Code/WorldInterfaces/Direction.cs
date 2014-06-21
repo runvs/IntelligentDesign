@@ -1,6 +1,6 @@
 ﻿using SFML.Window;
 
-namespace WorldEvolver.Animals
+namespace WorldInterfaces
 {
     public enum Direction
     {

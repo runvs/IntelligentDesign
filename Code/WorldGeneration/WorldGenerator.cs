@@ -88,8 +88,6 @@ namespace WorldGeneration
             world.BuildTileNeighbourLists();
             world.CreateClouds();
 
-            world.CreateAnimals();
-
         }
 
         

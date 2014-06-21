@@ -6,6 +6,8 @@ using JamUtilities.ScreenEffects;
 using WorldInterfaces;
 using WorldEvolver;
 using SFML.Window;
+using ArtificialIntelligence;
+using System.Collections.Generic;
 
 namespace JamTemplate
 {
@@ -16,6 +18,8 @@ namespace JamTemplate
 
         cWorld _world;
         cWorldProperties _gameWorldCreationProperties;
+
+        private List<Tribe> _tribeList;
 
         #endregion Fields
 
@@ -56,6 +60,18 @@ namespace JamTemplate
             ParticleManager.Update(timeObject);
             _world.Update(timeObject);
             JamUtilities.Camera.DoCameraMovement(timeObject);
+
+            List<Tribe> templist = new List<Tribe>();
+            foreach (var t in _tribeList)
+            {
+                t.Update(timeObject);
+                if (!t.IsDead())
+                {
+                    templist.Add(t);
+                }
+            }
+            _tribeList = templist;
+
         }
 
         public void Draw(RenderWindow rw)
@@ -64,7 +80,10 @@ namespace JamTemplate
             _world.Draw(rw);
             ParticleManager.Draw(rw);
 
-            
+            foreach (var t in _tribeList)
+            {
+                t.Draw(rw);
+            }
 
             ScreenEffects.GetStaticEffect("vignette").Draw(rw);
             ScreenEffects.Draw(rw);
@@ -111,13 +130,46 @@ namespace JamTemplate
             _gameWorldCreationProperties.TileTemperatureIntegrationTimer = 1.5f; 
 
             cTile.TileSizeInPixels = 8.0f;
-
+            Animal.TileSizeInPixels = 8.0f;
             
 
             IWorldInCreation worldInCreation = _world as IWorldInCreation;
 
             WorldGeneration.WorldGenerator.CreateWorld(ref worldInCreation, _gameWorldCreationProperties);
+            CreateAnimals();
         }
+
+
+        public void AddTribe(Tribe tribe)
+        {
+            _tribeList.Add(tribe);
+        }
+
+
+        public void CreateAnimals()
+        {
+            _tribeList = new List<Tribe>();
+
+            AnimalProperties properties = new AnimalProperties();
+            properties.Agility = 1;
+            properties.Diet = AnimalProperties.DietType.CARNIVORE;
+            properties.GroupBehaviour = 1;
+            properties.PreferredAltitude = 50;
+            properties.PreferredTemperature = 300;
+            properties.PreferredTerrain = AnimalProperties.TerrainType.LAND;
+            properties.Stamina = 1;
+            properties.Strength = 1;
+
+            Tribe tribe = new Tribe(_world, properties);
+
+            for (int i = 0; i != 10; ++i)
+            {
+                tribe.SpawnAninal();
+            }
+
+            _tribeList.Add(tribe);
+        }
+
 
         #endregion Methods
 

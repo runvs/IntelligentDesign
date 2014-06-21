@@ -14,7 +14,5 @@ namespace WorldInterfaces
         void BuildTileNeighbourLists();
 
         void CreateClouds();
-
-        void CreateAnimals();
     }
 }

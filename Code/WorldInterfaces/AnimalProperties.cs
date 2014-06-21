@@ -1,5 +1,5 @@
 ﻿
-namespace WorldEvolver.Animals
+namespace WorldInterfaces
 {
     public class AnimalProperties
     {

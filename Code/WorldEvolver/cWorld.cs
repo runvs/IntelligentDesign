@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using JamUtilities;
 using SFML.Graphics;
 using SFML.Window;
-using WorldEvolver.Animals;
 using WorldInterfaces;
 
 namespace WorldEvolver
@@ -12,8 +11,6 @@ namespace WorldEvolver
     {
         private List<ITile> _tileList;
         private List<cCloud> _cloudList;
-
-        private List<Tribe> _tribeList;
 
         private cWorldProperties _worldProperties;
 
@@ -166,17 +163,6 @@ namespace WorldEvolver
                 t.Update(timeObject);
             }
 
-            List<Tribe> templist = new List<Tribe>();
-            foreach (var t in _tribeList)
-            {
-                t.Update(timeObject);
-                if (!t.IsDead())
-                {
-                    templist.Add(t);
-                }
-            }
-            _tribeList = templist;
-
             CloudUpdate(timeObject);
         }
 
@@ -249,10 +235,7 @@ namespace WorldEvolver
                 }
             }
 
-            foreach (var t in _tribeList)
-            {
-                t.Draw(rw);
-            }
+        
         }
 
         public void AddTille(ITile tile)
@@ -316,34 +299,6 @@ namespace WorldEvolver
             }
         }
 
-        public void AddTribe(Tribe tribe)
-        {
-            _tribeList.Add(tribe);
-        }
-
-
-        public void CreateAnimals()
-        {
-            _tribeList = new List<Tribe>();
-
-            AnimalProperties properties = new AnimalProperties();
-            properties.Agility = 1;
-            properties.Diet = AnimalProperties.DietType.CARNIVORE;
-            properties.GroupBehaviour = 1;
-            properties.PreferredAltitude = 50;
-            properties.PreferredTemperature = 300;
-            properties.PreferredTerrain = AnimalProperties.TerrainType.LAND;
-            properties.Stamina = 1;
-            properties.Strength = 1;
-
-            Tribe tribe = new Tribe(this, properties);
-
-            for (int i = 0; i != 10; ++i)
-            {
-                tribe.SpawnAninal();
-            }
-
-            _tribeList.Add(tribe);
-        }
+  
     }
 }

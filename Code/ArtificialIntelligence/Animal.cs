@@ -2,12 +2,13 @@
 using JamUtilities;
 using SFML.Graphics;
 using SFML.Window;
+using WorldInterfaces;
 
-namespace WorldEvolver.Animals
+namespace ArtificialIntelligence
 {
     public class Animal : IGameObject
     {
-        private cWorld _world;
+        private IWorld _world;
 
         public float HealthMax { get; private set; }
         public float HealthCurrent { get; private set; }
@@ -27,10 +28,12 @@ namespace WorldEvolver.Animals
         public Vector2i PositionInTiles { get; set; }
         private CircleShape _shape;
 
-        public Animal(AnimalProperties properties, cWorld world, Vector2i initialPosition)
+        public static float TileSizeInPixels { get; set; }
+
+        public Animal(AnimalProperties properties, IWorld world, Vector2i initialPosition)
         {
             _world = world;
-            _shape = new CircleShape(cTile.GetTileSizeInPixelStatic() / 2.0f);
+            _shape = new CircleShape(TileSizeInPixels / 2.0f);
             PositionInTiles = initialPosition;
 
             CalculateAnimalParameters(properties);
@@ -52,7 +55,7 @@ namespace WorldEvolver.Animals
 
         public void Draw(RenderWindow rw)
         {
-            _shape.Position = cTile.GetTileSizeInPixelStatic() * new Vector2f(PositionInTiles.X, PositionInTiles.Y) - JamUtilities.Camera.CameraPosition;
+            _shape.Position = TileSizeInPixels * new Vector2f(PositionInTiles.X, PositionInTiles.Y) - JamUtilities.Camera.CameraPosition;
             rw.Draw(_shape);
         }
 

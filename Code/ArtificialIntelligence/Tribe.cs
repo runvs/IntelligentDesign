@@ -4,22 +4,25 @@ using System.Linq;
 using System.Text;
 using JamUtilities;
 using SFML.Window;
-using WorldEvolver.Animals;
 using WorldInterfaces;
 
-namespace WorldEvolver
+namespace ArtificialIntelligence
 {
     public class Tribe : IGameObject
     {
 
         private List<Animal> _animalList;
-        private cWorld _world;
+        private IWorld _world;
         private AnimalProperties _properties;
 
         private Vector2i PositionInTiles { get; set; }
 
-        public Tribe (cWorld world, AnimalProperties properties)
+        public Tribe(IWorld world, AnimalProperties properties)
         {
+            if (world == null)
+            {
+                throw new ArgumentNullException("IWorld world", "could not resolve world in Tribe Constructor.");
+            }
             _world = world;
             _animalList = new List<Animal>();
             _properties = properties;
