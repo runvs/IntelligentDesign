@@ -1,4 +1,5 @@
 ﻿using System;
+using ArtificialIntelligence.Intelligence;
 using JamUtilities;
 using SFML.Graphics;
 using SFML.Window;
@@ -30,6 +31,9 @@ namespace ArtificialIntelligence
 
         public static float TileSizeInPixels { get; set; }
 
+        private AbstractIntelligencePattern _intelligence;
+
+
         public Animal(AnimalProperties properties, IWorld world, Vector2i initialPosition)
         {
             _world = world;
@@ -37,6 +41,8 @@ namespace ArtificialIntelligence
             PositionInTiles = initialPosition;
 
             CalculateAnimalParameters(properties);
+
+            _intelligence = new RandomWalkIntelligence(this);
         }
 
         public bool IsDead()
@@ -51,6 +57,7 @@ namespace ArtificialIntelligence
 
         public void Update(TimeObject timeObject)
         {
+            _intelligence.DoIntelligenceUpdate(timeObject);
         }
 
         public void Draw(RenderWindow rw)

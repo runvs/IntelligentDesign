@@ -136,7 +136,7 @@ namespace JamTemplate
             IWorldInCreation worldInCreation = _world as IWorldInCreation;
 
             WorldGeneration.WorldGenerator.CreateWorld(ref worldInCreation, _gameWorldCreationProperties);
-            CreateAnimals();
+            CreateRandomTribes();
         }
 
 
@@ -146,7 +146,7 @@ namespace JamTemplate
         }
 
 
-        public void CreateAnimals()
+        public void CreateRandomTribes()
         {
             _tribeList = new List<Tribe>();
 

@@ -53,7 +53,6 @@
     <Compile Include="AnimalProperties.cs" />
     <Compile Include="cTileProperties.cs" />
     <Compile Include="cWorldProperties.cs" />
-    <Compile Include="Direction.cs" />
     <Compile Include="eFoodType.cs" />
     <Compile Include="eTileType.cs" />
     <Compile Include="ITile.cs" />

@@ -1,6 +1,8 @@
-﻿using SFML.Window;
+﻿using System;
+using JamUtilities;
+using SFML.Window;
 
-namespace WorldInterfaces
+namespace ArtificialIntelligence
 {
     public enum Direction
     {
@@ -32,5 +34,15 @@ namespace WorldInterfaces
                     return new Vector2i(0, 0);
             }
         }
+
+        public static Direction RandomDirection()
+        {
+
+            Array values = Enum.GetValues(typeof(Direction));
+            Direction randomDir = (Direction)values.GetValue(RandomGenerator.Random.Next(values.Length));
+            return randomDir;
+        }
+
     }
+
 }
