@@ -18,6 +18,18 @@ namespace JamTemplate
         Score _gameStats;
         float _timeTilNextInput = 0.0f;
 
+        private enum eMenuState
+        {
+            MS_START,
+            MS_WORLD,
+            MS_TRIBE
+        }
+
+        eMenuState _menuState;
+
+        WorldInterfaces.cWorldProperties _worldProperties;
+        WorldInterfaces.AnimalProperties _tribeProperties;
+
         #endregion Fields
 
         #region Methods
@@ -26,12 +38,57 @@ namespace JamTemplate
         {
             // Predefine game state to menu
             _gameState = State.Menu;
+            _menuState = eMenuState.MS_START;
 
             //TODO  Default values, replace with correct ones !
             SmartSprite._scaleVector = new Vector2f(2.0f, 2.0f);
             ScreenEffects.Init(new Vector2u(800, 600));
             ParticleManager.SetPositionRect(new FloatRect(-500, 0, 1400, 600));
             //ParticleManager.Gravity = GameProperties.GravitationalAcceleration;
+
+
+            _worldProperties = new WorldInterfaces.cWorldProperties();
+            _worldProperties.HeightMapNoiseLength = 20.0f;
+            _worldProperties.WorldSizeInTiles = new SFML.Window.Vector2i(GameProperties.WorldSizeInTiles.X, GameProperties.WorldSizeInTiles.Y);
+
+            _worldProperties.MaxHeightInMeter = 100.0f;
+            _worldProperties.AtmosphericHeatOutFluxPerSecond = 1.0f / 293.0f;
+            _worldProperties.SunHeatInfluxPerSecond = 1.0f;
+            _worldProperties.DayNightCycleFrequency = 0.11f;
+            _worldProperties.SunLightIntensityFactor = 0.75f * _worldProperties.DayNightCycleFrequency;
+
+            _worldProperties.TileTemperatureChangeMaximum = 3;
+            _worldProperties.TileTemperatureExchangeAmplification = 0.5f;
+
+            _worldProperties.MountainHeight = 70;
+            _worldProperties.WaterFreezingTemperature = 283.5f;
+            _worldProperties.DesertGrassTransitionAtHeightZero = 304.0f;
+            _worldProperties.DesertGrassTransitionAtMountainHeight = 298.50f;
+            _worldProperties.WaterGrassTransitionAtHeightZero = 304.50f;
+            _worldProperties.WaterGrassTransitionHeightAtWaterFreezingPoint = 30.0f;
+
+            _worldProperties.RainWaterAmount = 1.0f;
+            _worldProperties.PlantGrowthWaterAmount = 3.0f;
+            _worldProperties.PlantGrowthRate = 5.0f;
+            _worldProperties.CloudNumber = 1;
+
+            _worldProperties.TileTemperatureIntegrationTimer = 1.5f;
+
+            _worldProperties.WorldSizeInTiles = GameProperties.WorldSizeInTiles;
+
+
+
+            _tribeProperties = new WorldInterfaces.AnimalProperties();
+
+            _tribeProperties.Agility = 1;
+            _tribeProperties.Diet = WorldInterfaces.AnimalProperties.DietType.CARNIVORE;
+            _tribeProperties.GroupBehaviour = 1;
+            _tribeProperties.PreferredAltitude = 50;
+            _tribeProperties.PreferredTemperature = 300;
+            _tribeProperties.PreferredTerrain = WorldInterfaces.AnimalProperties.TerrainType.LAND;
+            _tribeProperties.Stamina = 1;
+            _tribeProperties.Strength = 1;
+
             try
             {
                 SmartText._font = new Font("../GFX/font.ttf");
@@ -43,6 +100,8 @@ namespace JamTemplate
             {
                 Console.WriteLine(e);
             }
+
+
         }
 
         public void GetInput()
@@ -68,7 +127,38 @@ namespace JamTemplate
         {
             if (Keyboard.IsKeyPressed(Keyboard.Key.Return))
             {
-                StartGame();
+                
+                if (_menuState == eMenuState.MS_START)
+                {
+                    _menuState = eMenuState.MS_WORLD;
+                    _timeTilNextInput = 0.5f;
+                }
+                else if (_menuState == eMenuState.MS_WORLD)
+                {
+                    _menuState = eMenuState.MS_TRIBE;
+                    _timeTilNextInput = 0.5f;
+                }
+                else if (_menuState == eMenuState.MS_TRIBE)
+                {
+
+                    StartGame();
+                }
+            }
+            else if (Keyboard.IsKeyPressed(Keyboard.Key.Back))
+            {
+                if (_menuState == eMenuState.MS_START)
+                {
+                    // Nothingness
+                }
+                else if (_menuState == eMenuState.MS_WORLD)
+                {
+                    //Nothingness squared
+                }
+                else if (_menuState == eMenuState.MS_TRIBE)
+                {
+                    _menuState = eMenuState.MS_WORLD;
+                    _timeTilNextInput = 0.5f;
+                }
             }
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.C))
@@ -131,11 +221,48 @@ namespace JamTemplate
 
         private void DrawMenu(RenderWindow rw)
         {
-            SmartText.DrawText("$GameTitle$", TextAlignment.MID, new Vector2f(400.0f, 150.0f), 1.5f, rw);
+            SmartText.DrawText("Intelligent Design", TextAlignment.MID, new Vector2f(400.0f, 150.0f), 1.5f, rw);
 
-            SmartText.DrawText("Start [Return]", TextAlignment.MID, new Vector2f(400.0f, 250.0f), rw);
-            SmartText.DrawText("W A S D & LShift", TextAlignment.MID, new Vector2f(530.0f, 340.0f), rw);
-            SmartText.DrawText("Arrows & RCtrl", TextAlignment.MID, new Vector2f(180.0f, 340.0f), rw);
+            if (_menuState == eMenuState.MS_START)
+            {
+                SmartText.DrawText("Create World [Return]", TextAlignment.MID, new Vector2f(400.0f, 250.0f), rw);
+            }
+            else if (_menuState == eMenuState.MS_WORLD)
+            {
+                SmartText.DrawText("Creating World", TextAlignment.MID, new Vector2f(400.0f, 200.0f), rw);
+
+                SmartText.DrawText("Day Night Frequency " + _worldProperties.DayNightCycleFrequency, TextAlignment.LEFT, new Vector2f(200.0f, 250.0f), 0.65f, rw);
+
+                SmartText.DrawText("Max Height " + _worldProperties.MaxHeightInMeter, TextAlignment.LEFT, new Vector2f(200.0f, 275.0f), 0.65f, rw);
+                SmartText.DrawText("Mountain Height " + _worldProperties.MountainHeight, TextAlignment.LEFT, new Vector2f(200.0f, 300.0f), 0.65f, rw);
+
+                SmartText.DrawText("Sunlight Intensity " + _worldProperties.SunLightIntensityFactor, TextAlignment.LEFT, new Vector2f(200.0f, 425.0f), 0.65f, rw);
+                SmartText.DrawText("Atmospheric Heat Flux " + _worldProperties.AtmosphericHeatOutFluxPerSecond * 1000.0f, TextAlignment.LEFT, new Vector2f(200.0f, 450.0f), 0.65f, rw);
+                    
+
+                SmartText.DrawText("Create Tribe [Return]", TextAlignment.MID, new Vector2f(400.0f, 500.0f), rw);
+            }
+            else if (_menuState == eMenuState.MS_TRIBE)
+            {
+                SmartText.DrawText("Selecting Tribe", TextAlignment.MID, new Vector2f(400.0f, 200.0f), rw);
+
+                SmartText.DrawText("Agility " + _tribeProperties.Agility, TextAlignment.LEFT, new Vector2f(200.0f, 250.0f), 0.65f, rw);
+                SmartText.DrawText("Stamina " + _tribeProperties.Stamina, TextAlignment.LEFT, new Vector2f(200.0f, 275.0f), 0.65f, rw);
+                SmartText.DrawText("Strength " + _tribeProperties.Strength, TextAlignment.LEFT, new Vector2f(200.0f, 300.0f), 0.65f, rw);
+
+
+                SmartText.DrawText("Pref. Terrain " + _tribeProperties.PreferredTerrain, TextAlignment.LEFT, new Vector2f(200.0f, 350.0f), 0.65f, rw);
+                SmartText.DrawText("Pref Altitude " + _tribeProperties.PreferredAltitude, TextAlignment.LEFT, new Vector2f(200.0f, 375.0f), 0.65f, rw);
+                SmartText.DrawText("Pref Temperature " + _tribeProperties.PreferredTemperature, TextAlignment.LEFT, new Vector2f(200.0f, 400.0f), 0.65f, rw);
+
+                SmartText.DrawText("Diet " + _tribeProperties.Diet, TextAlignment.LEFT, new Vector2f(200.0f, 450.0f), 0.65f, rw);
+                SmartText.DrawText("Group Behaviour " + _tribeProperties.GroupBehaviour, TextAlignment.LEFT, new Vector2f(200.0f, 475.0f), 0.65f, rw);
+                
+
+
+                SmartText.DrawText("Start Game [Return]", TextAlignment.MID, new Vector2f(400.0f, 500.0f), rw);
+            }
+
 
             SmartText.DrawText("[C]redits", TextAlignment.LEFT, new Vector2f(30.0f, 550.0f), rw);
             ScreenEffects.GetStaticEffect("vignette").Draw(rw);
@@ -170,6 +297,8 @@ namespace JamTemplate
         private void StartGame()
         {
             _myWorld = new World();
+            _myWorld.GameWorldCreationProperties = _worldProperties;
+            _myWorld.InitWorld();
             ChangeGameState(State.Game, 0.1f);
         }
 

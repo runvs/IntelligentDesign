@@ -17,7 +17,7 @@ namespace JamTemplate
         #region Fields
 
         cWorld _world;
-        cWorldProperties _gameWorldCreationProperties;
+        public cWorldProperties GameWorldCreationProperties { get; set; }
 
         private List<Tribe> _tribeList;
 
@@ -27,7 +27,6 @@ namespace JamTemplate
 
         public World()
         {
-            InitGame();
         }
 
         public void GetInput()
@@ -89,10 +88,9 @@ namespace JamTemplate
             ScreenEffects.Draw(rw);
         }
 
-        private void InitGame()
+        public void InitWorld()
         {
             CreateWorld();
-
             Camera.MinPosition = new Vector2f(0, 0);
             Camera.MaxPosition = new Vector2f(GameProperties.WorldSizeInTiles.X * cTile.GetTileSizeInPixelStatic() - 800, GameProperties.WorldSizeInTiles.Y * cTile.GetTileSizeInPixelStatic() - 600);
 
@@ -102,32 +100,7 @@ namespace JamTemplate
         {
             _world = new cWorld();
 
-            _gameWorldCreationProperties = new WorldInterfaces.cWorldProperties();
-            _gameWorldCreationProperties.HeightMapNoiseLength = 20.0f;
-            _gameWorldCreationProperties.WorldSizeInTiles = new SFML.Window.Vector2i(GameProperties.WorldSizeInTiles.X, GameProperties.WorldSizeInTiles.Y);
             
-            _gameWorldCreationProperties.MaxHeightInMeter = 100.0f;
-            _gameWorldCreationProperties.AtmosphericHeatOutFluxPerSecond = 1.0f / 293.0f;
-            _gameWorldCreationProperties.SunHeatInfluxPerSecond = 1.0f;
-                        _gameWorldCreationProperties.DayNightCycleFrequency = 0.11f;
-            _gameWorldCreationProperties.SunLightIntensityFactor = 0.75f * _gameWorldCreationProperties.DayNightCycleFrequency;
-
-            _gameWorldCreationProperties.TileTemperatureChangeMaximum = 3;
-            _gameWorldCreationProperties.TileTemperatureExchangeAmplification = 0.5f;
-
-            _gameWorldCreationProperties.MountainHeight = 70;
-            _gameWorldCreationProperties.WaterFreezingTemperature = 283.5f;
-            _gameWorldCreationProperties.DesertGrassTransitionAtHeightZero = 304.0f;
-            _gameWorldCreationProperties.DesertGrassTransitionAtMountainHeight = 298.50f;
-            _gameWorldCreationProperties.WaterGrassTransitionAtHeightZero = 304.50f;
-            _gameWorldCreationProperties.WaterGrassTransitionHeightAtWaterFreezingPoint = 30.0f;
-
-            _gameWorldCreationProperties.RainWaterAmount  = 1.0f;
-            _gameWorldCreationProperties.PlantGrowthWaterAmount = 3.0f;
-            _gameWorldCreationProperties.PlantGrowthRate = 5.0f;
-            _gameWorldCreationProperties.CloudNumber = 1;
-
-            _gameWorldCreationProperties.TileTemperatureIntegrationTimer = 1.5f; 
 
             cTile.TileSizeInPixels = 8.0f;
             Animal.TileSizeInPixels = 8.0f;
@@ -135,7 +108,7 @@ namespace JamTemplate
 
             IWorldInCreation worldInCreation = _world as IWorldInCreation;
 
-            WorldGeneration.WorldGenerator.CreateWorld(ref worldInCreation, _gameWorldCreationProperties);
+            WorldGeneration.WorldGenerator.CreateWorld(ref worldInCreation, GameWorldCreationProperties);
             CreateRandomTribes();
         }
 
