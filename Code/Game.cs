@@ -18,6 +18,8 @@ namespace JamTemplate
         Score _gameStats;
         float _timeTilNextInput = 0.0f;
 
+        public int EvolutionPoints { get; private set; }
+
         private enum eMenuState
         {
             MS_START,
@@ -47,6 +49,26 @@ namespace JamTemplate
             //ParticleManager.Gravity = GameProperties.GravitationalAcceleration;
 
 
+            ResetCreationParameters();
+
+
+            try
+            {
+                SmartText._font = new Font("../GFX/font.ttf");
+
+                SmartText._lineLengthInChars = 18;
+                SmartText._lineSpread = 1.2f;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+
+        }
+
+        private void ResetCreationParameters()
+        {
             _worldProperties = new WorldInterfaces.cWorldProperties();
             _worldProperties.HeightMapNoiseLength = 20.0f;
             _worldProperties.WorldSizeInTiles = new SFML.Window.Vector2i(GameProperties.WorldSizeInTiles.X, GameProperties.WorldSizeInTiles.Y);
@@ -89,19 +111,7 @@ namespace JamTemplate
             _tribeProperties.Stamina = 1;
             _tribeProperties.Strength = 1;
 
-            try
-            {
-                SmartText._font = new Font("../GFX/font.ttf");
-
-                SmartText._lineLengthInChars = 18;
-                SmartText._lineSpread = 1.2f;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-
+            EvolutionPoints = 100;
         }
 
         public void GetInput()
@@ -160,6 +170,8 @@ namespace JamTemplate
                     _timeTilNextInput = 0.5f;
                 }
             }
+
+
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.C))
             {
@@ -231,13 +243,13 @@ namespace JamTemplate
             {
                 SmartText.DrawText("Creating World", TextAlignment.MID, new Vector2f(400.0f, 200.0f), rw);
 
-                SmartText.DrawText("Day Night Frequency " + _worldProperties.DayNightCycleFrequency, TextAlignment.LEFT, new Vector2f(200.0f, 250.0f), 0.65f, rw);
+                SmartText.DrawText("Day Night Frequency " + _worldProperties.DayNightCycleFrequency  + " [Q, A]", TextAlignment.LEFT, new Vector2f(200.0f, 250.0f), 0.65f, rw);
 
-                SmartText.DrawText("Max Height " + _worldProperties.MaxHeightInMeter, TextAlignment.LEFT, new Vector2f(200.0f, 275.0f), 0.65f, rw);
-                SmartText.DrawText("Mountain Height " + _worldProperties.MountainHeight, TextAlignment.LEFT, new Vector2f(200.0f, 300.0f), 0.65f, rw);
+                SmartText.DrawText("Max Height " + _worldProperties.MaxHeightInMeter  + " [W, S]", TextAlignment.LEFT, new Vector2f(200.0f, 275.0f), 0.65f, rw);
+                SmartText.DrawText("Mountain Height " + _worldProperties.MountainHeight + " [E, D]", TextAlignment.LEFT, new Vector2f(200.0f, 300.0f), 0.65f, rw);
 
-                SmartText.DrawText("Sunlight Intensity " + _worldProperties.SunLightIntensityFactor, TextAlignment.LEFT, new Vector2f(200.0f, 425.0f), 0.65f, rw);
-                SmartText.DrawText("Atmospheric Heat Flux " + _worldProperties.AtmosphericHeatOutFluxPerSecond * 1000.0f, TextAlignment.LEFT, new Vector2f(200.0f, 450.0f), 0.65f, rw);
+                SmartText.DrawText("Sunlight Intensity " + _worldProperties.SunLightIntensityFactor + " [R, F]", TextAlignment.LEFT, new Vector2f(200.0f, 425.0f), 0.65f, rw);
+                SmartText.DrawText("Atmospheric Heat Flux " + _worldProperties.AtmosphericHeatOutFluxPerSecond * 1000.0f  + " [T, G]", TextAlignment.LEFT, new Vector2f(200.0f, 450.0f), 0.65f, rw);
                     
 
                 SmartText.DrawText("Create Tribe [Return]", TextAlignment.MID, new Vector2f(400.0f, 500.0f), rw);
@@ -246,17 +258,17 @@ namespace JamTemplate
             {
                 SmartText.DrawText("Selecting Tribe", TextAlignment.MID, new Vector2f(400.0f, 200.0f), rw);
 
-                SmartText.DrawText("Agility " + _tribeProperties.Agility, TextAlignment.LEFT, new Vector2f(200.0f, 250.0f), 0.65f, rw);
-                SmartText.DrawText("Stamina " + _tribeProperties.Stamina, TextAlignment.LEFT, new Vector2f(200.0f, 275.0f), 0.65f, rw);
-                SmartText.DrawText("Strength " + _tribeProperties.Strength, TextAlignment.LEFT, new Vector2f(200.0f, 300.0f), 0.65f, rw);
+                SmartText.DrawText("Agility " + _tribeProperties.Agility + " [Q, A]", TextAlignment.LEFT, new Vector2f(200.0f, 250.0f), 0.65f, rw);
+                SmartText.DrawText("Stamina " + _tribeProperties.Stamina + " [W, S]", TextAlignment.LEFT, new Vector2f(200.0f, 275.0f), 0.65f, rw);
+                SmartText.DrawText("Strength " + _tribeProperties.Strength + " [E, D]", TextAlignment.LEFT, new Vector2f(200.0f, 300.0f), 0.65f, rw);
 
 
-                SmartText.DrawText("Pref. Terrain " + _tribeProperties.PreferredTerrain, TextAlignment.LEFT, new Vector2f(200.0f, 350.0f), 0.65f, rw);
-                SmartText.DrawText("Pref Altitude " + _tribeProperties.PreferredAltitude, TextAlignment.LEFT, new Vector2f(200.0f, 375.0f), 0.65f, rw);
-                SmartText.DrawText("Pref Temperature " + _tribeProperties.PreferredTemperature, TextAlignment.LEFT, new Vector2f(200.0f, 400.0f), 0.65f, rw);
+                SmartText.DrawText("Pref. Terrain " + _tribeProperties.PreferredTerrain + " [R, F]", TextAlignment.LEFT, new Vector2f(200.0f, 350.0f), 0.65f, rw);
+                SmartText.DrawText("Pref Altitude " + _tribeProperties.PreferredAltitude + " [T, G]", TextAlignment.LEFT, new Vector2f(200.0f, 375.0f), 0.65f, rw);
+                SmartText.DrawText("Pref Temperature " + _tribeProperties.PreferredTemperature + " [Z, H]", TextAlignment.LEFT, new Vector2f(200.0f, 400.0f), 0.65f, rw);
 
-                SmartText.DrawText("Diet " + _tribeProperties.Diet, TextAlignment.LEFT, new Vector2f(200.0f, 450.0f), 0.65f, rw);
-                SmartText.DrawText("Group Behaviour " + _tribeProperties.GroupBehaviour, TextAlignment.LEFT, new Vector2f(200.0f, 475.0f), 0.65f, rw);
+                SmartText.DrawText("Diet " + _tribeProperties.Diet + " [U, J]", TextAlignment.LEFT, new Vector2f(200.0f, 450.0f), 0.65f, rw);
+                SmartText.DrawText("Group Behaviour " + _tribeProperties.GroupBehaviour + " [I, K]", TextAlignment.LEFT, new Vector2f(200.0f, 475.0f), 0.65f, rw);
                 
 
 
@@ -299,6 +311,7 @@ namespace JamTemplate
             _myWorld = new World();
             _myWorld.GameWorldCreationProperties = _worldProperties;
             _myWorld.InitWorld();
+            _myWorld.SpawnTribe(_tribeProperties);
             ChangeGameState(State.Game, 0.1f);
         }
 

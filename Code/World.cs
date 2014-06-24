@@ -155,6 +155,13 @@ namespace JamTemplate
             _tribeList.Add(tribe);
         }
 
+        public void SpawnTribe(AnimalProperties properties)
+        {
+            Tribe tribe = new Tribe(_world, properties);
+            _tribeList.Add(tribe);
+        }
+
+
 
         #endregion Methods
 
