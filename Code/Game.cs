@@ -74,7 +74,7 @@ namespace JamTemplate
             _worldProperties.WorldSizeInTiles = new SFML.Window.Vector2i(GameProperties.WorldSizeInTiles.X, GameProperties.WorldSizeInTiles.Y);
 
             _worldProperties.MaxHeightInMeter = 100.0f;
-            _worldProperties.AtmosphericHeatOutFluxPerSecond = 1.0f / 293.0f;
+            _worldProperties.AtmosphericHeatOutFluxPerSecond = 3.4f/1000.0f;
             _worldProperties.SunHeatInfluxPerSecond = 1.0f;
             _worldProperties.DayNightCycleFrequency = 0.11f;
             _worldProperties.SunLightIntensityFactor = 0.75f * _worldProperties.DayNightCycleFrequency;
@@ -171,12 +171,142 @@ namespace JamTemplate
                 }
             }
 
+             
+            if (_menuState == eMenuState.MS_WORLD)
+            {
+                GetInputWorldCreation();
+            }
 
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.C))
             {
                 ChangeGameState(State.Credits);
             }
+
+        }
+
+        private void GetInputWorldCreation()
+        {
+
+
+       
+            //SmartText.DrawText("Sunlight Intensity " + _worldProperties.SunLightIntensityFactor + " [R, F]", TextAlignment.LEFT, new Vector2f(200.0f, 425.0f), 0.65f, rw);
+            //SmartText.DrawText("Atmospheric Heat Flux " + _worldProperties.AtmosphericHeatOutFluxPerSecond * 1000.0f  + " [T, G]", TextAlignment.LEFT, new Vector2f(200.0f,
+
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.A))
+            {
+                _worldProperties.DayNightCycleFrequency -= 0.01f;
+                if (_worldProperties.DayNightCycleFrequency <= 0.0f)
+                {
+                    _worldProperties.DayNightCycleFrequency = 0.0f;
+                }
+
+                _timeTilNextInput = 0.25f;
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
+            {
+                _worldProperties.DayNightCycleFrequency += 0.01f;
+                if (_worldProperties.DayNightCycleFrequency >= 2.0f)
+                {
+                    _worldProperties.DayNightCycleFrequency = 2.0f;
+                }
+                _timeTilNextInput = 0.25f;
+            }
+
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.S))
+            {
+                _worldProperties.MaxHeightInMeter -= 1.0f;
+                if (_worldProperties.MaxHeightInMeter<= 50.0f)
+                {
+                    _worldProperties.MaxHeightInMeter = 50.0f;
+                }
+                if (_worldProperties.MountainHeight >= _worldProperties.MaxHeightInMeter)
+                {
+                    _worldProperties.MountainHeight = _worldProperties.MaxHeightInMeter;
+                }
+                _timeTilNextInput = 0.25f;
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.W))
+            {
+                _worldProperties.MaxHeightInMeter += 1.0f;
+                if (_worldProperties.MaxHeightInMeter>= 200.0f)
+                {
+                    _worldProperties.MaxHeightInMeter = 200.0f;
+                }
+                _timeTilNextInput = 0.25f;
+            }
+
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.D))
+            {
+                _worldProperties.MountainHeight -= 1.0f;
+                if (_worldProperties.MountainHeight <= 50.0f)
+                {
+                    _worldProperties.MountainHeight = 50.0f;
+                }
+            
+                _timeTilNextInput = 0.25f;
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.E))
+            {
+                _worldProperties.MountainHeight += 1.0f;
+                if (_worldProperties.MountainHeight >= 200.0f)
+                {
+                    _worldProperties.MountainHeight = 200.0f;
+                }
+
+                if (_worldProperties.MaxHeightInMeter <= _worldProperties.MountainHeight)
+                {
+                    _worldProperties.MaxHeightInMeter = _worldProperties.MountainHeight;
+                }
+
+                _timeTilNextInput = 0.25f;
+            }
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.F))
+            {
+                _worldProperties.SunLightIntensityFactor -= 0.25f / 100.0f;
+                if (_worldProperties.SunLightIntensityFactor <= 5.0f / 100.0f)
+                {
+                    _worldProperties.SunLightIntensityFactor = 5.0f / 100.0f;
+                }
+            
+                _timeTilNextInput = 0.25f;
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.R))
+            {
+                _worldProperties.SunLightIntensityFactor += 0.25f / 100.0f;
+                if (_worldProperties.SunLightIntensityFactor >= 10.0f / 100.0f)
+                {
+                    _worldProperties.SunLightIntensityFactor = 10.0f / 100.0f;
+                }
+
+                _timeTilNextInput = 0.25f;
+            }
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.G))
+            {
+                _worldProperties.AtmosphericHeatOutFluxPerSecond -= 0.001f / 1000.0f;
+                if (_worldProperties.AtmosphericHeatOutFluxPerSecond <= 0.32f / 1000.0f)
+                {
+                    _worldProperties.AtmosphericHeatOutFluxPerSecond = 0.32f / 1000.0f;
+                }
+
+                _timeTilNextInput = 0.25f;
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.T))
+            {
+                _worldProperties.AtmosphericHeatOutFluxPerSecond += 0.001f / 1000.0f;
+                if (_worldProperties.AtmosphericHeatOutFluxPerSecond >= 0.36f / 1000.0f)
+                {
+                    _worldProperties.AtmosphericHeatOutFluxPerSecond = 0.36f / 1000.0f;
+                }
+
+                _timeTilNextInput = 0.25f;
+            }
+
 
         }
 
@@ -209,6 +339,7 @@ namespace JamTemplate
             }
 
         }
+
 
         public void Draw(RenderWindow rw)
         {
@@ -248,7 +379,7 @@ namespace JamTemplate
                 SmartText.DrawText("Max Height " + _worldProperties.MaxHeightInMeter  + " [W, S]", TextAlignment.LEFT, new Vector2f(200.0f, 275.0f), 0.65f, rw);
                 SmartText.DrawText("Mountain Height " + _worldProperties.MountainHeight + " [E, D]", TextAlignment.LEFT, new Vector2f(200.0f, 300.0f), 0.65f, rw);
 
-                SmartText.DrawText("Sunlight Intensity " + _worldProperties.SunLightIntensityFactor + " [R, F]", TextAlignment.LEFT, new Vector2f(200.0f, 425.0f), 0.65f, rw);
+                SmartText.DrawText("Sunlight Intensity " + _worldProperties.SunLightIntensityFactor* 100 + " [R, F]", TextAlignment.LEFT, new Vector2f(200.0f, 425.0f), 0.65f, rw);
                 SmartText.DrawText("Atmospheric Heat Flux " + _worldProperties.AtmosphericHeatOutFluxPerSecond * 1000.0f  + " [T, G]", TextAlignment.LEFT, new Vector2f(200.0f, 450.0f), 0.65f, rw);
                     
 
