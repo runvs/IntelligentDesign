@@ -63,8 +63,16 @@ namespace WorldInterfaces
 
         #endregion AtmosphericStuff
 
-
-
         public float PlantGrowthWaterAmount { get; set; }
+
+
+        public int GetPropertyCosts ()
+        {
+            // TODO
+            return 1;
+        }
+
+
+
     }
 }

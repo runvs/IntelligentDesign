@@ -55,5 +55,13 @@ namespace WorldInterfaces
             CARNIVORE,
             OMNIVORE
         }
+
+
+        public int GetPropertyCosts()
+        {
+            // TODO
+            return 1;
+        }
+
     }
 }

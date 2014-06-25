@@ -111,7 +111,7 @@ namespace JamTemplate
             _tribeProperties.Stamina = 1;
             _tribeProperties.Strength = 1;
 
-            EvolutionPoints = 100;
+            EvolutionPoints = GameProperties.EvolutionPointsStart;
         }
 
         public void GetInput()
@@ -176,6 +176,10 @@ namespace JamTemplate
             {
                 GetInputWorldCreation();
             }
+            else if (_menuState == eMenuState.MS_TRIBE)
+            {
+                GetInputTribeCreation();
+            }
 
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.C))
@@ -185,14 +189,167 @@ namespace JamTemplate
 
         }
 
+        private void GetInputTribeCreation()
+        {
+         
+            //SmartText.DrawText("Pref. Terrain " + _tribeProperties.PreferredTerrain + " [R, F]", TextAlignment.LEFT, new Vector2f(200.0f, 350.0f), 0.65f, rw);
+            //SmartText.DrawText("Pref Altitude " + _tribeProperties.PreferredAltitude + " [T, G]", TextAlignment.LEFT, new Vector2f(200.0f, 375.0f), 0.65f, rw);
+            //SmartText.DrawText("Pref Temperature " + _tribeProperties.PreferredTemperature + " [Z, H]", TextAlignment.LEFT, new Vector2f(200.0f, 400.0f), 0.65f, rw);
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.A))
+            {
+                _tribeProperties.Agility -= 1.0f;
+                if (_tribeProperties.Agility <= 1.0f)
+                {
+                    _tribeProperties.Agility = 1.0f;
+                }
+
+                _timeTilNextInput = 0.25f;
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Q))
+            {
+                _tribeProperties.Agility += 1.0f;
+                if (_tribeProperties.Agility >= 10.0f)
+                {
+                    _tribeProperties.Agility = 10.0f;
+                }
+                _timeTilNextInput = 0.25f;
+            }
+
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.S))
+            {
+                _tribeProperties.Stamina -= 1.0f;
+                if (_tribeProperties.Stamina <= 1.0f)
+                {
+                    _tribeProperties.Stamina = 1.0f;
+                }
+                _timeTilNextInput = 0.25f;
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.W))
+            {
+                _tribeProperties.Stamina += 1.0f;
+                if (_tribeProperties.Stamina >= 10.0f)
+                {
+                    _tribeProperties.Stamina = 10.0f;
+                }
+                _timeTilNextInput = 0.25f;
+            }
+
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.D))
+            {
+                _tribeProperties.Strength -= 1.0f;
+                if (_tribeProperties.Strength <= 1.0f)
+                {
+                    _tribeProperties.Strength = 1.0f;
+                }
+
+                _timeTilNextInput = 0.25f;
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.E))
+            {
+                _tribeProperties.Strength += 1.0f;
+                if (_tribeProperties.Strength >= 10.0f)
+                {
+                    _tribeProperties.Strength = 10.0f;
+                }
+
+            
+                _timeTilNextInput = 0.25f;
+            }
+
+            //if (Keyboard.IsKeyPressed(Keyboard.Key.F))
+            //{
+            //    _worldProperties.SunLightIntensityFactor -= 0.25f / 100.0f;
+            //    if (_worldProperties.SunLightIntensityFactor <= 5.0f / 100.0f)
+            //    {
+            //        _worldProperties.SunLightIntensityFactor = 5.0f / 100.0f;
+            //    }
+
+            //    _timeTilNextInput = 0.25f;
+            //}
+            //if (Keyboard.IsKeyPressed(Keyboard.Key.R))
+            //{
+            //    _worldProperties.SunLightIntensityFactor += 0.25f / 100.0f;
+            //    if (_worldProperties.SunLightIntensityFactor >= 10.0f / 100.0f)
+            //    {
+            //        _worldProperties.SunLightIntensityFactor = 10.0f / 100.0f;
+            //    }
+
+            //    _timeTilNextInput = 0.25f;
+            //}
+
+            //if (Keyboard.IsKeyPressed(Keyboard.Key.G))
+            //{
+            //    _worldProperties.AtmosphericHeatOutFluxPerSecond -= 0.001f / 1000.0f;
+            //    if (_worldProperties.AtmosphericHeatOutFluxPerSecond <= 0.32f / 1000.0f)
+            //    {
+            //        _worldProperties.AtmosphericHeatOutFluxPerSecond = 0.32f / 1000.0f;
+            //    }
+
+            //    _timeTilNextInput = 0.25f;
+            //}
+            //if (Keyboard.IsKeyPressed(Keyboard.Key.T))
+            //{
+            //    _worldProperties.AtmosphericHeatOutFluxPerSecond += 0.001f / 1000.0f;
+            //    if (_worldProperties.AtmosphericHeatOutFluxPerSecond >= 0.36f / 1000.0f)
+            //    {
+            //        _worldProperties.AtmosphericHeatOutFluxPerSecond = 0.36f / 1000.0f;
+            //    }
+
+            //    _timeTilNextInput = 0.25f;
+            //}
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.U))
+            {
+                if (_tribeProperties.Diet == WorldInterfaces.AnimalProperties.DietType.CARNIVORE)
+                {
+                    _tribeProperties.Diet = WorldInterfaces.AnimalProperties.DietType.OMNIVORE;
+                }
+                else if (_tribeProperties.Diet == WorldInterfaces.AnimalProperties.DietType.OMNIVORE)
+                {
+                    _tribeProperties.Diet = WorldInterfaces.AnimalProperties.DietType.HERBIVORE;
+                }
+                else if (_tribeProperties.Diet == WorldInterfaces.AnimalProperties.DietType.HERBIVORE)
+                {
+                    _tribeProperties.Diet = WorldInterfaces.AnimalProperties.DietType.CARNIVORE;
+                }
+
+                _timeTilNextInput = 0.25f;
+            }
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.K))
+            {
+                _tribeProperties.GroupBehaviour -= 1.0f;
+                if (_tribeProperties.GroupBehaviour <= 1.0f)
+                {
+                    _tribeProperties.GroupBehaviour = 1.0f;
+                }
+
+                _timeTilNextInput = 0.25f;
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.I))
+            {
+                _tribeProperties.GroupBehaviour += 1.0f;
+                if (_tribeProperties.GroupBehaviour >= 10.0f)
+                {
+                    _tribeProperties.GroupBehaviour = 10.0f;
+                }
+
+                _timeTilNextInput = 0.25f;
+            }
+
+
+
+        }
+
+
+
+
+
         private void GetInputWorldCreation()
         {
-
-
-       
-            //SmartText.DrawText("Sunlight Intensity " + _worldProperties.SunLightIntensityFactor + " [R, F]", TextAlignment.LEFT, new Vector2f(200.0f, 425.0f), 0.65f, rw);
-            //SmartText.DrawText("Atmospheric Heat Flux " + _worldProperties.AtmosphericHeatOutFluxPerSecond * 1000.0f  + " [T, G]", TextAlignment.LEFT, new Vector2f(200.0f,
-
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.A))
             {
@@ -325,6 +482,16 @@ namespace JamTemplate
                 _timeTilNextInput -= deltaT;
             }
 
+
+            if (_worldProperties != null && _tribeProperties != null)
+            {
+                EvolutionPoints = GameProperties.EvolutionPointsStart - _worldProperties.GetPropertyCosts() - _tribeProperties.GetPropertyCosts();
+            }
+            else
+            {
+                EvolutionPoints = GameProperties.EvolutionPointsStart;
+            }
+
             CanBeQuit = false;
             if (_gameState == State.Game)
             {
@@ -372,7 +539,8 @@ namespace JamTemplate
             }
             else if (_menuState == eMenuState.MS_WORLD)
             {
-                SmartText.DrawText("Creating World", TextAlignment.MID, new Vector2f(400.0f, 200.0f), rw);
+                SmartText.DrawText("Creating World", TextAlignment.MID, new Vector2f(300.0f, 200.0f), rw);
+                SmartText.DrawText("Evo Points " + EvolutionPoints, TextAlignment.MID, new Vector2f(650.0f, 200.0f), rw);
 
                 SmartText.DrawText("Day Night Frequency " + _worldProperties.DayNightCycleFrequency  + " [Q, A]", TextAlignment.LEFT, new Vector2f(200.0f, 250.0f), 0.65f, rw);
 
@@ -387,7 +555,8 @@ namespace JamTemplate
             }
             else if (_menuState == eMenuState.MS_TRIBE)
             {
-                SmartText.DrawText("Selecting Tribe", TextAlignment.MID, new Vector2f(400.0f, 200.0f), rw);
+                SmartText.DrawText("Selecting Tribe", TextAlignment.MID, new Vector2f(300.0f, 200.0f), rw);
+                SmartText.DrawText("Evo Points " + EvolutionPoints, TextAlignment.MID, new Vector2f(650.0f, 200.0f), rw);
 
                 SmartText.DrawText("Agility " + _tribeProperties.Agility + " [Q, A]", TextAlignment.LEFT, new Vector2f(200.0f, 250.0f), 0.65f, rw);
                 SmartText.DrawText("Stamina " + _tribeProperties.Stamina + " [W, S]", TextAlignment.LEFT, new Vector2f(200.0f, 275.0f), 0.65f, rw);
