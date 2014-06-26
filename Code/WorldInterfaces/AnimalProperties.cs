@@ -59,8 +59,28 @@ namespace WorldInterfaces
 
         public int GetPropertyCosts()
         {
-            // TODO
-            return 1;
+            int cost = 0;
+
+            cost += (int)Agility * 5;
+            cost += (int)Strength * 5;
+            cost += (int)Stamina * 5;
+
+            if (Diet == DietType.HERBIVORE)
+            {
+                cost += 10;
+            }
+            else if (Diet == DietType.CARNIVORE)
+            {
+                cost += 10;
+            }
+            else if (Diet == DietType.OMNIVORE)
+            {
+                cost += 25;
+            }
+
+
+
+            return cost;
         }
 
     }

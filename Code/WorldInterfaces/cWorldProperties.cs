@@ -68,8 +68,10 @@ namespace WorldInterfaces
 
         public int GetPropertyCosts ()
         {
-            // TODO
-            return 1;
+            int cost = 0;
+
+
+            return cost;
         }
 
 

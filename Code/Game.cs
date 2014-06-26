@@ -145,13 +145,18 @@ namespace JamTemplate
                 }
                 else if (_menuState == eMenuState.MS_WORLD)
                 {
-                    _menuState = eMenuState.MS_TRIBE;
-                    _timeTilNextInput = 0.5f;
+                    if (EvolutionPoints >= GameProperties.EvolutionPointsStart - GameProperties.EvolutionPointsWorldMax)
+                    {
+                        _menuState = eMenuState.MS_TRIBE;
+                        _timeTilNextInput = 0.5f;
+                    }
                 }
                 else if (_menuState == eMenuState.MS_TRIBE)
                 {
-
-                    StartGame();
+                    if (EvolutionPoints >= 0)
+                    {
+                        StartGame();
+                    }
                 }
             }
             else if (Keyboard.IsKeyPressed(Keyboard.Key.Back))
@@ -540,7 +545,14 @@ namespace JamTemplate
             else if (_menuState == eMenuState.MS_WORLD)
             {
                 SmartText.DrawText("Creating World", TextAlignment.MID, new Vector2f(300.0f, 200.0f), rw);
-                SmartText.DrawText("Evo Points " + EvolutionPoints, TextAlignment.MID, new Vector2f(650.0f, 200.0f), rw);
+                if (EvolutionPoints > GameProperties.EvolutionPointsStart - GameProperties.EvolutionPointsWorldMax)
+                {
+                    SmartText.DrawText("Evo Points " + EvolutionPoints, TextAlignment.MID, new Vector2f(650.0f, 200.0f), rw);
+                }
+                else
+                {
+                    SmartText.DrawText("Evo Points " + EvolutionPoints, TextAlignment.MID, new Vector2f(650.0f, 200.0f), Color.Red, rw);
+                }
 
                 SmartText.DrawText("Day Night Frequency " + _worldProperties.DayNightCycleFrequency  + " [Q, A]", TextAlignment.LEFT, new Vector2f(200.0f, 250.0f), 0.65f, rw);
 
@@ -556,7 +568,14 @@ namespace JamTemplate
             else if (_menuState == eMenuState.MS_TRIBE)
             {
                 SmartText.DrawText("Selecting Tribe", TextAlignment.MID, new Vector2f(300.0f, 200.0f), rw);
-                SmartText.DrawText("Evo Points " + EvolutionPoints, TextAlignment.MID, new Vector2f(650.0f, 200.0f), rw);
+                if (EvolutionPoints >= 0)
+                {
+                    SmartText.DrawText("Evo Points " + EvolutionPoints, TextAlignment.MID, new Vector2f(650.0f, 200.0f), rw);
+                }
+                else
+                {
+                    SmartText.DrawText("Evo Points " + EvolutionPoints, TextAlignment.MID, new Vector2f(650.0f, 200.0f), Color.Red, rw);
+                }
 
                 SmartText.DrawText("Agility " + _tribeProperties.Agility + " [Q, A]", TextAlignment.LEFT, new Vector2f(200.0f, 250.0f), 0.65f, rw);
                 SmartText.DrawText("Stamina " + _tribeProperties.Stamina + " [W, S]", TextAlignment.LEFT, new Vector2f(200.0f, 275.0f), 0.65f, rw);
