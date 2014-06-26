@@ -27,6 +27,7 @@ namespace JamTemplate
 
         public World()
         {
+            _tribeList = new List<Tribe>();
         }
 
         public void GetInput()
@@ -115,13 +116,23 @@ namespace JamTemplate
 
         public void AddTribe(Tribe tribe)
         {
+            
+            tribe.PositionInTiles = RandomGenerator.GetRandomVector2iInRect(new IntRect(0, 0, _world.GetWorldProperties().WorldSizeInTiles.X, _world.GetWorldProperties().WorldSizeInTiles.Y));
+
+            Console.WriteLine("Spawning Tribe at " + tribe.PositionInTiles);
+
+            for (int i = 0; i != 50; ++i)
+            {
+                tribe.SpawnAnimal();
+            }
+
             _tribeList.Add(tribe);
         }
 
 
         public void CreateRandomTribes()
         {
-            _tribeList = new List<Tribe>();
+           
 
             AnimalProperties properties = new AnimalProperties();
             properties.Agility = 1;
@@ -140,7 +151,7 @@ namespace JamTemplate
             {
                 tribe.SpawnAnimal();
             }
-
+            Console.WriteLine("Spawning Tribe at " + tribe.PositionInTiles);
             _tribeList.Add(tribe);
 
 
@@ -151,14 +162,14 @@ namespace JamTemplate
             {
                 tribe.SpawnAnimal();
             }
-
+            Console.WriteLine("Spawning Tribe at " + tribe.PositionInTiles);
             _tribeList.Add(tribe);
         }
 
         public void SpawnTribe(AnimalProperties properties)
         {
             Tribe tribe = new Tribe(_world, properties);
-            _tribeList.Add(tribe);
+            AddTribe(tribe);
         }
 
 
