@@ -46,10 +46,27 @@ namespace ArtificialIntelligence
 
         public void Update(TimeObject timeObject)
         {
-            foreach (IGameObject a in _animalList)
+            Vector2f newCenterPosition = new Vector2f(0, 0);
+
+            List<Animal>  newAnimalList = new List<Animal>();
+
+            foreach (Animal a in _animalList)
             {
                 a.Update(timeObject);
+                newCenterPosition += new Vector2f(a.PositionInTiles.X, a.PositionInTiles.Y);
+
+                if (!a.IsDead())
+                {
+                    newAnimalList.Add(a);
+                }
+
             }
+            newCenterPosition /= _animalList.Count;
+            PositionInTiles = new Vector2i((int)newCenterPosition.X, (int)newCenterPosition.Y);
+
+            _animalList = newAnimalList;
+
+            Console.WriteLine("Population: " + _animalList.Count);
         }
 
         public void Draw(SFML.Graphics.RenderWindow rw)

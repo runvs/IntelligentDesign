@@ -9,7 +9,7 @@ namespace ArtificialIntelligence
 {
     public class Animal : IGameObject
     {
-        private IWorld _world;
+        public IWorld World {get; private set;}
         public Tribe Tribe { get; private set; }
 
         public float HealthMax { get; private set; }
@@ -41,10 +41,13 @@ namespace ArtificialIntelligence
 
         public Color AnimalColor { set { _shape.FillColor = value; } }
 
+        private float _temperatureCheckTimer;
+        private float _temperatureCheckTimerMax = 3.0f;
+
 
         public Animal(AnimalProperties properties, IWorld world, Tribe tribe, Vector2i initialPosition)
         {
-            _world = world;
+            World = world;
             Tribe = tribe;
             _shape = new CircleShape(TileSizeInPixels / 2.0f - 1.0f);
             PositionInTiles = initialPosition;
@@ -56,7 +59,11 @@ namespace ArtificialIntelligence
 
         public bool IsDead()
         {
-            throw new NotImplementedException();
+            if (HealthCurrent <= 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         public void GetInput()
@@ -67,6 +74,27 @@ namespace ArtificialIntelligence
         public void Update(TimeObject timeObject)
         {
             _intelligence.DoIntelligenceUpdate(timeObject);
+
+            _temperatureCheckTimer -= timeObject.ElapsedGameTime;
+
+            if (_temperatureCheckTimer <= 0)
+            {
+                _temperatureCheckTimer += _temperatureCheckTimerMax * ( 1.0f + ((float)(RandomGenerator.Random.NextDouble() - 0.5) * 0.5f ));;
+
+                DoCheckTemperature();
+            }
+
+
+
+        }
+
+        private void DoCheckTemperature()
+        {
+            float temperatureDifferenc = Math.Abs(World.GetTileOnPosition(PositionInTiles).GetTileProperties().TemperatureInKelvin - Tribe.Properties.PreferredTemperature);
+            if (temperatureDifferenc >= 15)
+            {
+                HealthCurrent -= 1;
+            }
         }
 
         public void Draw(RenderWindow rw)
@@ -78,6 +106,25 @@ namespace ArtificialIntelligence
         public void Move(Direction direction)
         {
             PositionInTiles += direction.DirectionToVector();
+
+            if (PositionInTiles.X < 0)
+            {
+                PositionInTiles += new Vector2i(World.GetWorldProperties().WorldSizeInTiles.X, 0);
+            }
+            if (PositionInTiles.X >= World.GetWorldProperties().WorldSizeInTiles.X)
+            {
+                PositionInTiles -= new Vector2i(World.GetWorldProperties().WorldSizeInTiles.X, 0);
+            }
+
+            if (PositionInTiles.Y < 0)
+            {
+                PositionInTiles += new Vector2i( 0, World.GetWorldProperties().WorldSizeInTiles.Y);
+            }
+            if (PositionInTiles.Y >= World.GetWorldProperties().WorldSizeInTiles.Y)
+            {
+                PositionInTiles -= new Vector2i(0, World.GetWorldProperties().WorldSizeInTiles.Y);
+            }
+
         }
 
         private void CalculateAnimalParameters(AnimalProperties prop)
@@ -86,15 +133,16 @@ namespace ArtificialIntelligence
             HealthCurrent = HealthMax;
             HealthRegeneration = prop.Stamina * 0.5f;
 
-            MoveTimerMax = 12.0f / (prop.Agility + 1.0f);
-            Console.WriteLine("Move Timer is " + MoveTimerMax);
+            MoveTimerMax = 1.0f / (prop.Agility + 1.0f);
+            //Console.WriteLine("Move Timer is " + MoveTimerMax);
+            
             Hunger = (prop.Strength + prop.Stamina) * 0.5f;
 
             PreferredAltitude = prop.PreferredAltitude;
             PreferredTerrain = prop.PreferredTerrain;
             PreferredTemperature = prop.PreferredTemperature;
 
-            GroupBehaviour = prop.GroupBehaviour / 10.0f - 0.1f;
+            GroupBehaviour = prop.GroupBehaviour / 15.0f - 0.1f;
         }
     }
 }

@@ -27,7 +27,7 @@ namespace ArtificialIntelligence.Intelligence
 
             if (_moveTimer <= 0)
             {
-                _moveTimer = _animal.MoveTimerMax + ((float)(RandomGenerator.Random.NextDouble() - 0.5) * 0.5f * _animal.MoveTimerMax);
+                _moveTimer = _animal.MoveTimerMax * ( 1.0f + ((float)(RandomGenerator.Random.NextDouble() - 0.5) * 0.5f ));
                 moveRecursionDepth = 0;
                 DoMove();
             }
@@ -38,10 +38,15 @@ namespace ArtificialIntelligence.Intelligence
         {
             moveRecursionDepth++;
             Vector2i tribeCenter = _animal.Tribe.PositionInTiles;
-            Vector2i animapPosition = _animal.PositionInTiles;
-            float difX = tribeCenter.X - animapPosition.X;
-            float difY = tribeCenter.Y - animapPosition.Y;
+            Vector2i animalPosition = _animal.PositionInTiles;
+            float difX = tribeCenter.X - animalPosition.X;
+            float difY = tribeCenter.Y - animalPosition.Y;
             float distanceToCenterSquared = difX * difX + difY * difY;
+
+            float temperaturAtPosition = _animal.World.GetTileOnPosition(animalPosition).GetTileProperties().TemperatureInKelvin;
+            float diffrerenceToPreferredTemperature = Math.Abs(_animal.PreferredTemperature - temperaturAtPosition);
+
+
 
             Direction moveDirection = DirectionExtensions.RandomDirection();
 
@@ -50,13 +55,30 @@ namespace ArtificialIntelligence.Intelligence
             float dif2Y = tribeCenter.Y - newAnimalPosition.Y;
             float newDistanceToCenterSquared = dif2X * dif2X + dif2Y * dif2Y;
 
-            float penality = 1.0f;
+            float temperaturAtNewPosition = _animal.World.GetTileOnPosition(newAnimalPosition).GetTileProperties().TemperatureInKelvin;
+            float newDiffrerenceToPreferredTemperature = Math.Abs(_animal.PreferredTemperature - temperaturAtNewPosition);
+            float temperatureGain = diffrerenceToPreferredTemperature - newDiffrerenceToPreferredTemperature;
+            
+
+
+
+
+            float penality = 0.8f;
 
 
             if (newDistanceToCenterSquared > distanceToCenterSquared)
             {
                 penality -= _animal.GroupBehaviour;
             }
+            if (newDiffrerenceToPreferredTemperature < diffrerenceToPreferredTemperature)
+            {
+               // Console.WriteLine(temperatureGain/30.0f);
+                penality += temperatureGain ;
+            }
+
+            
+            
+            
 
 
 

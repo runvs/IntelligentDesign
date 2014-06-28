@@ -132,6 +132,7 @@ namespace JamTemplate
             Camera.ShouldBePosition = new Vector2f(tribe.PositionInTiles.X, tribe.PositionInTiles.Y) * cTile.GetTileSizeInPixelStatic();
             Camera.CameraPosition = new Vector2f(tribe.PositionInTiles.X, tribe.PositionInTiles.Y) * cTile.GetTileSizeInPixelStatic();
 
+            Console.WriteLine("Desired Temp " + _world.GetWorldProperties().DesiredTemperature);
 
         }
 

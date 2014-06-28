@@ -110,7 +110,7 @@ namespace JamTemplate
             _tribeProperties.PreferredTerrain = WorldInterfaces.AnimalProperties.TerrainType.LAND;
             _tribeProperties.Stamina = 1;
             _tribeProperties.Strength = 1;
-            _tribeProperties.NumberOfAnimals = 30;
+            _tribeProperties.NumberOfAnimals = 300;
 
             EvolutionPoints = GameProperties.EvolutionPointsStart;
         }
@@ -285,6 +285,29 @@ namespace JamTemplate
 
             //    _timeTilNextInput = 0.25f;
             //}
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.H))
+            {
+                _tribeProperties.PreferredTemperature -= 0.5f;
+                if (_tribeProperties.PreferredTemperature <= 250.0f )
+                {
+                    _tribeProperties.PreferredTemperature = 250.0f;
+                }
+
+                _timeTilNextInput = 0.25f;
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Z))
+            {
+                _tribeProperties.PreferredTemperature += 0.5f;
+                if (_tribeProperties.PreferredTemperature >= 350.0f)
+                {
+                    _tribeProperties.PreferredTemperature = 350.0f;
+                }
+
+                _timeTilNextInput = 0.25f;
+            }
+
+
 
             //if (Keyboard.IsKeyPressed(Keyboard.Key.G))
             //{
