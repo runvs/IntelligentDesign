@@ -2,6 +2,7 @@
 using JamUtilities;
 using JamUtilities.Particles;
 using JamUtilities.ScreenEffects;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -19,6 +20,8 @@ namespace JamTemplate
         float _timeTilNextInput = 0.0f;
 
         public int EvolutionPoints { get; private set; }
+
+        private Music _bgm;
 
         private enum eMenuState
         {
@@ -38,6 +41,8 @@ namespace JamTemplate
 
         public Game()
         {
+            _bgm = new Music("../SFX/bgm.ogg");
+            _bgm.Play();
             // Predefine game state to menu
             _gameState = State.Menu;
             _menuState = eMenuState.MS_START;
