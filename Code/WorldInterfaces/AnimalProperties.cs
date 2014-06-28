@@ -56,6 +56,8 @@ namespace WorldInterfaces
             OMNIVORE
         }
 
+        public int NumberOfAnimals { get; set; }
+
 
         public int GetPropertyCosts()
         {
@@ -77,6 +79,7 @@ namespace WorldInterfaces
             {
                 cost += 25;
             }
+
 
 
 

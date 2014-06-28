@@ -14,7 +14,7 @@ namespace ArtificialIntelligence
 
         private List<Animal> _animalList;
         private IWorld _world;
-        private AnimalProperties _properties;
+        public AnimalProperties Properties { get; private set; }
 
         public Vector2i PositionInTiles { get; set; }
 
@@ -28,7 +28,7 @@ namespace ArtificialIntelligence
             }
             _world = world;
             _animalList = new List<Animal>();
-            _properties = properties;
+            Properties = properties;
 
             PositionInTiles = new Vector2i(_world.GetWorldProperties().WorldSizeInTiles.X / 2, _world.GetWorldProperties().WorldSizeInTiles.Y / 2);
             _tribeColor = RandomGenerator.GetRandomColor();
@@ -67,7 +67,7 @@ namespace ArtificialIntelligence
             int halfsize = -(tribeSize / 2) +1 ;
 
             Vector2i initialPosition = PositionInTiles + RandomGenerator.GetRandomVector2iInRect(new SFML.Graphics.IntRect(halfsize, halfsize, tribeSize, tribeSize));
-            Animal animal = new Animal(_properties, _world, initialPosition);
+            Animal animal = new Animal(Properties, _world, this, initialPosition);
             animal.AnimalColor = _tribeColor;
             _animalList.Add(animal);
         }

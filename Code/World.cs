@@ -91,6 +91,7 @@ namespace JamTemplate
 
         public void InitWorld()
         {
+            _tribeList = new List<Tribe>();
             CreateWorld();
             Camera.MinPosition = new Vector2f(0, 0);
             Camera.MaxPosition = new Vector2f(GameProperties.WorldSizeInTiles.X * cTile.GetTileSizeInPixelStatic() - 800, GameProperties.WorldSizeInTiles.Y * cTile.GetTileSizeInPixelStatic() - 600);
@@ -110,60 +111,56 @@ namespace JamTemplate
             IWorldInCreation worldInCreation = _world as IWorldInCreation;
 
             WorldGeneration.WorldGenerator.CreateWorld(ref worldInCreation, GameWorldCreationProperties);
-            CreateRandomTribes();
+            
         }
 
 
-        public void AddTribe(Tribe tribe)
+        private void AddTribe(Tribe tribe)
         {
             
             tribe.PositionInTiles = RandomGenerator.GetRandomVector2iInRect(new IntRect(0, 0, _world.GetWorldProperties().WorldSizeInTiles.X, _world.GetWorldProperties().WorldSizeInTiles.Y));
-
+            Console.WriteLine("");
             Console.WriteLine("Spawning Tribe at " + tribe.PositionInTiles);
 
-            for (int i = 0; i != 50; ++i)
+            for (int i = 0; i != tribe.Properties.NumberOfAnimals; ++i)
             {
                 tribe.SpawnAnimal();
             }
 
             _tribeList.Add(tribe);
+
+            Camera.ShouldBePosition = new Vector2f(tribe.PositionInTiles.X, tribe.PositionInTiles.Y) * cTile.GetTileSizeInPixelStatic();
+            Camera.CameraPosition = new Vector2f(tribe.PositionInTiles.X, tribe.PositionInTiles.Y) * cTile.GetTileSizeInPixelStatic();
+
+
         }
 
 
-        public void CreateRandomTribes()
+        public void CreateRandomTribes(int numberOfTribes)
         {
-           
 
-            AnimalProperties properties = new AnimalProperties();
-            properties.Agility = 1;
-            properties.Diet = AnimalProperties.DietType.CARNIVORE;
-            properties.GroupBehaviour = 1;
-            properties.PreferredAltitude = 50;
-            properties.PreferredTemperature = 300;
-            properties.PreferredTerrain = AnimalProperties.TerrainType.LAND;
-            properties.Stamina = 1;
-            properties.Strength = 1;
-
-            Tribe tribe = new Tribe(_world, properties);
-
-            tribe.PositionInTiles = RandomGenerator.GetRandomVector2iInRect(new IntRect(0, 0, _world.GetWorldProperties().WorldSizeInTiles.X, _world.GetWorldProperties().WorldSizeInTiles.Y));
-            for (int i = 0; i != 50; ++i)
+            for (int i = 0; i != numberOfTribes; ++i)
             {
-                tribe.SpawnAnimal();
+                AnimalProperties properties = new AnimalProperties();
+                properties.Agility = 1 + RandomGenerator.Random.Next(0, 4);
+                properties.Stamina = 1 + RandomGenerator.Random.Next(0, 4);
+                properties.Strength = 1 + RandomGenerator.Random.Next(0, 4);
+                properties.Diet = AnimalProperties.DietType.CARNIVORE;
+                properties.GroupBehaviour = 1 + RandomGenerator.Random.Next(0, 4); ;
+                properties.PreferredAltitude = 50 + RandomGenerator.Random.Next(-40, 40); ;
+                properties.PreferredTemperature = 300 + +RandomGenerator.Random.Next(-20 + 20); ;
+                properties.PreferredTerrain = AnimalProperties.TerrainType.LAND;
+                properties.NumberOfAnimals = 20 + RandomGenerator.Random.Next(0, 40);
+
+                Tribe tribe = new Tribe(_world, properties);
+
+                tribe.PositionInTiles = RandomGenerator.GetRandomVector2iInRect(new IntRect(0, 0, _world.GetWorldProperties().WorldSizeInTiles.X, _world.GetWorldProperties().WorldSizeInTiles.Y));
+                for (int j = 0; j != properties.NumberOfAnimals; ++j)
+                {
+                    tribe.SpawnAnimal();
+                }
+                _tribeList.Add(tribe);
             }
-            Console.WriteLine("Spawning Tribe at " + tribe.PositionInTiles);
-            _tribeList.Add(tribe);
-
-
-            tribe = new Tribe(_world, properties);
-
-            tribe.PositionInTiles = RandomGenerator.GetRandomVector2iInRect(new IntRect(0, 0, _world.GetWorldProperties().WorldSizeInTiles.X, _world.GetWorldProperties().WorldSizeInTiles.Y));
-            for (int i = 0; i != 50; ++i)
-            {
-                tribe.SpawnAnimal();
-            }
-            Console.WriteLine("Spawning Tribe at " + tribe.PositionInTiles);
-            _tribeList.Add(tribe);
         }
 
         public void SpawnTribe(AnimalProperties properties)

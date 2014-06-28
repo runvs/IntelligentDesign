@@ -53,6 +53,7 @@
     <Compile Include="Animal.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Intelligence\AbstractIntelligencePattern.cs" />
+    <Compile Include="Intelligence\AnimalAI.cs" />
     <Compile Include="Intelligence\RandomWalkIntelligence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tribe.cs" />
