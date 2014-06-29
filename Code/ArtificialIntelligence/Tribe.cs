@@ -18,7 +18,7 @@ namespace ArtificialIntelligence
 
         public Vector2i PositionInTiles { get; set; }
 
-        private Color _tribeColor;
+        public Color TribeColor { get; set; }
 
         private int _numberOfAnimalsToSpawnThisRound;
 
@@ -33,7 +33,7 @@ namespace ArtificialIntelligence
             Properties = properties;
 
             PositionInTiles = new Vector2i(_world.GetWorldProperties().WorldSizeInTiles.X / 2, _world.GetWorldProperties().WorldSizeInTiles.Y / 2);
-            _tribeColor = RandomGenerator.GetRandomColor();
+            TribeColor = RandomGenerator.GetRandomColor();
         }
     
         public bool IsDead()
@@ -117,7 +117,7 @@ namespace ArtificialIntelligence
 
             Vector2i initialPosition = PositionInTiles + RandomGenerator.GetRandomVector2iInRect(new SFML.Graphics.IntRect(halfsize, halfsize, tribeSize, tribeSize));
             Animal animal = new Animal(Properties, _world, this, initialPosition);
-            animal.AnimalColor = _tribeColor;
+            animal.AnimalColor = TribeColor;
             _animalList.Add(animal);
         }
 

@@ -63,9 +63,11 @@ namespace WorldInterfaces
         {
             int cost = 0;
 
-            cost += (int)Agility * 5;
-            cost += (int)Strength * 5;
-            cost += (int)Stamina * 5;
+            cost += (int)Agility * 6;
+            cost += (int)Strength * 3;
+            cost += (int)Stamina * 3;
+
+            cost += (int)GroupBehaviour * 6;
 
             if (Diet == DietType.HERBIVORE)
             {

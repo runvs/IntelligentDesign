@@ -532,7 +532,12 @@ namespace JamTemplate
             {
                 _myWorld.Update(Timing.Update(deltaT));
 
-               // Game End Condition
+                if (_myWorld.IsPlayerTribeDead())
+                {
+                    ChangeGameState(State.Menu);
+                    ResetCreationParameters();
+                    _menuState = eMenuState.MS_START;
+                }
 
             }
             else if (_gameState == State.Menu && this._timeTilNextInput <= 0.0f)
@@ -631,20 +636,21 @@ namespace JamTemplate
 
         private void DrawCredits(RenderWindow rw)
         {
-
-            SmartText.DrawText("$GameTitle$", TextAlignment.MID, new Vector2f(400.0f, 20.0f), 1.5f, rw);
+            SmartText.DrawText("Intelligent Design", TextAlignment.MID, new Vector2f(400.0f, 20.0f), 1.5f, rw);
 
             SmartText.DrawText("A Game by", TextAlignment.MID, new Vector2f(400.0f, 100.0f), 0.75f, rw);
-            SmartText.DrawText("$DeveloperNames$", TextAlignment.MID, new Vector2f(400.0f, 135.0f), rw);
+            SmartText.DrawText("Simon '@Laguna_999' Weis", TextAlignment.MID, new Vector2f(400.0f, 135.0f), rw);
 
             SmartText.DrawText("Visual Studio 2012 \t C#", TextAlignment.MID, new Vector2f(400, 170), 0.75f, rw);
             SmartText.DrawText("aseprite \t SFML.NET 2.1", TextAlignment.MID, new Vector2f(400, 200), 0.75f, rw);
             SmartText.DrawText("Cubase 5 \t SFXR", TextAlignment.MID, new Vector2f(400, 230), 0.75f, rw);
 
             SmartText.DrawText("Thanks to", TextAlignment.MID, new Vector2f(400, 350), 0.75f, rw);
-            SmartText.DrawText("Families & Friends for their great support", TextAlignment.MID, new Vector2f(400, 375), 0.75f, rw);
+            SmartText.DrawText("Julian '@Thunraz' Dinges for technical support", TextAlignment.MID, new Vector2f(400, 375), 0.75f, rw);
+            SmartText.DrawText("Sebastian 'XzzX' Eibl for discussions and brainstorming", TextAlignment.MID, new Vector2f(400, 400), 0.75f, rw);
+            SmartText.DrawText("Families & Friends for their great support", TextAlignment.MID, new Vector2f(400, 425), 0.75f, rw);
 
-            SmartText.DrawText("Created $Date$", TextAlignment.MID, new Vector2f(400.0f, 500.0f), 0.75f, rw);
+            SmartText.DrawText("Created June 2014", TextAlignment.MID, new Vector2f(400.0f, 500.0f), 0.75f, rw);
             ScreenEffects.GetStaticEffect("vignette").Draw(rw);
         }
 

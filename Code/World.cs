@@ -20,6 +20,7 @@ namespace JamTemplate
         public cWorldProperties GameWorldCreationProperties { get; set; }
 
         private List<Tribe> _tribeList;
+        private bool _playerTribeDead = false;
 
         #endregion Fields
 
@@ -68,6 +69,14 @@ namespace JamTemplate
                 if (!t.IsDead())
                 {
                     templist.Add(t);
+                }
+                else
+                {
+                    if (t.Equals(_tribeList[0]))
+                    {
+                        _playerTribeDead = true;
+                    }
+
                 }
             }
             _tribeList = templist;
@@ -167,6 +176,7 @@ namespace JamTemplate
         public void SpawnTribe(AnimalProperties properties)
         {
             Tribe tribe = new Tribe(_world, properties);
+            tribe.TribeColor = new Color(255, 255, 255);
             AddTribe(tribe);
         }
 
@@ -174,5 +184,10 @@ namespace JamTemplate
 
         #endregion Methods
 
+
+        public bool IsPlayerTribeDead()
+        {
+            return _playerTribeDead;
+        }
     }
 }
