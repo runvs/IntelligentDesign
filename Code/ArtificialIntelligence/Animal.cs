@@ -193,7 +193,7 @@ namespace ArtificialIntelligence
 
         private void CalculateAnimalParameters(AnimalProperties prop)
         {
-            HealthMax = prop.Stamina * 10;
+            HealthMax = 5 + prop.Stamina * 5 + prop.Strength * 3;
             HealthCurrent = HealthMax;
             HealthRegeneration = prop.Stamina * 0.5f;
 
