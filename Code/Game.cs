@@ -42,6 +42,7 @@ namespace JamTemplate
         public Game()
         {
             _bgm = new Music("../SFX/bgm.ogg");
+            _bgm.Loop = true;
             _bgm.Play();
             // Predefine game state to menu
             _gameState = State.Menu;

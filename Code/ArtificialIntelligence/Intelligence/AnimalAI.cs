@@ -46,7 +46,8 @@ namespace ArtificialIntelligence.Intelligence
             float temperaturAtPosition = _animal.World.GetTileOnPosition(animalPosition).GetTileProperties().TemperatureInKelvin;
             float diffrerenceToPreferredTemperature = Math.Abs(_animal.PreferredTemperature - temperaturAtPosition);
 
-
+            float HeightAtPosition = _animal.World.GetTileOnPosition(animalPosition).GetTileProperties().HeightInMeters;
+            float diffrerenceToPreferredHeight = Math.Abs(_animal.PreferredAltitude - HeightAtPosition);
 
             Direction moveDirection = DirectionExtensions.RandomDirection();
 
@@ -58,10 +59,10 @@ namespace ArtificialIntelligence.Intelligence
             float temperaturAtNewPosition = _animal.World.GetTileOnPosition(newAnimalPosition).GetTileProperties().TemperatureInKelvin;
             float newDiffrerenceToPreferredTemperature = Math.Abs(_animal.PreferredTemperature - temperaturAtNewPosition);
             float temperatureGain = diffrerenceToPreferredTemperature - newDiffrerenceToPreferredTemperature;
-            
 
-
-
+            float HeightAtNewPosition = _animal.World.GetTileOnPosition(newAnimalPosition).GetTileProperties().HeightInMeters;
+            float newDiffrerenceToPreferredHeight = Math.Abs(_animal.PreferredAltitude - HeightAtNewPosition);
+            float HeightGain = diffrerenceToPreferredHeight - newDiffrerenceToPreferredHeight;
 
             float penality = 0.8f;
 
@@ -72,10 +73,12 @@ namespace ArtificialIntelligence.Intelligence
             }
             if (newDiffrerenceToPreferredTemperature < diffrerenceToPreferredTemperature)
             {
-               // Console.WriteLine(temperatureGain/30.0f);
-                penality += temperatureGain ;
+                penality += temperatureGain*2.0f ;
             }
-
+            if (newDiffrerenceToPreferredHeight < diffrerenceToPreferredHeight)
+            {
+                penality += HeightGain/4.0f;
+            }
             
             
             

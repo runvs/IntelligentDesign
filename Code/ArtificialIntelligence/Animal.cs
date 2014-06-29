@@ -44,6 +44,8 @@ namespace ArtificialIntelligence
         private float _temperatureCheckTimer;
         private float _temperatureCheckTimerMax = 3.0f;
 
+        private float _foodTimer;   // will use MoveTimerMax
+
 
         public Animal(AnimalProperties properties, IWorld world, Tribe tribe, Vector2i initialPosition)
         {
@@ -76,22 +78,63 @@ namespace ArtificialIntelligence
             _intelligence.DoIntelligenceUpdate(timeObject);
 
             _temperatureCheckTimer -= timeObject.ElapsedGameTime;
-
             if (_temperatureCheckTimer <= 0)
             {
-                _temperatureCheckTimer += _temperatureCheckTimerMax * ( 1.0f + ((float)(RandomGenerator.Random.NextDouble() - 0.5) * 0.5f ));;
-
+                _temperatureCheckTimer += _temperatureCheckTimerMax * ( 1.0f + ((float)(RandomGenerator.Random.NextDouble() - 0.5) * 0.5f ));
                 DoCheckTemperature();
+                DoCheckTerrain();
+            }
+
+            _foodTimer -= timeObject.ElapsedGameTime;
+            if (_foodTimer <= 0)
+            {
+                _foodTimer += MoveTimerMax * (1.0f + ((float)(RandomGenerator.Random.NextDouble() - 0.5) * 0.5f));
+                EatFood();
             }
 
 
 
         }
 
+        private void EatFood()
+        {
+            ITile currentTile = World.GetTileOnPosition(PositionInTiles);
+            if(Diet == AnimalProperties.DietType.HERBIVORE || Diet == AnimalProperties.DietType.OMNIVORE)
+            {
+
+                if (currentTile.GetTileProperties().GetFoodAmountOnTile(eFoodType.FOOD_TYPE_PLANT) >= Hunger)
+                {
+                    currentTile.GetTileProperties().ChangeFoodAmountOnTile(eFoodType.FOOD_TYPE_PLANT, -Hunger);
+                    if (HealthCurrent < HealthMax)
+                    {
+                        HealthCurrent += HealthRegeneration;
+                    }
+                }
+            }
+        }
+
+        private void DoCheckTerrain()
+        {
+            if (PreferredTerrain == AnimalProperties.TerrainType.LAND)
+            {
+                if (World.GetTileOnPosition(PositionInTiles).GetTileType() == eTileType.TILETYPE_WATER)
+                {
+                    HealthCurrent -= 3;
+                }
+            }
+            else
+            {
+                if (World.GetTileOnPosition(PositionInTiles).GetTileType() != eTileType.TILETYPE_WATER)
+                {
+                    HealthCurrent -= 3;
+                }
+            }
+        }
+
         private void DoCheckTemperature()
         {
             float temperatureDifferenc = Math.Abs(World.GetTileOnPosition(PositionInTiles).GetTileProperties().TemperatureInKelvin - Tribe.Properties.PreferredTemperature);
-            if (temperatureDifferenc >= 15)
+            if (temperatureDifferenc >= 10)
             {
                 HealthCurrent -= 1;
             }

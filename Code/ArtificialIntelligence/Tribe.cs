@@ -66,7 +66,7 @@ namespace ArtificialIntelligence
 
             _animalList = newAnimalList;
 
-            Console.WriteLine("Population: " + _animalList.Count);
+            Console.WriteLine("TotalHealth : " + GetSummedCurrentHealth() + "\t/\t" + GetSummedMaxHealth() + "\t" + "\t" + GetSummedCurrentHealth() / GetSummedMaxHealth()* 100.0f  + "\t" + _animalList.Count);
         }
 
         public void Draw(SFML.Graphics.RenderWindow rw)
@@ -75,6 +75,28 @@ namespace ArtificialIntelligence
             {
                 a.Draw(rw);
             }
+        }
+
+        public float GetSummedCurrentHealth()
+        {
+            float totalHealth = 0;
+            foreach (Animal a in _animalList)
+            {
+                totalHealth += a.HealthCurrent;
+            }
+
+            return totalHealth;
+        }
+
+        public float GetSummedMaxHealth()
+        {
+            float totalHealth = 0;
+            foreach (Animal a in _animalList)
+            {
+                totalHealth += a.HealthMax;
+            }
+
+            return totalHealth;
         }
 
         public void SpawnAnimal()
