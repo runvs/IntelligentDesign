@@ -10,6 +10,6 @@ namespace JamTemplate
 
         public static int EvolutionPointsWorldMax { get { return 75; } }
 
-        public static int NumberOfEnemyTribes { get { return 0; } }
+        public static int NumberOfEnemyTribes { get { return 7; } }
     }
 }

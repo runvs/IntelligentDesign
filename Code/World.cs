@@ -143,15 +143,15 @@ namespace JamTemplate
             for (int i = 0; i != numberOfTribes; ++i)
             {
                 AnimalProperties properties = new AnimalProperties();
-                properties.Agility = 1 + RandomGenerator.Random.Next(0, 4);
-                properties.Stamina = 1 + RandomGenerator.Random.Next(0, 4);
-                properties.Strength = 1 + RandomGenerator.Random.Next(0, 4);
+                properties.Agility = 1 + RandomGenerator.Random.Next(0, 2);
+                properties.Stamina = 1 + RandomGenerator.Random.Next(0, 3);
+                properties.Strength = 1 + RandomGenerator.Random.Next(0, 3);
                 properties.Diet = AnimalProperties.DietType.CARNIVORE;
-                properties.GroupBehaviour = 1 + RandomGenerator.Random.Next(0, 4); ;
+                properties.GroupBehaviour = 1 + RandomGenerator.Random.Next(0, 6); ;
                 properties.PreferredAltitude = 50 + RandomGenerator.Random.Next(-40, 40); ;
-                properties.PreferredTemperature = 300 + +RandomGenerator.Random.Next(-20 + 20); ;
+                properties.PreferredTemperature = 300 + +RandomGenerator.Random.Next(-40 + 40); ;
                 properties.PreferredTerrain = AnimalProperties.TerrainType.LAND;
-                properties.NumberOfAnimals = 20 + RandomGenerator.Random.Next(0, 40);
+                properties.NumberOfAnimals = 10 + RandomGenerator.Random.Next(0, 20);
 
                 Tribe tribe = new Tribe(_world, properties);
 

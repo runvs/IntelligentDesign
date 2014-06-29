@@ -20,6 +20,8 @@ namespace ArtificialIntelligence
 
         private Color _tribeColor;
 
+        private int _numberOfAnimalsToSpawnThisRound;
+
         public Tribe(IWorld world, AnimalProperties properties)
         {
             if (world == null)
@@ -46,6 +48,7 @@ namespace ArtificialIntelligence
 
         public void Update(TimeObject timeObject)
         {
+            _numberOfAnimalsToSpawnThisRound = 0;
             Vector2f newCenterPosition = new Vector2f(0, 0);
 
             List<Animal>  newAnimalList = new List<Animal>();
@@ -66,7 +69,12 @@ namespace ArtificialIntelligence
 
             _animalList = newAnimalList;
 
-            Console.WriteLine("TotalHealth : " + GetSummedCurrentHealth() + "\t/\t" + GetSummedMaxHealth() + "\t" + "\t" + GetSummedCurrentHealth() / GetSummedMaxHealth()* 100.0f  + "\t" + _animalList.Count);
+            //Console.WriteLine("TotalHealth : " + GetSummedCurrentHealth() + "\t/\t" + GetSummedMaxHealth() + "\t" + "\t" + GetSummedCurrentHealth() / GetSummedMaxHealth()* 100.0f  + "\t" + _animalList.Count);
+
+            for (int i = 0; i != _numberOfAnimalsToSpawnThisRound; ++i)
+            {
+                SpawnAnimal();
+            }
         }
 
         public void Draw(SFML.Graphics.RenderWindow rw)
@@ -87,6 +95,8 @@ namespace ArtificialIntelligence
 
             return totalHealth;
         }
+
+
 
         public float GetSummedMaxHealth()
         {
@@ -109,6 +119,37 @@ namespace ArtificialIntelligence
             Animal animal = new Animal(Properties, _world, this, initialPosition);
             animal.AnimalColor = _tribeColor;
             _animalList.Add(animal);
+        }
+
+        public void LetThemHaveFun()
+        {
+            _numberOfAnimalsToSpawnThisRound++;
+        }
+
+
+        public bool TwoAnimalOnPosition(Vector2i position)
+        {
+            bool b1 = false;
+            foreach (Animal a in _animalList)
+            {
+                if (b1 == false)
+                {
+                    if (a.PositionInTiles.Equals(position))
+                    {
+                        b1 = true;
+                        continue;
+                    }
+                }
+                else
+                {
+                    if(a.PositionInTiles.Equals(position))
+                    {
+                        return true;
+                    }
+                }
+                
+            }
+            return false;
         }
 
 

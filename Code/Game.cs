@@ -116,7 +116,7 @@ namespace JamTemplate
             _tribeProperties.PreferredTerrain = WorldInterfaces.AnimalProperties.TerrainType.LAND;
             _tribeProperties.Stamina = 1;
             _tribeProperties.Strength = 1;
-            _tribeProperties.NumberOfAnimals = 300;
+            _tribeProperties.NumberOfAnimals = 20;
 
             EvolutionPoints = GameProperties.EvolutionPointsStart;
         }

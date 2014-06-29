@@ -42,9 +42,12 @@ namespace ArtificialIntelligence
         public Color AnimalColor { set { _shape.FillColor = value; } }
 
         private float _temperatureCheckTimer;
-        private float _temperatureCheckTimerMax = 3.0f;
+        private float _temperatureCheckTimerMax = 1.5f;
 
         private float _foodTimer;   // will use MoveTimerMax
+
+        private float _fuckDeadTime; // will also use MoveTimerMax
+        
 
 
         public Animal(AnimalProperties properties, IWorld world, Tribe tribe, Vector2i initialPosition)
@@ -93,7 +96,25 @@ namespace ArtificialIntelligence
             }
 
 
+            if (_fuckDeadTime >= 0)
+            {
+                _fuckDeadTime -= timeObject.ElapsedGameTime;
+            }
+            if (_fuckDeadTime < 0)
+            {
+                if (Tribe.TwoAnimalOnPosition(PositionInTiles))
+                {
+                    FuckIt();
+                }
+            }
 
+        }
+
+        private void FuckIt()
+        {
+            //Console.WriteLine("Fuck Yeah!");
+            _fuckDeadTime += 175.0f * (float)Math.Sqrt(Math.Sqrt(MoveTimerMax));
+            Tribe.LetThemHaveFun();
         }
 
         private void EatFood()
@@ -119,14 +140,14 @@ namespace ArtificialIntelligence
             {
                 if (World.GetTileOnPosition(PositionInTiles).GetTileType() == eTileType.TILETYPE_WATER)
                 {
-                    HealthCurrent -= 3;
+                    HealthCurrent -= 5;
                 }
             }
             else
             {
                 if (World.GetTileOnPosition(PositionInTiles).GetTileType() != eTileType.TILETYPE_WATER)
                 {
-                    HealthCurrent -= 3;
+                    HealthCurrent -= 4;
                 }
             }
         }
@@ -136,7 +157,7 @@ namespace ArtificialIntelligence
             float temperatureDifferenc = Math.Abs(World.GetTileOnPosition(PositionInTiles).GetTileProperties().TemperatureInKelvin - Tribe.Properties.PreferredTemperature);
             if (temperatureDifferenc >= 10)
             {
-                HealthCurrent -= 1;
+                HealthCurrent -= 1.25f;
             }
         }
 
