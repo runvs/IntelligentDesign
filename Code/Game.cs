@@ -26,6 +26,7 @@ namespace JamTemplate
         private enum eMenuState
         {
             MS_START,
+            MS_ABOUT,
             MS_WORLD,
             MS_TRIBE
         }
@@ -144,7 +145,6 @@ namespace JamTemplate
         {
             if (Keyboard.IsKeyPressed(Keyboard.Key.Return))
             {
-                
                 if (_menuState == eMenuState.MS_START)
                 {
                     _menuState = eMenuState.MS_WORLD;
@@ -192,12 +192,29 @@ namespace JamTemplate
             {
                 GetInputTribeCreation();
             }
+            else if(_menuState == eMenuState.MS_START)
+            {
+                if (Keyboard.IsKeyPressed(Keyboard.Key.A))
+                {
+                    _menuState = eMenuState.MS_ABOUT;
+                    _timeTilNextInput = 0.5f;
+                }
+            }
+            else if (_menuState == eMenuState.MS_ABOUT)
+            {
+                if (Keyboard.IsKeyPressed(Keyboard.Key.A) || Keyboard.IsKeyPressed(Keyboard.Key.Escape) || Keyboard.IsKeyPressed(Keyboard.Key.Return))
+                {
+                    _menuState = eMenuState.MS_START;
+                    _timeTilNextInput = 0.25f;
+                }
+            }
 
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.C))
             {
                 ChangeGameState(State.Credits);
             }
+            
 
         }
 
@@ -532,13 +549,6 @@ namespace JamTemplate
             {
                 _myWorld.Update(Timing.Update(deltaT));
 
-                if (_myWorld.IsPlayerTribeDead())
-                {
-                    ChangeGameState(State.Menu);
-                    ResetCreationParameters();
-                    _menuState = eMenuState.MS_START;
-                }
-
             }
             else if (_gameState == State.Menu && this._timeTilNextInput <= 0.0f)
             {
@@ -576,6 +586,13 @@ namespace JamTemplate
             if (_menuState == eMenuState.MS_START)
             {
                 SmartText.DrawText("Create World [Return]", TextAlignment.MID, new Vector2f(400.0f, 250.0f), rw);
+                SmartText.DrawText("[A]bout", TextAlignment.RIGHT, new Vector2f(770.0f, 550.0f), rw);
+            }
+            else if (_menuState == eMenuState.MS_ABOUT)
+            {
+                SmartText.DrawText("This techdemo is highly unfinished.", TextAlignment.MID, new Vector2f(400.0f, 250.0f), rw);
+                SmartText.DrawText("Please feel free to experiment", TextAlignment.MID, new Vector2f(400.0f, 300.0f), rw);
+                SmartText.DrawText("and watch your tribe expand", TextAlignment.MID, new Vector2f(400.0f, 325.0f), rw);
             }
             else if (_menuState == eMenuState.MS_WORLD)
             {
@@ -589,14 +606,14 @@ namespace JamTemplate
                     SmartText.DrawText("Evo Points " + EvolutionPoints, TextAlignment.MID, new Vector2f(650.0f, 200.0f), Color.Red, rw);
                 }
 
-                SmartText.DrawText("Day Night Frequency " + _worldProperties.DayNightCycleFrequency  + " [Q, A]", TextAlignment.LEFT, new Vector2f(200.0f, 250.0f), 0.65f, rw);
+                SmartText.DrawText("Day Night Frequency " + _worldProperties.DayNightCycleFrequency + " [Q, A]", TextAlignment.LEFT, new Vector2f(200.0f, 250.0f), 0.65f, rw);
 
-                SmartText.DrawText("Max Height " + _worldProperties.MaxHeightInMeter  + " [W, S]", TextAlignment.LEFT, new Vector2f(200.0f, 275.0f), 0.65f, rw);
+                SmartText.DrawText("Max Height " + _worldProperties.MaxHeightInMeter + " [W, S]", TextAlignment.LEFT, new Vector2f(200.0f, 275.0f), 0.65f, rw);
                 SmartText.DrawText("Mountain Height " + _worldProperties.MountainHeight + " [E, D]", TextAlignment.LEFT, new Vector2f(200.0f, 300.0f), 0.65f, rw);
 
-                SmartText.DrawText("Sunlight Intensity " + _worldProperties.SunLightIntensityFactor* 100 + " [R, F]", TextAlignment.LEFT, new Vector2f(200.0f, 425.0f), 0.65f, rw);
-                SmartText.DrawText("Atmospheric Heat Flux " + _worldProperties.AtmosphericHeatOutFluxPerSecond * 1000.0f  + " [T, G]", TextAlignment.LEFT, new Vector2f(200.0f, 450.0f), 0.65f, rw);
-                    
+                SmartText.DrawText("Sunlight Intensity " + _worldProperties.SunLightIntensityFactor * 100 + " [R, F]", TextAlignment.LEFT, new Vector2f(200.0f, 425.0f), 0.65f, rw);
+                SmartText.DrawText("Atmospheric Heat Flux " + _worldProperties.AtmosphericHeatOutFluxPerSecond * 1000.0f + " [T, G]", TextAlignment.LEFT, new Vector2f(200.0f, 450.0f), 0.65f, rw);
+
 
                 SmartText.DrawText("Create Tribe [Return]", TextAlignment.MID, new Vector2f(400.0f, 500.0f), rw);
             }
@@ -623,7 +640,7 @@ namespace JamTemplate
 
                 SmartText.DrawText("Diet " + _tribeProperties.Diet + " [U, J]", TextAlignment.LEFT, new Vector2f(200.0f, 450.0f), 0.65f, rw);
                 SmartText.DrawText("Group Behaviour " + _tribeProperties.GroupBehaviour + " [I, K]", TextAlignment.LEFT, new Vector2f(200.0f, 475.0f), 0.65f, rw);
-                
+
 
 
                 SmartText.DrawText("Start Game [Return]", TextAlignment.MID, new Vector2f(400.0f, 500.0f), rw);

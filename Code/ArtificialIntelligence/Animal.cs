@@ -42,7 +42,7 @@ namespace ArtificialIntelligence
         public Color AnimalColor { set { _shape.FillColor = value; } }
 
         private float _temperatureCheckTimer;
-        private float _temperatureCheckTimerMax = 1.5f;
+        private float _temperatureCheckTimerMax = 1.0f;
 
         private float _foodTimer;   // will use MoveTimerMax
 
@@ -157,7 +157,7 @@ namespace ArtificialIntelligence
             float temperatureDifferenc = Math.Abs(World.GetTileOnPosition(PositionInTiles).GetTileProperties().TemperatureInKelvin - Tribe.Properties.PreferredTemperature);
             if (temperatureDifferenc >= 10)
             {
-                HealthCurrent -= 1.25f;
+                HealthCurrent -= 1.75f;
             }
         }
 
